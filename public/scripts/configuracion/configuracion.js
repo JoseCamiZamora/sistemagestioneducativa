@@ -1,0 +1,942 @@
+function IN_form_crear_new_anio(){
+  
+  $('#modal_anio').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_anio";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_anio").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_materia(){
+  
+  $('#modal_materia').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_materia";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_materia").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_actividad(){
+  
+  $('#modal_actividad').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nueva_activdad";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_actividad").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_periodo(){
+  
+  $('#modal_periodo').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_periodo";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_periodo").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_curso(){
+  
+  $('#modal_curso').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_curso";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_curso").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_clasificacion(){
+  
+  $('#modal_clasificacion').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nueva_clasificacion";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_clasificacion").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+$(document).on("submit","#f_adicionar_nueva_materia",function(e){
+  //funcion para crear un nuevo usuario
+
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/crear_matria";
+
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_materia").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_nueva_actividad",function(e){
+  //funcion para crear un nuevo usuario
+
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/crear_actividad";
+
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_actividad").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_nuevo_periodo",function(e){
+  //funcion para crear un nuevo usuario
+
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/crear_periodo";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_periodo").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_nuevo_curso",function(e){
+  //funcion para crear un nuevo usuario
+
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/crear_curso";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_curso").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_nuevo_anio",function(e){
+  //funcion para crear un nuevo usuario
+  var validacione = validarCheckboxes();
+  console.log('jejejejej',validacione);
+  if(validacione){
+    e.preventDefault();
+    $('.preloader').fadeIn();
+    
+    var formu=$(this);
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var varurl=urlraiz+"/configuracion/crear_anio";
+    
+    $.ajax({
+      // la URL para la petición
+      url : varurl,
+      data : formu.serialize(),
+      method: 'POST',
+      dataType : 'html'
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        $("#contenido_modal_anio").html(resul);
+     })
+    .fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  }else{
+    e.preventDefault();
+  }
+ 
+});
+
+$(document).on("submit","#f_adicionar_nueva_clasificacion",function(e){
+  //funcion para crear un nuevo usuario
+
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/crear_clasificacion";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_clasificacion").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit", "#f_adicionar_curso_estudiante", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var idAnio = $("#anio_escolar").val();
+  var idCurso = $("#curso").val();
+  var idEstudiante = $("#id_estudiante").val();
+  
+  const select1 = document.getElementById('anio_escolar'); // ID del <select>
+  const textoSeleccionado1 = select1.options[select1.selectedIndex].text;
+  const select2 = document.getElementById('curso'); // ID del <select>
+  const textoSeleccionado2 = select2.options[select2.selectedIndex].text;
+
+  var urlraiz = $("#url_raiz_proyecto").val();
+  var miurl = urlraiz + "/configuracion/validar_curso_asociado/" + idAnio + "/" + idCurso + "/" + idEstudiante;
+
+  $.ajax({
+    url: miurl,
+  })
+  .done(function(resul) {
+    var estado = resul['estado'];
+    console.log('estado:', estado);
+
+    if (!estado) {
+      // Si no está registrado, procede a guardar
+      var formu = $("#f_adicionar_curso_estudiante");
+      var varurl = urlraiz + "/configuracion/adicionar_curso_estudiante";
+
+      $.ajax({
+        url: varurl,
+        data: formu.serialize(),
+        method: 'POST',
+        dataType: 'html'
+      })
+      .done(function(resul) {
+        $('.preloader').fadeOut();
+        $("#contenido_modal_asociar_estudiantes").html(resul);
+      })
+      .fail(function(err) {
+        $('.preloader').fadeOut();
+        SU_revise_conexion();
+      });
+
+    } else {
+      $('.preloader').fadeOut();
+      toastr.warning('El estudiante ya se encuentra matriculado en el periodo: '+textoSeleccionado1+'.', '¡Advertencia!');
+    }
+
+  })
+  .fail(function(err) {
+    $('.preloader').fadeOut();
+    SU_revise_conexion();
+  });
+});
+
+function validarCheckboxes() {
+  const periodos = document.querySelectorAll('input[name="periodos[]"]:checked');
+  const actividades = document.querySelectorAll('input[name="actividades[]"]:checked');
+  const cursos = document.querySelectorAll('input[name="cursos[]"]:checked');
+  const fechaIni = parseInt($("#anio_inicio").val());
+  const fechaFin = parseInt($("#anio_final").val());
+
+  if( fechaFin < fechaIni ){
+    toastr.warning('El año de inicio no puede ser menos al año final', '¡Advertencia!');
+    return false;
+  }
+
+  if (periodos.length === 0) {
+      toastr.warning('Debes seleccionar al menos un período.', '¡Advertencia!');
+      return false;
+  }
+
+  if (actividades.length === 0) {
+      toastr.warning('Debes seleccionar al menos una actividad.', '¡Advertencia!');
+      return false;
+  }
+
+  if (cursos.length === 0) {
+      toastr.warning('Debes seleccionar al menos un curso.', '¡Advertencia!');
+      return false;
+  }
+
+  return true; // Si pasa todas las validaciones
+}
+
+function editarMateria(idMateria){
+    $('#modal_editar_materia').modal();
+    $('.preloader').fadeIn();
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/frm_editar_materia/"+idMateria+"";
+
+    $.ajax({
+    url: miurl
+    }).done( function(resul){
+    
+      $('.preloader').fadeOut();
+      $("#contenido_modal_editar_materia").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+  // body...
+}
+
+function editarActividad(idActividad){
+  $('#modal_editar_actividad').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_actividad/"+idActividad+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_actividad").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function editarPeriodo(idPeriodo){
+  $('#modal_editar_periodo').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_periodo/"+idPeriodo+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_periodo").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function editarCurso(idCurso){
+  $('#modal_editar_curso').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_curso/"+idCurso+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_curso").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function editarClasificacion(idClasificacion){
+  $('#modal_editar_clasificacion').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_clasificacion/"+idClasificacion+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_clasificacion").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+$(document).on("submit","#f_editar_materia",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_materia";
+
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_materia").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_editar_actividad",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_actividad";
+
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_actividad").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_editar_periodo",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_periodo";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_periodo").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_editar_curso",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_curso";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_curso").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_editar_clasificacion",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_clasificacion";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_clasificacion").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_editar_anio",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_anio";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_anio").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+
+function borrarMateria(idMateria){
+
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar la materia ",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_materia/"+idMateria+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarActividad(idActividad){
+
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar la actividad ",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_actividad/"+idActividad+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarPeriodo(idPeriodo){
+
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar el periodo ",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_periodo/"+idPeriodo+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarCurso(idCurso){
+
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar el curso ",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_curso/"+idCurso+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarClasificacion(idClasificacion){
+
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar la clasificación ",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_clasificacion/"+idClasificacion+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function editarAnio(idAnio){
+  $('#modal_editar_anio').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_anio/"+idAnio+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_anio").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function infoClasesConfig(idDocente,idAnio){
+  const tbody = document.querySelector("#miTabla tbody");
+  if(tbody != null){
+    tbody.innerHTML = ""; // Limpiar contenido anterior
+  }
+
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/consultar_lista_anios/"+idDocente+"/"+idAnio+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+    const lstClasesConfiguradas = resul.lstAnio;
+    if(lstClasesConfiguradas.length > 0){
+      const tabla = document.getElementById('tablaMaterias');
+      let asignacionIndex = 0;
+      lstClasesConfiguradas.forEach(function(clase){
+        const cursos = JSON.parse(clase.json_cursos);
+        //const ids_grados = cursos.map(g => g.id);
+        const ids_grados = cursos.map(curso => ({ value: curso.id }));
+        const cursosTexto = cursos.map(g => g.nombre).join(', ');
+        const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${clase.nom_anio}<input type="hidden" name="asignaciones[${asignacionIndex}][anio]" value="${clase.id_anio}"></td>
+            <td>${clase.nom_materia}<input type="hidden" name="asignaciones[${asignacionIndex}][materia]" value="${clase.id_materia}"></td>
+            <td>${cursosTexto}<input type="hidden" name="asignaciones[${asignacionIndex}][cursos][]" value="${ids_grados}"</td>
+            <td style="text-align: center;"><button type="button" class="btn btn-danger btn-sm " onclick="eliminarCurso(${clase.id}, this)">🗑️</button></td>
+          `;
+          tabla.appendChild(row);
+          asignacionIndex++;
+        })
+    }
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;  
+}
+
+function matricularEstudiante(idEstudiante){
+  $('#modal_asociar_estudiantes').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_asociar_curso/"+idEstudiante+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_asociar_estudiantes").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+
+}
+
+function infoGrados(idTipo){
+ //debugger;
+    const tipoGradoSelectParam = Number(idTipo);
+    var arrayCursos=CURSOS?CURSOS:[];
+    const lstCursosConfiguradas = arrayCursos.filter(
+      item => item.tipo_grado === tipoGradoSelectParam
+    );
+
+    var mateHtmlteams = '';
+    mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
+    lstCursosConfiguradas.forEach(function(citi){
+      mateHtmlteams += '<option value="'+citi.id+'" class="">'+citi.nombre+'</option>';
+    })
+    $('#curso').html(mateHtmlteams);
+    document.getElementById("curso").disabled = false;
+
+}
+
+function eliminarAsociacion(idAsociacion){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar la matricula del estudiante a este periodo",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_asocacion/"+idAsociacion+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+        toastr.success('La matricula fue eliminada exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}

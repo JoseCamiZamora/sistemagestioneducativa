@@ -1,0 +1,9 @@
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>
+
+
+<Files .env>
+    order allow,deny
+    Deny from all
+</Files>
