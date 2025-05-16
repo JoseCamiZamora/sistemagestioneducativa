@@ -127,7 +127,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_estudiantes_configurados/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados');
    Route::get('/evaluacion/form_evaluacion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion');
    Route::post('/evaluacion/crear_evaluacion_estudiante', 'EvaluacionController@crear_evaluacion_estudiante');
-   Route::get('/evaluacion/consultar_evaluacion/{id_periodo?}/{id_estudiante?}', 'EvaluacionController@consultar_evaluacion');
+   Route::get('/evaluacion/consultar_evaluacion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion');
    
 
    

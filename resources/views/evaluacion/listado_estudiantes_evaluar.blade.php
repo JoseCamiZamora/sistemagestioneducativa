@@ -10,7 +10,10 @@
 	  <div class="page-header row no-gutters py-4">
 	    <div class="col">
 	      <span class="page-subtitle">Modulo Evaluación </span>
-	        <h4 class="page-title" >Listado de estudiantes matriculados en el: {{$curso->nombre}}<span style='font-size: 0.6em;'></span> </h4>
+	        <h4 class="page-title" >Listado de estudiantes matriculados<span style='font-size: 0.6em;'></span> </h4>
+          <br>
+	        <h4 class="page-title" >Materia de evaluación: {{$clasesDocente->nom_materia}}<span style='font-size: 0.6em;'></span> </h4>
+	        <h4 class="page-title" >Curso en evaluación: {{$curso->nombre}}<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
 	        <a href="{{ url('evaluacion/listado_cursos_configurados/'.$clasesDocente->id.'') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
@@ -32,6 +35,7 @@
                 <th scope="col" class="th-gris text-center" >Nota 2do Periodo</th>
                 <th scope="col" class="th-gris text-center" >Nota 3er Periodo</th>
                 <th scope="col" class="th-gris text-center" >Nota Final</th>
+                <th scope="col" class="th-gris text-center" >Desenpeño</th>
                 <th scope="col" class="th-gris text-center " >Evaluar</th>
               </tr>
             </thead>
@@ -46,6 +50,19 @@
                   <td class='td-titulo text-center'>{{$estudiante->nota_segundo_periodo}}</td>
                   <td class='td-titulo text-center'>{{$estudiante->nota_tercer_periodo}}</td>
                   <td class='td-titulo text-center'>{{$estudiante->nota_final}}</td>
+                  @if($estudiante->desempenio == 'Bajo')
+                    <td class='td-titulo text-center' style="color: red;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  @if($estudiante->desempenio == 'Básico')
+                    <td class='td-titulo text-center' style="color: #ffb300;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  @if($estudiante->desempenio == 'Alto')
+                    <td class='td-titulo text-center' style="color: #88e600;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  @if($estudiante->desempenio == 'Superior')
+                    <td class='td-titulo text-center' style="color: #88e600;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  
                   <td>
                   <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="evaluarEstudiante({{$estudiante->id}})" id="subirfile" >
                       <div class="nav-link-icon__wrapper">

@@ -104,7 +104,7 @@
     </tbody>
     </table>
     <div class="form-row col-md-12 mt-2  text-center">
-      <button type="submit" class="btn btn-accent text-center" >Actualziar Información Docente</button>
+      <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
     <div class="row" style="margin-top:-10px;">
 </div>

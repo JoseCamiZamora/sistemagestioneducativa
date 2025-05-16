@@ -92,10 +92,11 @@ $(document).on("submit", "#f_adicionar_evaluacion_estudiante", function(e) {
 function validarNotasInscritas(idPeriodo){
 
 var idCurso = $('#id_estudiante_curso').val();
+var idClase = $('#id_clase').val();
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
-  miurl=urlraiz+"/evaluacion/consultar_evaluacion/"+idPeriodo+"/"+idCurso+"";
+  miurl=urlraiz+"/evaluacion/consultar_evaluacion/"+idPeriodo+"/"+idCurso+"/"+idClase+"";
   $.ajax({
     url: miurl
     }).done( function(resul){
