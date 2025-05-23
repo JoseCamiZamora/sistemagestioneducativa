@@ -196,8 +196,22 @@ class DocentesController extends Controller
        
         if($docente->save()){
             $usuario= User::where("id_persona",$docente->id)->first();
-            $usuario->email=$docente->correo;
-            $usuario->password= Hash::make($docente->nro_documento);
+            if($usuario != null){
+                $usuario->email=$docente->correo;
+                $usuario->password= Hash::make($docente->nro_documento);
+            }else{
+                $usuario=new User;
+                $usuario->id_persona = $docente->id;
+                $usuario->nombres=strtoupper($docente->nom_completo) ;
+                $usuario->telefono= $docente->telefono;
+                $usuario->identificacion=$docente->nro_documento;
+                $usuario->tipo=1;
+                $usuario->rol=2;
+                $usuario->email=$docente->correo;
+                $usuario->password= Hash::make($docente->nro_documento);
+                $usuario->estado=1;
+            }
+           
             $usuario->save();
             return view("docentes.mensajes.msj_actualziado_edit")->with("msj","Docente Actulizado exitosamente")
             										   ->with("estado",$docente->estado);
