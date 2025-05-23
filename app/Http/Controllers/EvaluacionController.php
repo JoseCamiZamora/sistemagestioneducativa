@@ -496,14 +496,17 @@ class EvaluacionController extends Controller
                 $notaFinalEstudiante->nota_periodo_uno = $evaluacion->sum_nota;
                 $notaFinalEstudiante->nota_periodo_dos = 0;
                 $notaFinalEstudiante->nota_periodo_tres = 0;
+                $notaFinalEstudiante->concepto_per1 = $evaluacion->conceptos;
             }elseif($periodo->id == 2){
                 $notaFinalEstudiante->nota_periodo_dos = $evaluacion->sum_nota;
                 $notaFinalEstudiante->nota_periodo_uno = 0;
                 $notaFinalEstudiante->nota_periodo_tres = 0;
+                $notaFinalEstudiante->concepto_per2 = $evaluacion->conceptos;
             }else{
                 $notaFinalEstudiante->nota_periodo_tres = $evaluacion->sum_nota;
                 $notaFinalEstudiante->nota_periodo_uno = 0;
                 $notaFinalEstudiante->nota_periodo_dos = 0;
+                $notaFinalEstudiante->concepto_per3 = $evaluacion->conceptos;
             }
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0) +
@@ -516,11 +519,14 @@ class EvaluacionController extends Controller
            
             if($periodo->id == 1){
                 $notaFinalEstudiante->nota_periodo_uno = $notaFinal;
+                $notaFinalEstudiante->concepto_per1 = $evaluacion->conceptos;
                 
             }elseif($periodo->id == 2){
                 $notaFinalEstudiante->nota_periodo_dos = $notaFinal;
+                $notaFinalEstudiante->concepto_per2 = $evaluacion->conceptos;
             }else{
                 $notaFinalEstudiante->nota_periodo_tres = $notaFinal;
+                $notaFinalEstudiante->concepto_per3 = $evaluacion->conceptos;
                 
             }
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
@@ -530,6 +536,7 @@ class EvaluacionController extends Controller
             $notaFinalFinal =  $suma / $anios->cant_periodos;
             $notaFinalPer =  round($notaFinalFinal,2);
             $notaFinalEstudiante->nota_final =  $notaFinalPer;
+            $notaFinalEstudiante->concepto_final = "";
         }
         if($evaluacion->save()){
             $notaFinalEstudiante->save();
