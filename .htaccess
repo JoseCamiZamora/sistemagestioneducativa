@@ -1,9 +1,27 @@
-<IfModule mime_module>
-  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{THE_REQUEST} /public/([^\s?]*) [NC]
+RewriteRule ^ %1 [L,NE,R=302]
+
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
 </IfModule>
-
-
-<Files .env>
+  <Files .env>
     order allow,deny
     Deny from all
 </Files>
+<Files 403.shtml>
+order allow,deny
+allow from all
+</Files>
+
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header always edit Set-Cookie "(.*)" "$1;Secure"
+    Header always edit Set-Cookie "(.*)" "$1;HttpOnly"
+    Header always append X-Frame-Options "SAMEORIGIN"
+    Header always set Strict-Transport-Security "max-age=10886400; includeSubDomains; preload"
+</IfModule>
