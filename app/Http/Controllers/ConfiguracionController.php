@@ -351,6 +351,7 @@ class ConfiguracionController extends Controller
     public function listado_actividades() {
         $usuarioactual = Auth::user();
         $lstActividades = ConfEvaluaciones::where("estado", "=", 'A')->paginate(50);
+        
         return view("configuracion.listado_Actividades")->with("lstActividades", $lstActividades)
         ->with("usuarioactual", $usuarioactual);
     }
