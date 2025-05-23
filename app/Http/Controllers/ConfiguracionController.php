@@ -130,7 +130,6 @@ class ConfiguracionController extends Controller
     public function crear_anio(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $anio = new ConfAnios();
 
         $anio->anio_inicio = $request->input('anio_inicio')?$request->input('anio_inicio'):'';
@@ -140,7 +139,6 @@ class ConfiguracionController extends Controller
         $cursos = $request->input('cursos');
         $periodosArray = array();
         foreach ($periodos as $data) {
-            $periodo = new PeriodosClases();
             $periodo = PeriodosClases::find($data);
             $newarrayPeriodo = array(
                 "id" => $periodo->id,
@@ -152,7 +150,6 @@ class ConfiguracionController extends Controller
         
         $actividadArray = array();
         foreach ($actividades as $dataAct) {
-            $actividad = new ConfEvaluaciones();
             $actividad = ConfEvaluaciones::find($dataAct);
             $newarrayActividad = array(
                 "id" => $actividad->id,
@@ -166,7 +163,6 @@ class ConfiguracionController extends Controller
         
         $cursoArray = array();
         foreach ($cursos as $dataCurso) {
-            $curso = new Grados();
             $curso = Grados::find($dataCurso);
             $newarrayCurso = array(
                 "id" => $curso->id,
@@ -206,7 +202,6 @@ class ConfiguracionController extends Controller
 
         $periodosArray = array();
         foreach ($periodos as $data) {
-            $periodo = new PeriodosClases();
             $periodo = PeriodosClases::find($data);
             $newarrayPeriodo = array(
                 "id" => $periodo->id,
@@ -218,7 +213,6 @@ class ConfiguracionController extends Controller
         
         $actividadArray = array();
         foreach ($actividades as $dataAct) {
-            $actividad = new ConfEvaluaciones();
             $actividad = ConfEvaluaciones::find($dataAct);
             $newarrayActividad = array(
                 "id" => $actividad->id,
@@ -231,7 +225,6 @@ class ConfiguracionController extends Controller
         
         $cursoArray = array();
         foreach ($cursos as $dataCurso) {
-            $curso = new Grados();
             $curso = Grados::find($dataCurso);
             $newarrayCurso = array(
                 "id" => $curso->id,
@@ -295,7 +288,6 @@ class ConfiguracionController extends Controller
     public function crear_matria(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $materia = new Materias();
         $idClasificacion = $request->input('tipo')?$request->input('tipo'):'';
         $clasificacion = TipoCursos::find($idClasificacion);
@@ -326,7 +318,6 @@ class ConfiguracionController extends Controller
     public function editar_materia(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $materia = Materias::find($request->input('id_materia'));
         $idClasificacion = $request->input('tipo')?$request->input('tipo'):'';
         $clasificacion = TipoCursos::find($idClasificacion);
@@ -345,14 +336,13 @@ class ConfiguracionController extends Controller
     public function  borrar_materia($idMateria=null) {
         $materia = Materias::find($idMateria);
         $materia->delete();
-        return response()->json([ 'estado' => 'borrada' ],200);  
+        return response()->json([ 'estado' => 'borrada' ],200);
     }
 
     public function listado_actividades() {
         $usuarioactual = Auth::user();
         $lstActividades = ConfEvaluaciones::where("estado", "=", 'A')->paginate(50);
-        dd($lstActividades);
-        return view("configuracion.listado_Actividades")->with("lstActividades", $lstActividades)
+        return view("configuracion.listado_actividades")->with("lstActividades", $lstActividades)
         ->with("usuarioactual", $usuarioactual);
     }
 
