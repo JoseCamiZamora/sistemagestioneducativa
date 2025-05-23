@@ -19,7 +19,11 @@
           <div class="stats-small card card-small">
             <div class="card-body px-0 pb-0" >
             <div class="d-flex px-3 text-center">
-                  <a href="{{ url('/evaluacion/listado_estudiantes_configurados/'.$curso->id.'/'.$clasesDocente->id.'') }}" style='width: 100%'>
+                  @if($clasesDocente->id_tipo_clase == 1)
+                    <a href="{{ url('/evaluacion/listado_estudiantes_configurados_t/'.$curso->id.'/'.$clasesDocente->id.'') }}" style='width: 100%'>
+                  @else
+                    <a href="{{ url('/evaluacion/listado_estudiantes_configurados/'.$curso->id.'/'.$clasesDocente->id.'') }}" style='width: 100%'>
+                  @endif
                   <img src="{{ asset('/assets/img/cursolista.svg') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
                   <h4 style='margin-bottom: 1px;' >{{$curso->nombre }}</h4>
                   <span  class="text-primary" style="font-size:1.0em;margin-top:1px;" >Ver estudiantes</span>

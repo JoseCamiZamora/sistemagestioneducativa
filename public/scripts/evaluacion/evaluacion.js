@@ -23,6 +23,31 @@ function evaluarEstudiante(id_estudiante){
 
 }
 
+function evaluarEstudianteTransicion(id_estudiante){
+  
+  
+  var idClase = $('#id_clase').val();
+  console.log('jejejeje',idClase);
+
+  $('#modal_evaluacion').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_evaluacion_transicion/"+id_estudiante+"/"+idClase+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_evaluacion").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+
+}
+
 
 
 $(document).on("submit", "#f_adicionar_evaluacion_estudiante", function(e) {
@@ -129,3 +154,71 @@ var idClase = $('#id_clase').val();
    }) ;
 
 }
+
+function validarNotasInscritasTransicion(idPeriodo){
+
+  var idCurso = $('#id_estudiante_curso').val();
+  var idClase = $('#id_clase').val();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/consultar_evaluacion_transicion/"+idPeriodo+"/"+idCurso+"/"+idClase+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      // Asumiendo que resul es un solo objeto, no un array de filas
+    console.log(resul);
+    if(resul.notas.length > 0){
+      resul.notas.forEach(item => {
+        const select = document.querySelector(`.evaluacion-select[data-id='${item.id}']`);
+        if (select) {
+          select.value = item.nota;
+        }
+      });
+    }else{
+      document.querySelectorAll('.evaluacion-select').forEach(select => {
+        select.value = ""; // Selecciona "Evaluar al estudiante"
+        select.classList.remove('bg-success', 'bg-warning', 'bg-danger'); // Limpia colores
+      });
+    }
+    
+    document.getElementById("conceptos").value = resul.conceptos;
+
+    $('.preloader').fadeOut();
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+
+}
+
+
+$(document).on("submit", "#f_adicionar_evaluacion_transicion", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu = $(this);
+  var urlraiz = $("#url_raiz_proyecto").val();
+  var varurl = urlraiz + "/evaluacion/crear_evaluacion_transicion";
+
+  // Enviar AJAX
+  $.ajax({
+    url: varurl,
+    data: formu.serialize(),
+    method: 'POST',
+    dataType: 'html'
+  })
+  .done(function(resul) {
+    $('.preloader').fadeOut();
+    $("#contenido_modal_evaluacion").html(resul);
+  })
+  .fail(function(err) {
+    $('.preloader').fadeOut();
+    SU_revise_conexion();
+  });
+});
+
+
+

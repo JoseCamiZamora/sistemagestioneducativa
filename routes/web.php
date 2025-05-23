@@ -47,12 +47,14 @@ Route::group(['middleware' => 'auth'], function () {
 
    // Rutas para modulo de estudiantes
    Route::get('/estudiantes/listado_estudiantes', 'EstudiantesController@listado_estudiantes');
+   Route::get('/estudiantes/listado_estudiantes_i', 'EstudiantesController@listado_estudiantes_i');
    Route::get('/estudiantes/form_nuevo_estudiante', 'EstudiantesController@form_nuevo_estudiante');
    Route::post('/estudiantes/crear_estudiante', 'EstudiantesController@crear_estudiante');
    Route::get('/estudiantes/frm_info_estudiante/{id_estudiante}', 'EstudiantesController@frm_info_estudiante');
    Route::get('/estudiantes/frm_editar_estudiante/{id_estudiante}', 'EstudiantesController@frm_editar_estudiante');
    Route::post('/estudiantes/editar_estudiante', 'EstudiantesController@editar_estudiante');
    Route::post('/estudiantes/buscar_estudiantes', 'EstudiantesController@buscar_estudiantes');
+   Route::get('/estudiantes/listado_estudiantes_filtro/{idAnio}/{idGrado}', 'EstudiantesController@listado_estudiantes_filtro');
 
    // Rutas para docentes
    Route::get('/docentes/listado_docentes', 'DocentesController@listado_docentes');
@@ -126,8 +128,14 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_cursos_configurados/{id_curso?}', 'EvaluacionController@listado_cursos_configurados');
    Route::get('/evaluacion/listado_estudiantes_configurados/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados');
    Route::get('/evaluacion/form_evaluacion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion');
+   Route::get('/evaluacion/form_evaluacion_transicion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion_transicion');
    Route::post('/evaluacion/crear_evaluacion_estudiante', 'EvaluacionController@crear_evaluacion_estudiante');
    Route::get('/evaluacion/consultar_evaluacion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion');
+   Route::get('/evaluacion/listado_estudiantes_configurados_t/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados_t');
+   Route::get('/evaluacion/consultar_evaluacion_transicion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion_transicion');
+   Route::post('/evaluacion/crear_evaluacion_transicion', 'EvaluacionController@crear_evaluacion_transicion');
+   
+    
    
 
    

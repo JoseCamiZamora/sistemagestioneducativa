@@ -9,7 +9,7 @@
   <div>
 	  <div class="page-header row no-gutters py-4">
 	    <div class="col">
-	      <span class="page-subtitle">Modulo Evaluación </span>
+	      <span class="page-subtitle">Modulo Evaluación - PRIMARIA</span>
 	        <h4 class="page-title" >Listado de estudiantes matriculados<span style='font-size: 0.6em;'></span> </h4>
           <br>
 	        <h4 class="page-title" >Materia de evaluación: {{$clasesDocente->nom_materia}}<span style='font-size: 0.6em;'></span> </h4>

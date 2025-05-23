@@ -147,104 +147,22 @@ function borrarDataAcudiente3(){
   $('#telefono3').val("");
 }
 
-function editarcliente(id_cliente,estado) {
-
-  console.log(id_cliente,estado);
-    $('#modal_editar_cliente').modal();
-    $('.preloader').fadeIn();
-    var urlraiz=$("#url_raiz_proyecto").val();
-    var miurl='';
-    miurl=urlraiz+"/clientes/frm_editar_cliente/"+id_cliente+"";
-
-    $.ajax({
-    url: miurl
-    }).done( function(resul){
-    
-      $('.preloader').fadeOut();
-      $("#contenido_editar_modal_clientes").html(resul);
-   
-    }).fail( function() 
-   {
-    $('.preloader').fadeOut();
-     SU_revise_conexion();
-   }) ;
-  // body...
-}
-
-function IN_form_crear_cliente(){
-
-    $('#modal_clientes').modal();
-    $('.preloader').fadeIn();
-    var urlraiz=$("#url_raiz_proyecto").val();
-    var miurl='';
-    miurl=urlraiz+"/clientes/form_nuevo_cliente";
-
-    $.ajax({
-    url: miurl
-    }).done( function(resul){
-      //console.log("Resultado", resul);
-      $('.preloader').fadeOut();
-      $("#contenido_modal_clientes").html(resul);
-   
-    }).fail( function() 
-   {
-    $('.preloader').fadeOut();
-     SU_revise_conexion();
-   }) ;
-}
-
-
-
-$(document).on("submit","#f_editar_cliente",function(e){
-  //funcion para actualizar los datos del usuario
-  e.preventDefault();
+function FC_cambiar_filtro_grado($idGrado){
   $('.preloader').fadeIn();
+  var idAnio=$('#select_filtro_val_anio').val();
+  if(idAnio == "0"){
+     toastr.warning('Se debe seleccionar almenos un año para continuar con la busqueda', '¡Advertencia!');
+     $('#select_filtro_val_grado').val(0)
+  }else{
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+'/estudiantes/listado_estudiantes_filtro/'+idAnio+'/'+$idGrado+"";
+    window.location.href= miurl;
+    $('#select_filtro_val_anio').val(idAnio);
+    $('#select_filtro_val_grado').val($idGrado)
 
-  var formu=$(this);
-  var urlraiz=$("#url_raiz_proyecto").val();
-  var varurl=urlraiz+"/clientes/editar_cliente";
-
-  $.ajax({
-    url : varurl,
-    data : formu.serialize(),
-    method: 'POST',
-    dataType : 'html',
-    })
-    .done(function(resul) {
-     // console.log("Resul xxxxxxxxxxx", resul);
-     $('.preloader').fadeOut();
-     $("#contenido_editar_modal_clientes").html(resul);
-    })
-    .fail(function(err){
-        SU_revise_conexion();
-        $(".preloader").hide();
-         
-    });
+  }
+   $('.preloader').fadeOut();
   
-
-});
-
-function cargar_ciudades(idDepa){
-
-
-
-  var arrayciudades=VARCIUDADES?VARCIUDADES:[];
-  var lstCiti = [];
-
-  arrayciudades.forEach(function(value){
-    if(value.cod_departamento == idDepa){
-      lstCiti.push(value.municipio);
-    }
-  });
-  let result = lstCiti.filter((item,index)=>{
-    return lstCiti.indexOf(item) === index;
-  })
-
-  var citiHtmlteams = '';
-  citiHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
-  result.forEach(function(citi){
-      citiHtmlteams += '<option value="'+citi+'" class="">'+citi+'</option>';
-  })
-  $('#ciudad').html(citiHtmlteams);
 
 }

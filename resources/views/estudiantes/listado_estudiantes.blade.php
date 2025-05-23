@@ -22,29 +22,67 @@
 
 	  <div class="row">
 	    <div class="col">
-        <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
-	      <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
-	      <a href="javascript:void(0);" onclick="IN_form_crear_new_estudiante();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Estudiante</a>
+        @if($estado == 'A')
+          <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
+          <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
+	      @else
+          <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
+          <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
+        @endif
+        <a href="javascript:void(0);" onclick="IN_form_crear_new_estudiante();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Estudiante</a>
 	                       
 	    </div>
 	    
 	  </div>
 	  <form  method="post"  action="{{ url('estudiantes/buscar_estudiantes') }}" id="f_buscar_estudiante"   >
-        <input type="hidden" name="_token" id='_token_avatar' value="<?php echo csrf_token(); ?>">    
-          <div class="input-group mb-3">
-            <input type="text" id='dato_buscadoDBP' name='dato_buscado' required class="form-control" style='background-color: white !important;' placeholder="Buscar estudiante por identificación o nombres y apellidos aquí...." aria-label="Buscar estudiante" aria-describedby="basic-addon2">
-            <input type="hidden" id='busdbp_pagina' name='busdbp_pagina' value='1'  >
-            <input type="hidden" id='busdbp_next' name='busdbp_next' value='0'  >
-            <div class="input-group-append">
-              <button class="btn btn-white" type="submit">Buscar</button>
-              @if(isset($busqueda))
-              <a href="{{ url('estudiantes/listado_estudiantes') }}" class="btn btn-white  btn-azul"   >
-                  <i class="fas fa-undo icon-color_blanco" title="deshacer busqueda"></i>
-              </a>
-              @endif
-            </div>
-          </div>
-    </form>
+            <input type="hidden" name="_token" id='_token_avatar' value="<?php echo csrf_token(); ?>">    
+              <div class="input-group mb-3">
+                <input type="text" id='dato_buscadoDBP' name='dato_buscado' required class="form-control" style='background-color: white !important;' placeholder="Buscar estudiante por identificación o nombres y apellidos aquí...." aria-label="Buscar estudiante" aria-describedby="basic-addon2">
+                <input type="hidden" id='busdbp_pagina' name='busdbp_pagina' value='1'  >
+                <input type="hidden" id='busdbp_next' name='busdbp_next' value='0'  >
+                <div class="input-group-append">
+                  <button class="btn btn-white" type="submit">Buscar</button>
+                  @if(isset($busqueda))
+                  <a href="{{ url('estudiantes/listado_estudiantes') }}" class="btn btn-white  btn-azul"   >
+                      <i class="fas fa-undo icon-color_blanco" title="deshacer busqueda"></i>
+                  </a>
+                  @endif
+                </div>
+              </div>
+          </form>
+    <div class="row " style="margin-bottom: 20px;">
+      @if($estado == 'A')
+        <div class="col-md-2">
+          <select class="form-control" id="select_filtro_val_anio" >
+            @if($filtro == 'I')
+              <option value="0" selected >Seleccione Año...</option>
+            @else
+              <option value="{{$anioFind->id}}" selected >{{$anioFind->anio_inicio}}-{{$anioFind->anio_fin}}</option>
+            @endif
+              @foreach($anios as $anio)
+                <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
+              @endforeach
+          </select>
+        </div>
+        <div class="col-md-2">
+          <select class="form-control" id="select_filtro_val_grado" onchange="FC_cambiar_filtro_grado(this.value);" >
+            @if($filtro == 'I')  
+              <option value="0" selected >Seleccione Curso...</option>
+            @else
+              <option value="{{$cursoFind->id}}" >{{$cursoFind->nombre}}</option>
+            @endif
+            @foreach($grados as $curso)
+              <option value="{{$curso->id}}" >{{$curso->nombre}}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="col-md-2">
+           <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " style="height: 35px;" ><span style="margin-top: 7px;">Ver Todos Los Estudiantes</span></a>
+        </div>
+
+      @endif
+    </div>
+         
   
 	  <div class="row">
 	    <div class="col">
@@ -63,7 +101,6 @@
                 <th scope="col" class="th-gris text-left" >Telefono</th>
                 <th scope="col" class="th-gris text-center " >Info</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
-                <th scope="col" class="th-gris text-center " >Matricular</th>
               </tr>
             </thead>
             <tbody>
@@ -100,6 +137,7 @@
                   <td class='td-titulo text-left'  >{{ $estudiante->direccion }}</td>
                   <td class='td-titulo text-left'  >{{ $estudiante->telefono }}</td>
                   <td>
+                   
                     <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
                     onclick="verInfoEstidiante({{$estudiante->id}})" role="button" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
@@ -107,22 +145,18 @@
                       </div>
                     </a>
                   </td>
+                 
                   <td>
-                    <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
-                    onclick="editarEstudiante({{$estudiante->id}},'{{$estudiante->estado}}')" role="button" id="subirfile" >
-                      <div class="nav-link-icon__wrapper">
-                        <i class="fa fa-edit" title="Editar Insumo" style=""></i><br>
-                      </div>
-                    </a>
+                    @if($estado == 'A')
+                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
+                      onclick="editarEstudiante({{$estudiante->id}},'{{$estudiante->estado}}')" role="button" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-edit" title="Editar Insumo" style=""></i><br>
+                        </div>
+                      </a>
+                     @endif
                   </td>
-                  <td>
-                    <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
-                    onclick="editarEstudiante({{$estudiante->id}},'{{$estudiante->estado}}')" role="button" id="subirfile" >
-                      <div class="nav-link-icon__wrapper">
-                        <i class="fa fa-list" title="Editar Insumo" style=""></i><br>
-                      </div>
-                    </a>
-                  </td>
+                  
                 </tr>
               @endforeach
             </tbody>
@@ -132,7 +166,9 @@
               </tr>
               </tfoot>
           </table>
-          {{ $lstEstudiantes->links() }}
+          @if($filtro == 'I')
+            {{ $lstEstudiantes->links() }}
+          @endif
 	    </div> 
 	  </div>
 </div>

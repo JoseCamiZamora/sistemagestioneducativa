@@ -37,13 +37,13 @@
         display: none; /* ✅ Se oculta inicialmente */
     }   
 </style>
-<form  method="post"  action="adicionar_evaluacion_estudiante" id="f_adicionar_evaluacion_estudiante"   >
-   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
+<form  method="post"  action="adicionar_evaluacion_transicion" id="f_adicionar_evaluacion_transicion"  onsubmit="return prepararEvaluaciones()" >
+   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
    <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
    <input type="hidden" id="id_clase" name="id_clase" value="{{$claseDocente->id}}">
-   <input type="hidden" id="estado" name="estado" value="A"> 
+   <input type="hidden" id="estado" name="estado" value="A">
 
-   <table border  class='table table-generic table-strech table-font-normal table-hover' >
+   <table border  class='table table-generic table-strech table-font-normal table-hover'>
         <thead class="bg-light">
           <TR>
             <TD ALIGN=center ROWSPAN=4 COLSPAN=1 style="width: 120px"> <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width:6em;margin-top: 0px" src="{{ asset('/assets/img/proinco1.png') }}" alt="logo cedenar"></TD>
@@ -70,7 +70,7 @@
       </div>
       <div class="col-md-4">
           <label for="feLastName">Perido a Evaluar</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritas(this.value)" required>
+          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritasTransicion(this.value)" required>
           <option value="">Seleccione el periodo a evaluar</option>
               @foreach($periodos as $periodo)
                 <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
@@ -83,91 +83,62 @@
       </div>
     </div>
     <br>
-    <table border  class='table table-generic table-strech table-font-normal table-hover' >
+    <table border  class='table table-generic table-strech  table-hover' >
     <thead>
       <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <th style="font-size: 12px;" >{{$tipo->nombre}}</th>
-        @endforeach
-        <th>Nota Final</th>
-        <th>Desempeño</th>
+        <th style="font-size: 14px;" >Iten Evaluar</th>
+        <th style="font-size: 14px;">Evaluacion</th>
       </tr>
     </thead>
     <tbody id="tablaDatos">
-      <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <td contenteditable="true" class="limitado editable" data-id="{{ $tipo->id }}" data-porcentaje="{{ $tipo->porcentaje ?? 20 }}">0</td>
-        @endforeach
-        <td class="nota-final">0</td>
-        <td class="desempeno">Bajo</td>
-      </tr>
+       @foreach($itemEvaluar as $item)
+        <tr>
+          <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+         <td>
+          <select id="selectEvaluacion" class="form-control evaluacion-select" data-id="{{ $item->id }}">
+            <option value="">Evaluar al estudiante...</option>
+            <option value="3">😀 Logro alcanzado</option>
+            <option value="2">😐 En proceso</option>
+            <option value="1">😟 Se requiere apoyo</option>
+          </select>
+        </td>
+        </tr>
+     @endforeach
     </tbody>
     </table>
+    <!-- Campo oculto para guardar el array como JSON -->
+    <input type="hidden" name="evaluaciones" id="evaluaciones">
     <div class="form-group col-md-12">
         <label for="feLastName">Conceptos del Periodo Evaluado</label>
-        <textarea id="conceptos" name="conceptos" rows="3" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
+        <textarea id="conceptos" name="conceptos" rows="5" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
       </div>
     <div class="form-row col-md-12 mt-2  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
     <div class="row" style="margin-top:-10px;">
 </div>
+  
 </form>
 <script src="{{ asset('/assets/plugins/jquery.dropdown.min.js') }}"></script>
 <script>
-  document.querySelectorAll('td.limitado').forEach(cell => {
-    cell.addEventListener('input', function () {
-      if (this.innerText.length > 3) {
-        this.innerText = this.innerText.slice(0, 2);
-        window.getSelection().collapse(this.firstChild, this.innerText.length);
-      }
-    });
-  });
+  function prepararEvaluaciones() {
+    let datos = [];
 
-  document.querySelectorAll('.editable').forEach(cell => {
-  cell.addEventListener('blur', function () {
-    const fila = this.parentElement;
-    const celdas = fila.querySelectorAll('.editable');
-    
-    let total = 0;
-    celdas.forEach(celda => {
-      let valor = parseFloat(celda.innerText) || 0;
+    document.querySelectorAll('.evaluacion-select').forEach(select => {
+      const id = select.dataset.id;
+      const valor = select.value;
 
-      if (valor > 5) {
-        toastr.warning('La nota no puede ser mayor a 5', '¡Advertencia!');
-        celda.innerText = '5';
-        valor = 5;
-      }
-
-      if (isNaN(valor)) {
-        toastr.warning('Debe ingresar un número válido', '¡Advertencia!');
-        celda.innerText = '0';
-        valor = 0;
-      }
-
-      let porcentaje = parseFloat(celda.dataset.porcentaje) || 0;
-      total += (valor * porcentaje) / 100;
+      datos.push({
+        id_criterio: id,
+        evaluacion: valor
+      });
     });
 
-    // ✅ Redondear a un decimal correctamente
-    let redondeada = Math.round(total * 10) / 10;
-
-    const notaFinal = fila.querySelector('.nota-final');
-    notaFinal.innerText = redondeada;
-
-    // Opcional: actualizar desempeño
-    const desempeno = fila.querySelector('.desempeno');
-    if (redondeada >= 5) {
-      desempeno.innerText = 'Superior';
-    } else if (redondeada >= 4.5) {
-      desempeno.innerText = 'Alto';
-    } else if (redondeada >= 3.9) {
-      desempeno.innerText = 'Básico';
-    } else {
-      desempeno.innerText = 'Bajo';
-    }
-  });
-});
+    // Pasar array como string JSON al campo oculto
+    document.getElementById('evaluaciones').value = JSON.stringify(datos);
+    return true; // permite que el formulario se envíe
+  }
+  
     
 </script>
 

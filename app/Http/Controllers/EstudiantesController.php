@@ -7,6 +7,9 @@ use App\User;
 
 use App\Estudiantes;
 use App\TiposDocumentos;
+use App\Grados;
+use App\EstudiantesCurso;
+use App\ConfAnios;
 
 
 use PDF;
@@ -48,10 +51,66 @@ class EstudiantesController extends Controller
 
     public function listado_estudiantes() {
         $usuarioactual = Auth::user();
-        $lstEstudiantes = Estudiantes::where("estado", "=", 'A')->paginate(50);
+        $estado = 'A';
+        $filtro = 'I';
+        $grados = Grados::all();
+        $anios = ConfAnios::all();
+        $lstEstudiantes = Estudiantes::where("estado", "=", $estado)->paginate(50);
         return view("estudiantes.listado_estudiantes")->with("lstEstudiantes", $lstEstudiantes)
+        ->with("estado", $estado)
+        ->with("grados",$grados)
+        ->with("anios",$anios)
+         ->with("filtro",$filtro)
         ->with("usuarioactual", $usuarioactual);
     }
+
+    public function listado_estudiantes_i() {
+        $usuarioactual = Auth::user();
+        $grados = Grados::all();
+        $estado = 'I';
+        $filtro = 'I';
+        $lstEstudiantes = Estudiantes::where("estado", "=", $estado)->paginate(50);
+        return view("estudiantes.listado_estudiantes")->with("lstEstudiantes", $lstEstudiantes)
+        ->with("estado", $estado)
+        ->with("grados",$grados)
+         ->with("filtro",$filtro)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
+    public function listado_estudiantes_filtro($idAnio=null, $idGrado=null) {
+        
+        //dd('idanio',$idAnio , 'idGrado',$idGrado );
+        $usuarioactual = Auth::user();
+        $estado = 'A';
+        $grados = Grados::all();
+        $anios = ConfAnios::all();
+        $anioFind = ConfAnios::find($idAnio);
+        $cursoFind = Grados::find($idGrado);
+        $filtro = 'A';
+        $lstEstudiantes = Estudiantes::where("estado", "=", $estado)->get();
+        $estudiantesCurso = EstudiantesCurso::where("id_anio",$idAnio)->where("id_curso",$idGrado)->get();
+        
+        // Creamos una colección con los IDs de estudiantes del curso
+        $idsCurso = $estudiantesCurso->pluck('id_estudiante')->toArray();
+
+        // Filtramos los estudiantes activos que están en ese curso
+        $estudiantesFiltrados = $lstEstudiantes->filter(function ($estudiante) use ($idsCurso) {
+            return in_array($estudiante->id, $idsCurso);
+        });
+
+        return view("estudiantes.listado_estudiantes")->with("lstEstudiantes", $estudiantesFiltrados)
+        ->with("estado", $estado)
+        ->with("grados",$grados)
+        ->with("anios",$anios)
+        ->with("filtro",$filtro)
+        ->with("anioFind",$anioFind)
+        ->with("cursoFind",$cursoFind)
+        ->with("usuarioactual", $usuarioactual);
+
+        
+    }
+
+    
 
     public function form_nuevo_estudiante(){
         $usuario_actual=Auth::user();
