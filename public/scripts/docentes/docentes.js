@@ -228,7 +228,7 @@ function validarChexbox(idTipo){
 
   // Filtrar los cursos por tipo
   const lstCursosConfiguradas = arraygrados.filter(
-    item => item.tipo_grado === tipoGradoSelectParam
+    item => Number(item.tipo_grado) === tipoGradoSelectParam
   );
 
   // Obtener los nombres válidos para mostrar
