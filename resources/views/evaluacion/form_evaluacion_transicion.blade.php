@@ -83,35 +83,39 @@
       </div>
     </div>
     <br>
-    <table border  class='table table-generic table-strech  table-hover' >
-    <thead>
-      <tr>
-        <th style="font-size: 14px;" >Iten Evaluar</th>
-        <th style="font-size: 14px;">Evaluacion</th>
-      </tr>
-    </thead>
-    <tbody id="tablaDatos">
-       @foreach($itemEvaluar as $item)
+    <table border class='table table-generic table-strech table-hover'>
+      <thead>
         <tr>
-          <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
-         <td>
-          <select id="selectEvaluacion" class="form-control evaluacion-select" data-id="{{ $item->id }}">
-            <option value="">Evaluar al estudiante...</option>
-            <option value="3">😀 Logro alcanzado</option>
-            <option value="2">😐 En proceso</option>
-            <option value="1">😟 Se requiere apoyo</option>
-          </select>
-        </td>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
         </tr>
-     @endforeach
-    </tbody>
+      </thead>
+      <tbody id="tablaDatos">
+        @foreach($itemEvaluar as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacion" class="form-control evaluacion-select" data-id="{{ $item->id }}" onchange="actualizarNotaFinal()">
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+
+      <tbody id="tablaDatos2">
+        <tr>
+          <td colspan="3" class="text-center" id="resultadoFinal">😐 Logro En Proceso
+          </td>
+        </tr>
+      </tbody>
     </table>
     <!-- Campo oculto para guardar el array como JSON -->
+    
     <input type="hidden" name="evaluaciones" id="evaluaciones">
-    <div class="form-group col-md-12">
-        <label for="feLastName">Conceptos del Periodo Evaluado</label>
-        <textarea id="conceptos" name="conceptos" rows="5" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
-      </div>
+    
     <div class="form-row col-md-12 mt-2  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
@@ -138,7 +142,49 @@
     document.getElementById('evaluaciones').value = JSON.stringify(datos);
     return true; // permite que el formulario se envíe
   }
-  
+
+  // Mapea los valores con sus descripciones
+  const descripciones = {
+    2: "😀 Logro Alcanzado",
+    1: "😐 Logro En Proceso",
+    "": "" // Para evitar errores con selects vacíos
+  };
+
+  function actualizarNotaFinal() {
+    console.log("LLego aqui");
+    const selects = document.querySelectorAll('.evaluacion-select');
+    let total = 0;
+    let count = 0;
+
+    selects.forEach(select => {
+      const val = parseFloat(select.value);
+      if (!isNaN(val)) {
+        total += val;
+        count++;
+      }
+    });
+
+    const promedio = count > 0 ? total / count : 0;
+    let resultado = "";
+
+    // Mostrar el emoji según el promedio
+    if (promedio >= 1.5) {
+      resultado = "😀 Logro Alcanzado";
+    } else if (promedio > 0) {
+      resultado = "😐 Logro En Proceso";
+    } else {
+      resultado = "";
+    }
+
+    document.getElementById("resultadoFinal").innerText = resultado;
+  }
+
+  // Escucha cambios en todos los selects
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.evaluacion-select').forEach(select => {
+      select.addEventListener('change', actualizarNotaFinal);
+    });
+  });
     
 </script>
 

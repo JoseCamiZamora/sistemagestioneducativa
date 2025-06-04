@@ -46,7 +46,7 @@
   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
   <input type="hidden" id="id_docente" name="id_docente" value="">
   <div class="form-row col-md-12">
-    <div class="form-group col-md-8">
+    <div class="form-group col-md-6">
       <label for="feLastName">Nombre Materia</label><spam style="color: red;"> * </spam>
       <input type="text" style="text-transform: uppercase;" maxlength="50" class="form-control" id="materia" name="materia"  
       value="" required >
@@ -59,6 +59,11 @@
                 <option value="{{$clas->id}}">{{$clas->nombre}}</option>
               @endforeach
           </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="feLastName">Intensidad Horas</label><spam style="color: red;"> * </spam>
+      <input type="number" maxlength="2" class="form-control" id="instensidad_horas" name="instensidad_horas"
+      value="" required >
     </div>
     
   </div>

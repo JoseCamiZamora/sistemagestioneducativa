@@ -13,6 +13,7 @@ use App\Grados;
 use App\ConfAnios;
 use App\ConfClasesDocente;
 use App\TipoCursos;
+use App\ConfDirectorGrupo;
 
 
 use PDF;
@@ -67,8 +68,8 @@ class DocentesController extends Controller
         $materias = Materias::all();
         $grados = Grados::all();
 
-        if( $usuario_actual->rol!=1 ){  
-            return view("mensajes.msj_no_autorizado")->with("msj","no tiene autorizacion para acceder a esta seccion"); 
+        if( $usuario_actual->rol!=1 ){
+            return view("mensajes.msj_no_autorizado")->with("msj","no tiene autorizacion para acceder a esta seccion");
         }
 
         return view("docentes.form_nuevo_docente")
@@ -81,7 +82,6 @@ class DocentesController extends Controller
     public function crear_docente(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $docente = new Docentes();
         
         $tipoDoc = $request->input('tipoDocumento');
@@ -96,12 +96,6 @@ class DocentesController extends Controller
         $docente->telefono=$request->input('telefono')?$request->input('telefono'):'';
         $docente->correo=$request->input('email')?$request->input('email'):'';
         $docente->estado="A";
-        $docente->json_materias = null;
-        $docente->materias = "";
-        $docente->grados = "";
-        $docente->json_grados= null;
-
-        
 
         if($docente->save()){
 
@@ -164,7 +158,19 @@ class DocentesController extends Controller
         ->with("grados",$grados)
         ->with("lstClasificaciones",$lstClasificaciones)
         ->with("clases",$clases);
+    }
 
+    public function frm_director_grupo($id_docente= null){
+
+        $docente=Docentes::find($id_docente);
+        $grados = Grados::all();
+        $anios = ConfAnios::where("finalizado",'NO')->get();
+        $usuario_actual=Auth::user();
+
+        return view('docentes.form_director_grupo')->with('docente',$docente)
+        ->with("usuario_actual",$usuario_actual)
+        ->with("anios",$anios)
+        ->with("grados",$grados);
     }
 
     
@@ -172,12 +178,11 @@ class DocentesController extends Controller
     public function editar_docente(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $id_docente = $request->input('id_docente');
         $docente = Docentes::find($id_docente);
         
         $tipoDoc = $request->input('tipoDocumento');
-        $tipoDocumento = TiposDocumentos::find($tipoDoc);  
+        $tipoDocumento = TiposDocumentos::find($tipoDoc);
         
         $docente->id_tipo_documento=$tipoDocumento->id;
         $docente->tipo_documento= $tipoDocumento->descripcion;
@@ -189,10 +194,6 @@ class DocentesController extends Controller
         $docente->telefono=$request->input('telefono')?$request->input('telefono'):'';
         $docente->correo=$request->input('email')?$request->input('email'):'';
         $docente->estado="A";
-        $docente->json_materias = null;
-        $docente->json_grados = null;
-        $docente->materias = "";
-        $docente->grados = "";
        
         if($docente->save()){
             $usuario= User::where("id_persona",$docente->id)->first();
@@ -268,7 +269,6 @@ class DocentesController extends Controller
                 $clasesDocente->id_tipo_clase = $clasificacion->id;
                 $clasesDocente->tipo_clase = $clasificacion->nombre;
 
-                $anio = new ConfAnios();
                 $anio = ConfAnios::find($asignacion['anio']);
                 $clasesDocente->id_anio =  $anio->id;
                 $clasesDocente->nom_anio =  $anio->anio_inicio.'-'.$anio->anio_fin;
@@ -302,7 +302,6 @@ class DocentesController extends Controller
                 $clasesDocente->id_tipo_clase = $clasificacion->id;
                 $clasesDocente->tipo_clase = $clasificacion->nombre;
 
-                $anio = new ConfAnios();
                 $anio = ConfAnios::find($asignacion['anio']);
                 $clasesDocente->id_anio =  $anio->id;
                 $clasesDocente->nom_anio =  $anio->anio_inicio.'-'.$anio->anio_fin;
@@ -333,10 +332,59 @@ class DocentesController extends Controller
         ->with("estado",$docente->estado);
     }
 
+    public function adicionar_director_grupo(Request $request){
+        
+        $asignaciones = $request->input('asignaciones');
+        $id_anio = $request->input('anio_escolar');
+        $idDocente = $request->input('id_docente');
+        $docente = Docentes::find($idDocente);
+        $directorGrupo =  ConfDirectorGrupo::where("id_docente",$idDocente)->where("id_anio", $id_anio)->get();
+       
+        $cantidad = count($directorGrupo);
+        
+        if($cantidad > 0){
+            foreach ($asignaciones as $dir) {
+                $anio = ConfAnios::find($dir['anio']);
+                $directorGrupo->id_anio = $anio->id;
+                $directorGrupo->nom_anio = $anio->anio_inicio.'-'.$anio->anio_fin;
+
+                $grado = Grados::find($dir['curso']);
+                $directorGrupo->id_curso = $grado->id;
+                $directorGrupo->nom_curso = $grado->nombre;
+            }
+            $directorGrupo->save();
+
+        }else{
+            
+            $directorGrupo = new ConfDirectorGrupo();
+            foreach ($asignaciones as $dir) {
+                $anio = ConfAnios::find($dir['anio']);
+                $directorGrupo->id_anio = $anio->id;
+                $directorGrupo->nom_anio = $anio->anio_inicio.'-'.$anio->anio_fin;
+
+                $grado = Grados::find($dir['curso']);
+                $directorGrupo->id_curso = $grado->id;
+                $directorGrupo->nom_curso = $grado->nombre;
+            }
+            $directorGrupo->id_docente = $docente->id;
+            $directorGrupo->nom_docente = $docente->nom_completo;
+            $directorGrupo->save();
+        }
+
+        return view("docentes.mensajes.msj_clase_creada")->with("msj","La asignación del curso al docente se realizó exitosamente")
+        ->with("estado",$docente->estado);
+    }
+
     public function  borrar_clase_docente($idClase=null) {
         $clasesDocente =  ConfClasesDocente::find($idClase);
         $clasesDocente->delete();
-        return response()->json([ 'estado' => 'borrada' ],200);  
+        return response()->json([ 'estado' => 'borrada' ],200);
+    }
+
+    public function  borrar_director_grupo($idClase=null) {
+        $dirGrupo =  ConfDirectorGrupo::find($idClase);
+        $dirGrupo->delete();
+        return response()->json([ 'estado' => 'borrada' ],200);
     }
 
 

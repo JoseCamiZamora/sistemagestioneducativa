@@ -37,11 +37,11 @@
         display: none; /* ✅ Se oculta inicialmente */
     }
 </style>
-<form  method="post"  action="adicionar_evaluacion_estudiante" id="f_adicionar_evaluacion_estudiante"   >
+<form  method="post"  action="adicionar_evaluacion_comportamiento_transicion" id="f_adicionar_evaluacion_comportamiento_transicion"   >
    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
    <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
-   <input type="hidden" id="id_clase" name="id_clase" value="{{$claseDocente->id}}">
-   <input type="hidden" id="estado" name="estado" value="A"> 
+   <input type="hidden" id="id_clase" name="id_clase" value="">
+   <input type="hidden" id="estado" name="estado" value="A">
 
    <table border  class='table table-generic table-strech table-font-normal table-hover' >
         <thead class="bg-light">
@@ -70,7 +70,7 @@
       </div>
       <div class="col-md-4">
           <label for="feLastName">Periodo a Evaluar</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritas(this.value)" required>
+          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritasComportamientoTransicion(this.value)" required>
           <option value="">Seleccione el periodo a evaluar</option>
               @foreach($periodos as $periodo)
                 <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
@@ -83,41 +83,25 @@
       </div>
     </div>
     <br>
-    <table border  class='table table-generic table-strech table-font-normal table-hover' >
-    <thead>
-      <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <th style="font-size: 12px;" >{{$tipo->nombre}}</th>
-        @endforeach
-        <th>Nota Final</th>
-        <th>Desempeño</th>
-        <th>Concepto</th>
-      </tr>
-    </thead>
-    <tbody id="tablaDatos">
-      <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <td contenteditable="true" class="limitado editable" data-id="{{ $tipo->id }}" data-porcentaje="{{ $tipo->porcentaje ?? 20 }}" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">0</td>
-        @endforeach
-        <td class="nota-final" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">0</td>
-        <td class="desempeno" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">Bajo</td>
-        <td >
-          <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="adicionarConcepto()" id="subirfile" >
-            <div class="nav-link-icon__wrapper">
-              <i class="fa fa-plus" title="Generar Concepto Evaluacion" style=""></i><br>
-            </div>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-    <tbody id="tablaDatos2">
-      <tr>
-        <td colspan="9">
-          <textarea id="conceptos" name="conceptos" rows="4" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
-        </td>
-      </tr>
-    </tbody>
-    </table>
+    <div class="form-row col-md-12 mt-2">
+      
+     
+      <div class="col-md-3">
+        <label for="feLastName">Desempeño En Comportamiento</label>
+         <select id="desempenio_compo" name="desempenio_compo" class="form-control evaluacion-select" onchange="adicionarConceptoTrans(this.value)">
+          <option value="">Seleccione...</option>
+          <option value="3">😀 Alto</option>
+          <option value="2">😐 Medio</option>
+          <option value="1">☹️ Bajo</option>
+        </select>
+      </div>
+      <br>
+      <div class="col-md-12" style="margin-top: 10px;">
+        <label for="feLastName">Concepto del Comportamiento</label>
+        <textarea id="conceptos_comportamiento" name="conceptos_comportamiento" rows="3" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
+    </div>
+    
+    </div>
     <div class="form-row col-md-12 mt-2  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
@@ -179,56 +163,52 @@
     }
   });
 });
-var CONCEPTOS = @json($lstConceptosEvaluar);
 var CONCEPTOS_COMPORTAMIENTO = @json($conceptosComportamiento);
-function adicionarConcepto() {
-  const fila = document.querySelector("#tablaDatos tr");
-  const notaFinal = parseFloat(fila.querySelector(".nota-final").innerText);
-  const desempeno = fila.querySelector(".desempeno").innerText;
+function adicionarConceptoTrans(desempenio) {
 
   const idPeriodo = parseInt($('#periodo').val(), 10);
   if (!idPeriodo) {
     toastr.warning('Por favor seleccione un periodo antes de generar el concepto.', 'Atención');
     return; // Detener ejecución si no hay selección
   }
-  var arrayConceptos=CONCEPTOS?CONCEPTOS:[];
+  var arrayConceptos=CONCEPTOS_COMPORTAMIENTO?CONCEPTOS_COMPORTAMIENTO:[];
+  var desempenioText = '';
+  if(desempenio == 3){
+    desempenioText = "Alto";
+  }else if(desempenio == 2){
+    desempenioText = "Medio";
+  }else{
+    desempenioText = "Bajo";
+  }
 
   const resultado = arrayConceptos.filter(item =>
     item.id_periodo === idPeriodo &&
-    item.desempenio === desempeno
+    item.desempenio === desempenioText
   );
   let resultadoConcepto = "";
-  console.log(resultado);
   if(resultado.length > 0){
-    
-    if(resultado.length > 0){
-      resultadoConcepto = resultado[0].descripcion;
-    }
-
-    let concepto = "";
-
-    switch (desempeno) {
-      case "Superior":
-        concepto = resultadoConcepto;
-        break;
-      case "Alto":
-        concepto = resultadoConcepto;
-        break;
-      case "Básico":
-        concepto = resultadoConcepto;
-        break;
-      case "Bajo":
-        concepto = resultadoConcepto;
-        break;
-      default:
-        concepto = "";
-    }
-
-    document.getElementById("conceptos").value = concepto;
+    resultadoConcepto = resultado[0].descripcion;
   }else{
-     toastr.warning('No existe un concepto configurado para este periodo. Valida la información e intenta nuevamente o ingresa el concepto de forma manual', 'Atención');
+    toastr.warning('No existe un concepto configurado para el periodo y desempeño seleccionado.', 'Atención');
   }
-  
+
+  let concepto = "";
+
+  switch (desempenioText) {
+    case "Alto":
+      concepto = resultadoConcepto;
+      break;
+    case "Medio":
+      concepto = resultadoConcepto;
+      break;
+    case "Bajo":
+      concepto = resultadoConcepto;
+      break;
+    default:
+      concepto = "";
+  }
+
+  document.getElementById("conceptos_comportamiento").value = concepto;
 }
     
 </script>

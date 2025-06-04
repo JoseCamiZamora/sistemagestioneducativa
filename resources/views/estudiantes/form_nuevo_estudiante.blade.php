@@ -122,7 +122,7 @@
     </div>
     <br>
     <div class="form-row" style="background-color: #66d1ea">
-      <label for="feLastName" style="color: black; margin-top: 8px;margin-left: 8px">DATOS DE UBICACION Y CONTACTO</label>
+      <label for="feLastName" style="color: black; margin-top: 8px;margin-left: 8px">DATOS DE UBICACIÓN Y CONTACTO</label>
     </div>
     <div class="form-row col-md-12 mt-2">
       <div class="form-group col-md-2">
@@ -131,7 +131,7 @@
         value="" required >
       </div>
       <div class="form-group col-md-4">
-        <label for="feLastName">Dirección Recidencia</label><spam style="color: red;"> * </spam>
+        <label for="feLastName">Dirección Residencia</label><spam style="color: red;"> * </spam>
         <input type="text" maxlength="125" class="form-control" id="direccion" name="direccion" 
         value=""  required>
       </div>

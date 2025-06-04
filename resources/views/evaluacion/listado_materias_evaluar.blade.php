@@ -21,7 +21,11 @@
             <div class="d-flex px-3 text-center">
                   <a href="{{ url('/evaluacion/listado_cursos_configurados/'.$materia->id.'') }}" style='width: 100%'>
                   <img src="{{ asset('/assets/img/materias.svg') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
-                  <h4 style='margin-bottom: 1px;' >{{$materia->nom_materia }}</h4>
+                  @if($materia->id_tipo_clase == 3)
+                    <h4 style='margin-bottom: 1px;' >{{$materia->nom_materia }}</h4>
+                  @else
+                    <h4 style='margin-bottom: 1px; font-size: 16px;' >DIMENSION {{$materia->nom_materia}}</h4>
+                  @endif
                   <span  class="text-primary" style="font-size:1.0em;margin-top:1px;" >Ver cursos evaluar</span>
                   </a>
               </div>

@@ -869,6 +869,43 @@ function infoClasesConfig(idDocente,idAnio){
  }) ;  
 }
 
+function infoDirGrupo(idDocente,idAnio){
+  const tbody = document.querySelector("#miTabla tbody");
+  if(tbody != null){
+    tbody.innerHTML = ""; // Limpiar contenido anterior
+  }
+
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/consultar_lista_director_grupo/"+idDocente+"/"+idAnio+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+    const lstDirectorConfiguradas = resul.lstDirector;
+    if(lstDirectorConfiguradas.length > 0){
+      const tabla = document.getElementById('tablaDirectorGrupo');
+      let asignacionIndex = 0;
+      lstDirectorConfiguradas.forEach(function(clase){
+        const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${clase.nom_anio}<input type="hidden" name="asignaciones[${asignacionIndex}][anio]" value="${clase.id_anio}"></td>
+            <td>${clase.nom_curso}<input type="hidden" name="asignaciones[${asignacionIndex}][materia]" value="${clase.id_curso}"></td>
+            <td style="text-align: center;"><button type="button" class="btn btn-danger btn-sm " onclick="eliminarGrupo(${clase.id}, this)">🗑️</button></td>
+          `;
+          tabla.appendChild(row);
+          asignacionIndex++;
+        })
+    }else{
+      document.getElementById("btn_actualizar").style.display = "none";
+    }
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;  
+}
+
 function matricularEstudiante(idEstudiante){
   $('#modal_asociar_estudiantes').modal();
   $('.preloader').fadeIn();

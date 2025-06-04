@@ -33,6 +33,7 @@
                 <th scope="col" class="th-gris text-center" style="width: 50px;">No.</th>
                 <th scope="col" class="th-gris text-left" >Descripción</th>
                 <th scope="col" class="th-gris text-left" >Clasificación</th>
+                <th scope="col" class="th-gris text-center" >Intensidad Horas</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
                 <th scope="col" class="th-gris text-center " >Borrar</th>
               </tr>
@@ -44,6 +45,7 @@
                   <td class='text-center' >{{ $loop->index+1 }}</td>
                   <td class='td-titulo text-left'>{{ $materia->nombre}}</td>
                   <td class='td-titulo text-left'>{{ $materia->nom_clasificacion}}</td>
+                  <td class='td-titulo text-center'>{{ $materia->intensidad_horas}}</td>
                   <td>
                     <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
                     onclick="editarMateria({{$materia->id}})" role="button" id="subirfile" >

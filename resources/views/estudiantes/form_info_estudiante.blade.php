@@ -100,7 +100,7 @@
   </div>
 </div>
 <div class="form-row" style="background-color: #66d1ea">
-  <label for="feLastName" style="color: black; margin-top: 8px;margin-left: 8px">DATOS DE UBICACION Y CONTACTO DEL ESTUDIANTE</label>
+  <label for="feLastName" style="color: black; margin-top: 8px;margin-left: 8px">DATOS DE UBICACIÓN Y CONTACTO DEL ESTUDIANTE</label>
 </div>
 <br>
 <div class="row" >
@@ -118,7 +118,7 @@
         </tr>
         <tr>
           <td style="width: 20%; background-color: #c9ccce; padding-left: 10px; border-bottom: 1px solid white;">
-            Dirección De Recidencia:
+            Dirección De Residencia:
           </td>
           <td style="width: 80%; background-color: white; padding-left:10px; ">
             <input type="text" class="form-control" id="remitente" name="remitente" value="{{$estudiante->direccion}}, Barrio: {{$estudiante->barrio}}" disabled>

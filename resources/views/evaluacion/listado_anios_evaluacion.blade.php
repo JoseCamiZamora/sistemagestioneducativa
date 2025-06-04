@@ -29,7 +29,11 @@
                 <th scope="col" class="th-gris text-left" >Estado</th>
                 <th scope="col" class="th-gris text-left" >Finalizado</th>
                 <th scope="col" class="th-gris text-left" >Cantidad Periodos</th>
-                <th scope="col" class="th-gris text-center " >Ver Materias</th>
+                <th scope="col" class="th-gris text-center " >Evaluar Materias</th>
+                @if($esDocenteTransicion == 'S')
+                <th scope="col" class="th-gris text-center " >Generar Concepto</th>
+                @endif
+                <th scope="col" class="th-gris text-center " >Evaluar Comportamiento</th>
               </tr>
             </thead>
             <tbody>
@@ -48,12 +52,43 @@
                   <td class='td-titulo text-left'>{{ $anio->finalizado}}</td>
                   <td class='td-titulo text-left'>{{ $anio->cant_periodos}}</td>
                   <td>
-                  <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-list" title="Editar Listado de Periodos" style=""></i><br>
                       </div>
                     </a>
                   </td>
+                  @if($anio->clasificacion == 1)
+                    <td>
+                      <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_estudiantes_transicion/'.$usuarioactual->id_persona.'/'.$anio->id.'/'.$anio->clasificacion.'') }}" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-edit" title="Editar Listado de Periodos" style=""></i><br>
+                        </div>
+                      </a>
+                    </td>
+                  @endif
+                  @if($anio->esDirectorGrupo == 'S')
+                  <td>
+                    @if($anio->clasificacion == 1)
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_estudiantes_evaluar_transicion/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                      <div class="nav-link-icon__wrapper">
+                        <i class="fa fa-user" title="Editar Listado de Periodos" style=""></i><br>
+                      </div>
+                    </a>
+                    @else
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_estudiantes_evaluar/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                      <div class="nav-link-icon__wrapper">
+                        <i class="fa fa-user" title="Editar Listado de Periodos" style=""></i><br>
+                      </div>
+                    </a>
+
+                    @endif
+                  </td>
+                  @else
+                   <td></td>
+                  @endif
+                  
+                  
                 </tr>
               @endforeach
             </tbody>

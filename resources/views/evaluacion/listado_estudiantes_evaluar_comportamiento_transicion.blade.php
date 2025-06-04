@@ -9,33 +9,33 @@
   <div>
 	  <div class="page-header row no-gutters py-4">
 	    <div class="col">
-	      <span class="page-subtitle">Modulo Evaluación - TRANSICION </span>
+	      <span class="page-subtitle">Modulo Evaluación - TRANSICIÓN</span>
 	        <h4 class="page-title" >Listado de estudiantes matriculados<span style='font-size: 0.6em;'></span> </h4>
           <br>
-	        <h4 class="page-title" >Materia de evaluación: {{$clasesDocente->nom_materia}}<span style='font-size: 0.6em;'></span> </h4>
 	        <h4 class="page-title" >Curso en evaluación: {{$curso->nombre}}<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
-	        <a href="{{ url('evaluacion/listado_cursos_configurados/'.$clasesDocente->id.'') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
+	        <a href="{{ url('evaluacion/listado_anios_evaluacion') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
 	      </div>
 	    </div>
 	  </div>
   <!-- End Page Header -->
   <!-- Default Light Table -->
 	  <div class="row">
-    <input type="hidden" id="id_clase" name="id_clase" value="{{$clasesDocente->id}}">
+    <input type="hidden" id="id_clase" name="id_clase" value="{{$curso->id}}">
 	    <div class="col">
 	    	<table  class='table table-generic table-strech table-font-normal table-hover' >
+          
             <thead class="bg-light">
               <tr>
                 <th scope="col" class="th-gris text-center" style="width: 50px;">No.</th>
                 <th scope="col" class="th-gris text-left" >Año Lectivo</th>
                 <th scope="col" class="th-gris text-left" >Nombre Estudiante</th>
-                <th scope="col" class="th-gris text-center" >Nota 1er Periodo</th>
-                <th scope="col" class="th-gris text-center" >Nota 2do Periodo</th>
-                <th scope="col" class="th-gris text-center" >Nota 3er Periodo</th>
-                <th scope="col" class="th-gris text-left" >Desenpeño</th>
+                <th scope="col" class="th-gris text-center" >Nota Comp. 1</th>
+                <th scope="col" class="th-gris text-center" >Nota Comp. 2</th>
+                <th scope="col" class="th-gris text-center" >Nota Comp. 3</th>
                 <th scope="col" class="th-gris text-center" >Nota Final</th>
+                <th scope="col" class="th-gris text-center" >Desenpeño</th>
                 <th scope="col" class="th-gris text-center " >Evaluar</th>
               </tr>
             </thead>
@@ -48,59 +48,67 @@
                   <td class='td-titulo text-left'>{{$estudiante->nombre_estudiante}}</td>
                   <td class='td-titulo text-center'>
                     @if($estudiante->nota_primer_periodo > 0)
-                      @if($estudiante->nota_primer_periodo >= 1.5)
+                      @if($estudiante->nota_primer_periodo >= 2.5)
                         <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->nota_primer_periodo > 0)
+                      @elseif($estudiante->nota_primer_periodo > 1.5)
                         <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @endif
-                    @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                    @endif
-
-                  </td>
-                  <td class='td-titulo text-center'>
-                    @if($estudiante->nota_segundo_periodo > 0)
-                      @if($estudiante->nota_segundo_periodo >= 1.5)
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->nota_segundo_periodo > 0 )
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @endif
-                    @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                    @endif
-                  </td>
-                  <td class='td-titulo text-center'>
-                    @if($estudiante->nota_tercer_periodo > 0)
-                      @if($estudiante->nota_tercer_periodo >= 1.5)
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->nota_tercer_periodo > 0)
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @endif
-                    @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                    @endif
-                  </td>
-                    @if($estudiante->desempenio == 'Se requiere apoyo')
-                      <td class='td-titulo text-left' style="color: red;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
-                    @endif
-                    @if($estudiante->desempenio == 'En proceso')
-                      <td class='td-titulo text-left' style="color: #ffb300;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
-                    @endif
-                    @if($estudiante->desempenio == 'Logro alcanzado')
-                      <td class='td-titulo text-left' style="color: #88e600;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
-                    @endif
-                  <td class='td-titulo text-center'>
-                      @if($estudiante->desempenio == 'Logro alcanzado')
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->desempenio == 'En proceso')
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->desempenio == 'Se requiere apoyo')
+                      @else
                         <img src="{{ asset('/assets/img/triste.svg') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
+                    @else
+                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                    @endif
                   </td>
-                    
+                  <td class='td-titulo text-center'>
+                     @if($estudiante->nota_segundo_periodo > 0)
+                      @if($estudiante->nota_segundo_periodo >= 2.5)
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @elseif($estudiante->nota_segundo_periodo > 1.5)
+                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @else
+                        <img src="{{ asset('/assets/img/triste.svg') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
+                      @endif
+                    @else
+                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                    @endif
+                  </td>
+                  <td class='td-titulo text-center'>
+                     @if($estudiante->nota_tercer_periodo > 0)
+                      @if($estudiante->nota_tercer_periodo >= 2.5)
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @elseif($estudiante->nota_tercer_periodo > 1.5)
+                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @else
+                        <img src="{{ asset('/assets/img/triste.svg') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
+                      @endif
+                    @else
+                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                    @endif
+                  </td>
+                  <td class='td-titulo text-center' style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">
+                    @if($estudiante->nota_final > 0)
+                      @if($estudiante->nota_final >= 2.5)
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @elseif($estudiante->nota_final > 1.5)
+                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      @else
+                        <img src="{{ asset('/assets/img/triste.svg') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
+                      @endif
+                    @else
+                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                    @endif
+                  </td>
+                  @if($estudiante->desempenio == 'Bajo')
+                    <td class='td-titulo text-center' style="color: red;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  @if($estudiante->desempenio == 'Medio')
+                    <td class='td-titulo text-center' style="color: #ffb300;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
+                  @if($estudiante->desempenio == 'Alto')
+                    <td class='td-titulo text-center' style="color: #88e600;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
+                  @endif
                   <td>
-                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="evaluarEstudianteTransicion({{$estudiante->id}})" id="subirfile" >
+                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="evaluarEstudianteComportamientoTransicion({{$estudiante->id}})" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-list" title="Evaluar estudiante" style=""></i><br>
                       </div>

@@ -35,9 +35,9 @@
         z-index: 1000; /* ✅ Asegura que la lista esté por encima de otros elementos */
         box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
         display: none; /* ✅ Se oculta inicialmente */
-    }
+    }   
 </style>
-<form  method="post"  action="adicionar_evaluacion_estudiante" id="f_adicionar_evaluacion_estudiante"   >
+<form  method="post"  action="adicionar_evaluacion_comportamiento" id="f_adicionar_evaluacion_comportamiento"   >
    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
    <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
    <input type="hidden" id="id_clase" name="id_clase" value="{{$claseDocente->id}}">
@@ -70,7 +70,7 @@
       </div>
       <div class="col-md-4">
           <label for="feLastName">Periodo a Evaluar</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritas(this.value)" required>
+          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritasComportamiento(this.value)" required>
           <option value="">Seleccione el periodo a evaluar</option>
               @foreach($periodos as $periodo)
                 <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
@@ -83,41 +83,21 @@
       </div>
     </div>
     <br>
-    <table border  class='table table-generic table-strech table-font-normal table-hover' >
-    <thead>
-      <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <th style="font-size: 12px;" >{{$tipo->nombre}}</th>
-        @endforeach
-        <th>Nota Final</th>
-        <th>Desempeño</th>
-        <th>Concepto</th>
-      </tr>
-    </thead>
-    <tbody id="tablaDatos">
-      <tr>
-        @foreach($tiposEvaluacion as $tipo)
-        <td contenteditable="true" class="limitado editable" data-id="{{ $tipo->id }}" data-porcentaje="{{ $tipo->porcentaje ?? 20 }}" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">0</td>
-        @endforeach
-        <td class="nota-final" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">0</td>
-        <td class="desempeno" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;">Bajo</td>
-        <td >
-          <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="adicionarConcepto()" id="subirfile" >
-            <div class="nav-link-icon__wrapper">
-              <i class="fa fa-plus" title="Generar Concepto Evaluacion" style=""></i><br>
-            </div>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-    <tbody id="tablaDatos2">
-      <tr>
-        <td colspan="9">
-          <textarea id="conceptos" name="conceptos" rows="4" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
-        </td>
-      </tr>
-    </tbody>
-    </table>
+    <div class="form-row col-md-12 mt-2">
+      
+      <div class="col-md-1">
+        <label for="feLastName">Nota</label>
+        <input  type="number" min="0" max="5" step="0.1" class="form-control "  id="nota_comportamiento" name="nota_comportamiento" value="" onchange="validarNotasComportamiento(this.value)" required style="margin-top: -6px;" >
+      </div>
+      <div class="col-md-2">
+        <label for="feLastName">Desempeño</label>
+        <input  class="form-control "  id="desempenio_compo" name="desempenio_compo" value="" required style="margin-top: -6px;" disabled>
+      </div>
+      <div class="col-md-9">
+        <label for="feLastName">Concepto</label>
+        <textarea id="conceptos_comportamiento" name="conceptos_comportamiento" rows="3" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
+    </div>
+    </div>
     <div class="form-row col-md-12 mt-2  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
@@ -179,7 +159,6 @@
     }
   });
 });
-var CONCEPTOS = @json($lstConceptosEvaluar);
 var CONCEPTOS_COMPORTAMIENTO = @json($conceptosComportamiento);
 function adicionarConcepto() {
   const fila = document.querySelector("#tablaDatos tr");
@@ -198,37 +177,30 @@ function adicionarConcepto() {
     item.desempenio === desempeno
   );
   let resultadoConcepto = "";
-  console.log(resultado);
   if(resultado.length > 0){
-    
-    if(resultado.length > 0){
-      resultadoConcepto = resultado[0].descripcion;
-    }
-
-    let concepto = "";
-
-    switch (desempeno) {
-      case "Superior":
-        concepto = resultadoConcepto;
-        break;
-      case "Alto":
-        concepto = resultadoConcepto;
-        break;
-      case "Básico":
-        concepto = resultadoConcepto;
-        break;
-      case "Bajo":
-        concepto = resultadoConcepto;
-        break;
-      default:
-        concepto = "";
-    }
-
-    document.getElementById("conceptos").value = concepto;
-  }else{
-     toastr.warning('No existe un concepto configurado para este periodo. Valida la información e intenta nuevamente o ingresa el concepto de forma manual', 'Atención');
+    resultadoConcepto = resultado[0].descripcion;
   }
-  
+
+  let concepto = "";
+
+  switch (desempeno) {
+    case "Superior":
+      concepto = resultadoConcepto;
+      break;
+    case "Alto":
+      concepto = resultadoConcepto;
+      break;
+    case "Básico":
+      concepto = resultadoConcepto;
+      break;
+    case "Bajo":
+      concepto = resultadoConcepto;
+      break;
+    default:
+      concepto = "";
+  }
+
+  document.getElementById("conceptos").value = concepto;
 }
     
 </script>

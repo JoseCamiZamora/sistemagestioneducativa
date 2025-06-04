@@ -95,7 +95,6 @@ function editarDocente(id_docente){
 }
 
 function clasesDocente(id_docente){
-  console.log("jejejeje",id_docente);
     $('#modal_clases_docentes').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
@@ -115,7 +114,29 @@ function clasesDocente(id_docente){
      SU_revise_conexion();
    }) ;
   // body...
+}
 
+function confDirectorGrupo(id_docente){
+  console.log("jejejeje llego aqui",id_docente);
+    $('#modal_dir_grupo').modal();
+    $('.preloader').fadeIn();
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/docentes/frm_director_grupo/"+id_docente+"";
+
+    $.ajax({
+    url: miurl
+    }).done( function(resul){
+    
+      $('.preloader').fadeOut();
+      $("#contenido_modal_dir_grupo").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+  // body...
 }
 
 $(document).on("submit","#f_editar_docente",function(e){
@@ -222,6 +243,30 @@ function eliminarCurso(id_clase, btn){
     });
 }
 
+
+function eliminarGrupo(id_clase, btn){
+  console.log(id_clase);
+  var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/docentes/borrar_director_grupo/"+id_clase+"";
+
+    $.ajax({
+      url : miurl,
+    })
+     .done(function(resul) {
+       if(resul.estado=="borrada"){  
+          toastr.success('La asignación del grupo fue eliminada exitosamente', '¡Éxito!');
+          const fila = btn.closest('tr');
+          if (fila) {
+            fila.remove();
+          }
+        }
+     }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+}
+
 function validarChexbox(idTipo){
   const tipoGradoSelectParam = Number(idTipo);
   const arraygrados = GRADOS ? GRADOS : [];
@@ -271,6 +316,33 @@ $(document).on("submit","#f_adicionar_clases_docente",function(e){
  .done(function(resul) {
      $('.preloader').fadeOut();
      $("#contenido_modal_clases_docentes").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_adicionar_director_grupo",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/docentes/adicionar_director_grupo";
+
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_dir_grupo").html(resul);
   })
  .fail(function(err){
      $('.preloader').fadeOut();

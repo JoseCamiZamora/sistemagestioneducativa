@@ -16,6 +16,7 @@ use App\PeriodosClases;
 use App\EstudiantesCurso;
 use App\TipoCursos;
 use App\ConfClasesDocente;
+use App\ConfDirectorGrupo;
 
 
 use PDF;
@@ -295,6 +296,7 @@ class ConfiguracionController extends Controller
         $materia->nombre= strtoupper($request->input('materia')?$request->input('materia'):'');
         $materia->tipo_curso = $clasificacion->id;
         $materia->nom_clasificacion = $clasificacion->nombre;
+        $materia->intensidad_horas = $request->input('instensidad_horas')?$request->input('instensidad_horas'):'';
         $materia->estado="A";
 
         if($materia->save()){
@@ -325,6 +327,7 @@ class ConfiguracionController extends Controller
         $materia->nombre= strtoupper($request->input('materia')?$request->input('materia'):'');
         $materia->tipo_curso = $clasificacion->id;
         $materia->nom_clasificacion = $clasificacion->nombre;
+        $materia->intensidad_horas = $request->input('instensidad_horas')?$request->input('instensidad_horas'):'';
         $materia->estado="A";
         if($materia->save()){
             return view("configuracion.mensajes.msj_confirmacion")->with("msj","La materia fue Actualizada exitosamente");
@@ -602,6 +605,11 @@ class ConfiguracionController extends Controller
     public function  consultar_lista_anios($idDocente=null,$idAnio=null ) {
         $lstAnio = ConfClasesDocente::where("id_docente",$idDocente)->where("id_anio",$idAnio)->get();
         return response()->json([ 'lstAnio' => $lstAnio ],200);  
+    }
+
+     public function  consultar_lista_director_grupo($idDocente=null,$idAnio=null ) {
+        $lstDirector = ConfDirectorGrupo::where("id_docente",$idDocente)->where("id_anio",$idAnio)->get();
+        return response()->json([ 'lstDirector' => $lstDirector ],200);  
     }
 
     public function  validar_curso_asociado($idAnio=null,$idCurso=null,$idEstudiante=null ) {
