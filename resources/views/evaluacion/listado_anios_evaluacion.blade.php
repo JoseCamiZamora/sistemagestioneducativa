@@ -29,7 +29,11 @@
                 <th scope="col" class="th-gris text-left" >Estado</th>
                 <th scope="col" class="th-gris text-left" >Finalizado</th>
                 <th scope="col" class="th-gris text-left" >Cantidad Periodos</th>
-                <th scope="col" class="th-gris text-center " >Evaluar Materias</th>
+                @if($esDocenteTransicion == 'S')
+                  <th scope="col" class="th-gris text-center " >Evaluar Dimensiones</th>
+                @else
+                  <th scope="col" class="th-gris text-center " >Evaluar Materias</th>
+                @endif
                 @if($esDocenteTransicion == 'S')
                 <th scope="col" class="th-gris text-center " >Generar Concepto</th>
                 @endif
