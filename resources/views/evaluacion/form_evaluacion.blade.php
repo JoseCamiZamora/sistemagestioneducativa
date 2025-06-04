@@ -194,7 +194,7 @@ function adicionarConcepto() {
   var arrayConceptos=CONCEPTOS?CONCEPTOS:[];
 
   const resultado = arrayConceptos.filter(item =>
-    item.id_periodo === idPeriodo &&
+    parseFloat(item.id_periodo) === parseFloat(idPeriodo) &&
     item.desempenio === desempeno
   );
   let resultadoConcepto = "";
