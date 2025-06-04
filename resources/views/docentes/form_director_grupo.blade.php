@@ -101,7 +101,6 @@
 </form>
 <script>
   document.getElementById('btnAdd').addEventListener('click', () => {
-    console.log('aqui vamos');
     
     const tabla2 = document.getElementById('tablaDirectorGrupo');
     const filas2 = tabla2.querySelectorAll('tr');

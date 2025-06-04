@@ -198,7 +198,6 @@ function adicionarConcepto() {
     item.desempenio === desempeno
   );
   let resultadoConcepto = "";
-  console.log(resultado);
   if(resultado.length > 0){
     
     if(resultado.length > 0){

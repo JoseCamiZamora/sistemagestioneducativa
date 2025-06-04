@@ -151,7 +151,6 @@
   };
 
   function actualizarNotaFinal() {
-    console.log("LLego aqui");
     const selects = document.querySelectorAll('.evaluacion-select');
     let total = 0;
     let count = 0;

@@ -183,6 +183,8 @@ class EvaluacionController extends Controller
 
     
     public function listado_estudiantes_configurados_t($idCurso=null, $idClase=null){
+        
+        $usuarioactual = Auth::user();
         $clasesDocente =  ConfClasesDocente::find($idClase);
         $lstEstudiantes = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$clasesDocente->id_anio)->get();
         foreach ($lstEstudiantes as $estudiante) {
@@ -238,6 +240,7 @@ class EvaluacionController extends Controller
 
         return view('evaluacion.listado_estudiantes_transicion_evaluar')->with('clasesDocente',$clasesDocente)
         ->with("lstEstudiantes",$lstEstudiantes)
+        ->with("usuarioactual",$usuarioactual)
         ->with("curso",$curso);
 
     }

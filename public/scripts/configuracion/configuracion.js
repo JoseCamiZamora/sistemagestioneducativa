@@ -231,7 +231,6 @@ $(document).on("submit","#f_adicionar_nuevo_curso",function(e){
 $(document).on("submit","#f_adicionar_nuevo_anio",function(e){
   //funcion para crear un nuevo usuario
   var validacione = validarCheckboxes();
-  console.log('jejejejej',validacione);
   if(validacione){
     e.preventDefault();
     $('.preloader').fadeIn();
@@ -309,7 +308,6 @@ $(document).on("submit", "#f_adicionar_curso_estudiante", function(e) {
   })
   .done(function(resul) {
     var estado = resul['estado'];
-    console.log('estado:', estado);
 
     if (!estado) {
       // Si no está registrado, procede a guardar

@@ -16,7 +16,7 @@
 	        <h4 class="page-title" >Curso en evaluación: {{$curso->nombre}}<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
-	        <a href="{{ url('evaluacion/listado_cursos_configurados/'.$clasesDocente->id.'') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
+	        <a href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$clasesDocente->id_anio.'') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
 	      </div>
 	    </div>
 	  </div>

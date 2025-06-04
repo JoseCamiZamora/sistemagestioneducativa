@@ -46,7 +46,6 @@ $(document).on("submit","#f_nuevo_estudiante",function(e){
 });
 
 function verInfoEstidiante(id_estudiante){
-  console.log(id_estudiante);
     $('#modal_info_estudiantes').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
@@ -70,7 +69,6 @@ function verInfoEstidiante(id_estudiante){
 }
 
 function editarEstudiante(id_estudiante){
-  console.log(id_estudiante);
     $('#modal_editar_estudiantes').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();

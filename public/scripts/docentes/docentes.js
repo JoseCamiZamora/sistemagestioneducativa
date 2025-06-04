@@ -47,7 +47,6 @@ $(document).on("submit","#f_nuevo_docente",function(e){
 });
 
 function verInfoEstidiante(id_estudiante){
-  console.log(id_estudiante);
     $('#modal_info_estudiantes').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
@@ -71,7 +70,6 @@ function verInfoEstidiante(id_estudiante){
 }
 
 function editarDocente(id_docente){
-  console.log(id_docente);
     $('#modal_editar_docentes').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
@@ -117,7 +115,6 @@ function clasesDocente(id_docente){
 }
 
 function confDirectorGrupo(id_docente){
-  console.log("jejejeje llego aqui",id_docente);
     $('#modal_dir_grupo').modal();
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
@@ -221,7 +218,6 @@ function infoMaterias(idTipo){
 
 
 function eliminarCurso(id_clase, btn){
-  console.log(id_clase);
   var urlraiz=$("#url_raiz_proyecto").val();
     var miurl='';
     miurl=urlraiz+"/docentes/borrar_clase_docente/"+id_clase+"";
@@ -245,7 +241,6 @@ function eliminarCurso(id_clase, btn){
 
 
 function eliminarGrupo(id_clase, btn){
-  console.log(id_clase);
   var urlraiz=$("#url_raiz_proyecto").val();
     var miurl='';
     miurl=urlraiz+"/docentes/borrar_director_grupo/"+id_clase+"";

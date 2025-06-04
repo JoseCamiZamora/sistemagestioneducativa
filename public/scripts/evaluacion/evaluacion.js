@@ -25,7 +25,6 @@ function evaluarEstudiante(id_estudiante){
 function evaluarEstudianteComportamiento(id_estudiante){
   
   var idClase = $('#id_clase').val();
-  console.log('id curso',idClase);
   $('#modal_evaluacion').modal();
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
@@ -94,7 +93,6 @@ function generarConceptoTransicion(id_estudiante){
 
 
 function validarNotasComportamiento(val_nota){
-  console.log(val_nota);
   var desempenio = "";
    if (val_nota >= 4.6) {
       desempenio = 'Superior';
@@ -379,7 +377,6 @@ var idClase = $('#id_clase').val();
     url: miurl
     }).done( function(resul){
     // Asumiendo que resul es un solo objeto, no un array de filas
-    console.log(resul);
 
     document.getElementById("nota_comportamiento").value = resul.notaComportamiento;
 
@@ -419,7 +416,6 @@ var idClase = $('#id_clase').val();
     url: miurl
     }).done( function(resul){
     // Asumiendo que resul es un solo objeto, no un array de filas
-    console.log(resul);
 
     var desempenio = "";
     if (resul.notaComportamiento >= 2.5 && resul.notaComportamiento <= 3) {
@@ -463,7 +459,6 @@ function validarNotasInscritasTransicion(idPeriodo){
     url: miurl
     }).done( function(resul){
       // Asumiendo que resul es un solo objeto, no un array de filas
-    console.log(resul);
     if(resul.notas.length > 0){
       resul.notas.forEach(item => {
         const select = document.querySelector(`.evaluacion-select[data-id='${item.id}']`);
@@ -536,7 +531,6 @@ function validarNotasMateriasTransicion(idPeriodo){
 
     // Pintar desempeño
     $(fila).find('.desempeno').text(resul.desempenio || '');
-    console.log('estoy en borrar el concepto');
     if(resul.textoConcepto != ""){
       document.getElementById("conceptos").value = resul.textoConcepto;
     }else{
@@ -639,7 +633,6 @@ $(document).on("submit", "#f_adicionar_concepto_transicion", function(e) {
 function evaluarEstudianteComportamientoTransicion(id_estudiante){
   
   var idClase = $('#id_clase').val();
-  console.log('id curso',idClase);
   $('#modal_evaluacion').modal();
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
