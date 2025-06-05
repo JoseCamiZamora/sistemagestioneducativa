@@ -56,11 +56,19 @@
                   <td class='td-titulo text-left'>{{ $anio->finalizado}}</td>
                   <td class='td-titulo text-left'>{{ $anio->cant_periodos}}</td>
                   <td>
-                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
-                      <div class="nav-link-icon__wrapper">
-                        <i class="fa fa-list" title="Editar Listado de Periodos" style=""></i><br>
-                      </div>
-                    </a>
+                    @if($anio->clasificacion == 1)
+                      <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_estudiantes_configurados_t/1/'.$anio->id.'') }}" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-list" title="Editar Listado de Periodos" style=""></i><br>
+                        </div>
+                      </a>
+                    @else
+                      <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-list" title="Editar Listado de Periodos" style=""></i><br>
+                        </div>
+                      </a>
+                    @endif
                   </td>
                   @if($anio->clasificacion == 1)
                     <td>

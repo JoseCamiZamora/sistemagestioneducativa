@@ -85,7 +85,7 @@
     <br>
     <div class="form-row col-md-12 mt-2">
       
-      <div class="col-md-1">
+      <div class="col-md-2">
         <label for="feLastName">Nota</label>
         <input  type="number" min="0" max="5" step="0.1" class="form-control "  id="nota_comportamiento" name="nota_comportamiento" value="" onchange="validarNotasComportamiento(this.value)" required style="margin-top: -6px;" >
       </div>
@@ -93,7 +93,7 @@
         <label for="feLastName">Desempeño</label>
         <input  class="form-control "  id="desempenio_compo" name="desempenio_compo" value="" required style="margin-top: -6px;" disabled>
       </div>
-      <div class="col-md-9">
+      <div class="col-md-8">
         <label for="feLastName">Concepto</label>
         <textarea id="conceptos_comportamiento" name="conceptos_comportamiento" rows="3" cols="33" maxlength="2000" style="width: 100%;" ></textarea>
     </div>

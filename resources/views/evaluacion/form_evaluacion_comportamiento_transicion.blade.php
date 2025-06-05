@@ -180,9 +180,9 @@ function adicionarConceptoTrans(desempenio) {
   }else{
     desempenioText = "Bajo";
   }
-
+  console.log(idPeriodo);
   const resultado = arrayConceptos.filter(item =>
-    item.id_periodo === idPeriodo &&
+    parseFloat(item.id_periodo) === parseFloat(idPeriodo) &&
     item.desempenio === desempenioText
   );
   let resultadoConcepto = "";

@@ -40,7 +40,7 @@
 <form  method="post"  action="adicionar_evaluacion_transicion" id="f_adicionar_evaluacion_transicion"  onsubmit="return prepararEvaluaciones()" >
    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
    <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
-   <input type="hidden" id="id_clase" name="id_clase" value="{{$claseDocente->id}}">
+   <input type="hidden" id="id_clase" name="id_clase" value="">
    <input type="hidden" id="estado" name="estado" value="A">
 
    <table border  class='table table-generic table-strech table-font-normal table-hover'>
@@ -86,16 +86,20 @@
     <table border class='table table-generic table-strech table-hover'>
       <thead>
         <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN COGNITIVA</th>
+        </tr>
+        <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
           <th style="font-size: 14px;">Evaluación</th>
         </tr>
       </thead>
-      <tbody id="tablaDatos">
-        @foreach($itemEvaluar as $item)
+      <tbody id="tablaDatosCognitiva">
+        @foreach($filtradosCognitiva as $item)
           <tr>
             <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
             <td>
-              <select id="selectEvaluacion" class="form-control evaluacion-select" data-id="{{ $item->id }}" onchange="actualizarNotaFinal()">
+              <select id="selectEvaluacionCognitiva" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
                 <option value="">Evaluar al estudiante...</option>
                 <option value="2">😀 Logro Alcanzado</option>
                 <option value="1">😐 Logro En Proceso</option>
@@ -104,12 +108,149 @@
           </tr>
         @endforeach
       </tbody>
-
-      <tbody id="tablaDatos2">
+      <thead>
         <tr>
-          <td colspan="3" class="text-center" id="resultadoFinal">😐 Logro En Proceso
-          </td>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN COMUNICATIVA</th>
         </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosComunicativa">
+        @foreach($filtradosComunicativa as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacionComunicativa" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ETICA</th>
+        </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosEtica">
+        @foreach($filtradosEtica as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacionEtica" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ESTETICA</th>
+        </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosEstetica">
+        @foreach($filtradosEsteica as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEstetica" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN SOCIOAFECTIVA</th>
+        </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosSocioafectiva">
+        @foreach($filtradosSocioafectiva as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacionSocioafectiva" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN CORPORAL</th>
+        </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosCorporal">
+        @foreach($filtradosCorporal as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacionCorporal" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
+      </tbody>
+      <thead>
+        <tr>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ESPIRITUAL</th>
+        </tr>
+        <tr>
+          <th style="font-size: 14px;">Ítem Evaluar</th>
+          <th style="font-size: 14px;">Evaluación</th>
+        </tr>
+      </thead>
+      <tbody id="tablaDatosEspiritual">
+        @foreach($filtradosEspiritual as $item)
+          <tr>
+            <td contenteditable="true" class="limitado editable" data-id="{{ $item->id }}" style="font-size: 14px;">{{$item->descripcion}}</td>
+            <td>
+              <select id="selectEvaluacionEspiritual" class="form-control evaluacion-select" data-id="{{ $item->id }}" data-dimencion="{{$item->nom_materia}}" 
+               data-id_dimencion="{{$item->id_materia}}" >
+                <option value="">Evaluar al estudiante...</option>
+                <option value="2">😀 Logro Alcanzado</option>
+                <option value="1">😐 Logro En Proceso</option>
+              </select>
+            </td>
+          </tr>
+        @endforeach
       </tbody>
     </table>
     <!-- Campo oculto para guardar el array como JSON -->
@@ -131,9 +272,13 @@
     document.querySelectorAll('.evaluacion-select').forEach(select => {
       const id = select.dataset.id;
       const valor = select.value;
+      const nom_dimencion = select.dataset.dimencion;
+      const id_dimencion = select.dataset.id_dimencion;
 
       datos.push({
         id_criterio: id,
+        dimencion:nom_dimencion,
+        id_dimencion:id_dimencion,
         evaluacion: valor
       });
     });

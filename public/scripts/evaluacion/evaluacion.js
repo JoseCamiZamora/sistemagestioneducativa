@@ -47,14 +47,11 @@ function evaluarEstudianteComportamiento(id_estudiante){
 
 function evaluarEstudianteTransicion(id_estudiante){
   
-  
-  var idClase = $('#id_clase').val();
-
   $('#modal_evaluacion').modal();
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
-  miurl=urlraiz+"/evaluacion/form_evaluacion_transicion/"+id_estudiante+"/"+idClase+"";
+  miurl=urlraiz+"/evaluacion/form_evaluacion_transicion/"+id_estudiante+"";
   $.ajax({
     url: miurl
     }).done( function(resul){
@@ -454,7 +451,7 @@ function validarNotasInscritasTransicion(idPeriodo){
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
-  miurl=urlraiz+"/evaluacion/consultar_evaluacion_transicion/"+idPeriodo+"/"+idCurso+"/"+idClase+"";
+  miurl=urlraiz+"/evaluacion/consultar_evaluacion_transicion/"+idPeriodo+"/"+idCurso+"";
   $.ajax({
     url: miurl
     }).done( function(resul){
@@ -472,14 +469,7 @@ function validarNotasInscritasTransicion(idPeriodo){
         select.classList.remove('bg-success', 'bg-warning', 'bg-danger'); // Limpia colores
       });
     }
-    if(resul.desempenio == "Logro Alcanzado"){
-      document.getElementById("resultadoFinal").value = "😀 Logro Alcanzado";
-      document.getElementById("resultadoFinal").innerText = "😀 Logro Alcanzado";
-    }else{
-      document.getElementById("resultadoFinal").value = "😐 Logro En Proceso";
-      document.getElementById("resultadoFinal").innerText = "😐 Logro En Proceso";
-    }
-
+    
     $('.preloader').fadeOut();
    
     }).fail( function() 

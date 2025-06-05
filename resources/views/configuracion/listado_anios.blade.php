@@ -80,7 +80,7 @@
   <div class="modal-dialog modal-lg" style="max-width: 60%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nuevo Anio</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nuevo Año</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>

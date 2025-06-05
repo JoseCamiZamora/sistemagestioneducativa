@@ -479,8 +479,14 @@ class EstudiantesController extends Controller
         }
         $estudiante->responsable_json= json_encode($responsablesArray);
 
-        if($estudiante->save())
-        {
+        if($estudiante->save()){
+            $estudiantesCurso = EstudiantesCurso::all();
+            foreach ($estudiantesCurso as $estudiante) {
+                if($estudiante->id_estudiante == $estudiante->id){
+                    $estudiantesCurso->nombre_estudiante = $estudiante->primer_nombre." ". $estudiante->segundo_nombre." ".$estudiante->primer_apellido." ".$estudiante->segundo_apellido;
+                }
+            }
+            $estudiantesCurso->save();
             return view("estudiantes.mensajes.msj_actualziado")->with("msj","Estudiante fue actualizado exitosamente")
             										   ->with("estado",$estudiante->estado);
         }else{

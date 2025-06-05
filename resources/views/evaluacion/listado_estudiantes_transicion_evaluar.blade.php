@@ -12,18 +12,17 @@
 	      <span class="page-subtitle">Modulo Evaluación - TRANSICION </span>
 	        <h4 class="page-title" >Listado de estudiantes matriculados<span style='font-size: 0.6em;'></span> </h4>
           <br>
-	        <h4 class="page-title" >Materia de evaluación: {{$clasesDocente->nom_materia}}<span style='font-size: 0.6em;'></span> </h4>
 	        <h4 class="page-title" >Curso en evaluación: {{$curso->nombre}}<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
-	        <a href="{{ url('evaluacion/listado_materias_configuradas/'.$usuarioactual->id_persona.'/'.$clasesDocente->id_anio.'') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
+	        <a href="{{ url('evaluacion/listado_anios_evaluacion') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
 	      </div>
 	    </div>
 	  </div>
   <!-- End Page Header -->
   <!-- Default Light Table -->
 	  <div class="row">
-    <input type="hidden" id="id_clase" name="id_clase" value="{{$clasesDocente->id}}">
+    <input type="hidden" id="id_clase" name="id_clase" value="">
 	    <div class="col">
 	    	<table  class='table table-generic table-strech table-font-normal table-hover' >
             <thead class="bg-light">

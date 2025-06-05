@@ -6,7 +6,7 @@
           <div class="d-table m-auto">
             <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 18em;margin-top: -11px" src="{{ asset('/assets/img/logo_proinco.png') }}" alt="logo cedenar">
             <span class="d-none d-md-inline ml-1 " >
-              <b style='line-height: 63px !important;'>SISTEMA PARA LA GESTIÓN ACADEMICA EN LA ESCUELA CORAZÓN DE MARÍA - FUNDACIÓN PROINCO</b>
+              <b style='line-height: 63px !important;'>SISTEMA PARA LA GESTIÓN ACADEMICA CENTRO EDUCATIVO CORAZÓN DE MARÍA - FUNDACIÓN PROINCO</b>
             </span>
           </div>
         </a>
@@ -16,7 +16,6 @@
               <img class="user-avatar rounded-circle mr-2" src="{{ asset('/assets/img/usuario.svg') }}"   onerror="this.src='{{ asset('/assets/img/usuario.svg') }}">
             </a>
             <div class="dropdown-menu dropdown-menu-small">
-              <a class="dropdown-item" href="#/seccion_datos_contratista"><i class="material-icons">&#xE7FD;</i> Perfil</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item text-danger" href="{{ url('/logout') }}" >
                 <i class="material-icons text-danger">&#xE879;</i> Cerrar Sesión </a>

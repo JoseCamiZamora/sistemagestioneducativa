@@ -135,11 +135,11 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_cursos_configurados/{id_curso?}', 'EvaluacionController@listado_cursos_configurados');
    Route::get('/evaluacion/listado_estudiantes_configurados/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados');
    Route::get('/evaluacion/form_evaluacion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion');
-   Route::get('/evaluacion/form_evaluacion_transicion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion_transicion');
+   Route::get('/evaluacion/form_evaluacion_transicion/{id_estudiante?}', 'EvaluacionController@form_evaluacion_transicion');
    Route::post('/evaluacion/crear_evaluacion_estudiante', 'EvaluacionController@crear_evaluacion_estudiante');
    Route::get('/evaluacion/consultar_evaluacion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion');
-   Route::get('/evaluacion/listado_estudiantes_configurados_t/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados_t');
-   Route::get('/evaluacion/consultar_evaluacion_transicion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion_transicion');
+   Route::get('/evaluacion/listado_estudiantes_configurados_t/{id_curso?}/{id_anio?}', 'EvaluacionController@listado_estudiantes_configurados_t');
+   Route::get('/evaluacion/consultar_evaluacion_transicion/{id_periodo?}/{id_estudiante?}', 'EvaluacionController@consultar_evaluacion_transicion');
    Route::post('/evaluacion/crear_evaluacion_transicion', 'EvaluacionController@crear_evaluacion_transicion');
    Route::get('/evaluacion/listado_estudiantes_evaluar/{id_persona?}/{id_anio?}', 'EvaluacionController@listado_estudiantes_evaluar');
    Route::get('/evaluacion/form_evaluacion_comportamiento/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion_comportamiento');
