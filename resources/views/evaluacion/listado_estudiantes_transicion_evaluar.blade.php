@@ -48,40 +48,36 @@
                   <td class='td-titulo text-center'>
                     @if($estudiante->nota_primer_periodo > 0)
                       @if($estudiante->nota_primer_periodo >= 1.5)
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @elseif($estudiante->nota_primer_periodo > 0)
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
                     @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                     @endif
-
                   </td>
                   <td class='td-titulo text-center'>
                     @if($estudiante->nota_segundo_periodo > 0)
                       @if($estudiante->nota_segundo_periodo >= 1.5)
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @elseif($estudiante->nota_segundo_periodo > 0 )
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
                     @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                     @endif
                   </td>
                   <td class='td-titulo text-center'>
                     @if($estudiante->nota_tercer_periodo > 0)
                       @if($estudiante->nota_tercer_periodo >= 1.5)
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @elseif($estudiante->nota_tercer_periodo > 0)
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
                     @else
-                      <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                      <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                     @endif
                   </td>
-                    @if($estudiante->desempenio == 'Se requiere apoyo')
-                      <td class='td-titulo text-left' style="color: red;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
-                    @endif
                     @if($estudiante->desempenio == 'En proceso')
                       <td class='td-titulo text-left' style="color: #ffb300;font-size: 15px !important;font-weight: bold;">{{$estudiante->desempenio}}</td>
                     @endif
@@ -90,11 +86,9 @@
                     @endif
                   <td class='td-titulo text-center'>
                       @if($estudiante->desempenio == 'Logro alcanzado')
-                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/feliz.svg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @elseif($estudiante->desempenio == 'En proceso')
-                        <img src="{{ asset('/assets/img/neutro.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                      @elseif($estudiante->desempenio == 'Se requiere apoyo')
-                        <img src="{{ asset('/assets/img/triste.svg') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
+                        <img src="{{ asset('/assets/img/neutro3.jpeg') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
                   </td>
                     
