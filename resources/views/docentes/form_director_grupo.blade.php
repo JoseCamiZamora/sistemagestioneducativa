@@ -69,7 +69,7 @@
           </select>
       </div>
       <div class="col-md-2" style="margin-top: 23px;">
-        <button type="button" class="btn btn-primary w-100" id="btnAdd"><i class="fa fa-plus" title="Adicionar el curso" style="margin-top: 10px;margin-left: 8px;">&nbsp;&nbsp;</i>Adicionar Curso </button>
+        <button type="button" class="btn btn-primary w-100" id="btnAdd"><i class="fa fa-plus" title="Adicionar el curso" style="margin-top: 10px;margin-left: 8px;">&nbsp;&nbsp;</i>Adicionar</button>
       </div>
     </div>
  <br>
