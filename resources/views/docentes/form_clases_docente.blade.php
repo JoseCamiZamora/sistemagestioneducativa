@@ -91,7 +91,7 @@
           </div>
       </div>
       <div class="col-md-2" style="margin-top: 32px;">
-        <button type="button" class="btn btn-primary w-100" id="btnAdd"><i class="fa fa-plus" title="Adicionar la clase" style="margin-top: 10px;margin-left: 8px;">&nbsp;&nbsp;</i>Adicionar Clase  </button>
+        <button type="button" class="btn btn-primary w-100" id="btnAdd"><i class="fa fa-plus" title="Adicionar la clase" style="margin-top: 10px;margin-left: 8px;">&nbsp;&nbsp;</i>Adicionar</button>
       </div>
     </div>
 
