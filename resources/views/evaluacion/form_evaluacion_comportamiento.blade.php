@@ -40,7 +40,7 @@
 <form  method="post"  action="adicionar_evaluacion_comportamiento" id="f_adicionar_evaluacion_comportamiento"   >
    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
    <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
-   <input type="hidden" id="id_clase" name="id_clase" value="{{$claseDocente->id}}">
+   <input type="hidden" id="id_clase" name="id_clase" value="">
    <input type="hidden" id="estado" name="estado" value="A"> 
 
    <table border  class='table table-generic table-strech table-font-normal table-hover' >

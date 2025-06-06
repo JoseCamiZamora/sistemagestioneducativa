@@ -267,7 +267,7 @@ class EvaluacionController extends Controller
         $anios = ConfAnios::find($estudiante->id_anio);
         $claseDocente =  ConfClasesDocente::find($idClase);
     
-        $conceptosComportamiento = ConceptosComportamiento::where('id_anio', $claseDocente->id_anio)->where('id_curso',$estudiante->id_curso)->get();
+        $conceptosComportamiento = ConceptosComportamiento::where('id_anio', $anios->id)->where('id_curso',$estudiante->id_curso)->get();
         $periodos = PeriodosClases::all();
 
         return view('evaluacion.form_evaluacion_comportamiento')->with('estudiante',$estudiante)
