@@ -34,9 +34,6 @@
                 @else
                   <th scope="col" class="th-gris text-center " >Evaluar Materias</th>
                 @endif
-                @if($esDocenteTransicion == 'S')
-                <th scope="col" class="th-gris text-center " >Generar Concepto</th>
-                @endif
                 <th scope="col" class="th-gris text-center " >Evaluar Comportamiento</th>
               </tr>
             </thead>
@@ -70,15 +67,6 @@
                       </a>
                     @endif
                   </td>
-                  @if($anio->clasificacion == 1)
-                    <td>
-                      <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/listado_estudiantes_transicion/'.$usuarioactual->id_persona.'/'.$anio->id.'/'.$anio->clasificacion.'') }}" id="subirfile" >
-                        <div class="nav-link-icon__wrapper">
-                          <i class="fa fa-edit" title="Editar Listado de Periodos" style=""></i><br>
-                        </div>
-                      </a>
-                    </td>
-                  @endif
                   @if($anio->esDirectorGrupo == 'S')
                   <td>
                     @if($anio->clasificacion == 1)

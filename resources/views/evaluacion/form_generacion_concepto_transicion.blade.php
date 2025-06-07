@@ -84,44 +84,16 @@
     </div>
     <br>
     <table border  class='table table-generic table-strech table-font-normal table-hover' >
-    <thead>
-      <tr>
-        @foreach($lstMaterias as $materia)
-        <th style="font-size: 12px; text-align: center;" >{{$materia->nombre}}</th>
-        @endforeach
-        <th style="text-align: center;">Nota Final</th>
-        <th >Desempeño</th>
-        <th style="text-align: center;">Concepto</th>
-      </tr>
-    </thead>
-    <tbody id="tablaDatos">
-      <tr>
-        @foreach($lstMaterias as $tipo)
-        <td  class="limitado" data-id="{{ $tipo->id }}"  style="text-align: center;">
-        </td>
-        @endforeach
-        <td class="nota-final" style="text-align: center;">
-        </td>
-        <td class="desempeno" style="color:rgb(3, 3, 3);font-size: 15px !important;font-weight: bold;"></td>
-        <td >
-          <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="adicionarConceptoTransicion()" id="subirfile" >
-            <div class="nav-link-icon__wrapper">
-              <i class="fa fa-plus" title="Generar Concepto Evaluacion" style=""></i><br>
-            </div>
-          </a>
-        </td>
-      </tr>
-    </tbody>
     <tbody id="tablaDatos2">
       <tr>
         <td colspan="10">
-          <textarea id="conceptos" name="conceptos" rows="4" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
+          <textarea id="conceptos" name="conceptos" rows="5" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
         </td>
       </tr>
     </tbody>
     </table>
     <div class="form-row col-md-12 mt-2  text-center">
-      <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
+      <button type="submit" id="btn_actualizar" class="btn btn-accent text-center" >Guardar Información Observación</button>
     </div>
     <div class="row" style="margin-top:-10px;">
 </div>

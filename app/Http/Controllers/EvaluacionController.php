@@ -927,75 +927,25 @@ class EvaluacionController extends Controller
     public function consultar_evaluacion_materias_transicion($idPeriodo=null, $id_estudiante=null){
         
         $estudiante = EstudiantesCurso::find($id_estudiante);
-        $lstMaterias = Materias::where("tipo_curso", 1)->get();
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
 
-        $evaluacionesFinales = NotaFinalEstudiante::all();
-        $estudianteFiltro = $estudiante->id_estudiante;
-        $anioFiltro = $estudiante->id_anio;
-        $cursoFiltro = $estudiante->id_curso;
-    
-        $filtrados = array_filter($evaluacionesFinales->toArray(), function($item) use ($estudianteFiltro, $anioFiltro, $cursoFiltro) {
-            return $item['id_estudiante'] == $estudianteFiltro &&
-                    $item['id_anio'] == $anioFiltro &&
-                    $item['id_grado'] == $cursoFiltro ;
-        });
-
-       
-
-        $actividadArray = array();
-        foreach ($lstMaterias as $materia) {
-            $materiaFiltro = $materia->id;
-           
-            $filtradosMateria = array_filter($filtrados, function($item) use ($materiaFiltro) {
-                return $item['id_materia'] == $materiaFiltro;
-            });
-           
-            $elemento = reset($filtradosMateria);
-             
-            $notaPeriodo = 0;
-            if($elemento != null){
-                if($idPeriodo == 1){
-                    $notaPeriodo = $elemento['nota_periodo_uno'];
-                }elseif($idPeriodo == 2){
-                    $notaPeriodo = $elemento['nota_periodo_dos'];
-                }else{
-                    $notaPeriodo = $elemento['nota_periodo_tres'];
-                }
+        $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_grado",$estudiante->id_curso)->where("id_docente",$docente->id)->first();
+        if($notaFinalEstudiante != null){
+            if($idPeriodo == 1){
+                $textoConcepto = $notaFinalEstudiante->concepto_per1;
+                $textoNota = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0);
+            }elseif($idPeriodo == 2){
+                 $textoConcepto = $notaFinalEstudiante->concepto_per2;
+                  $textoNota = floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0);
             }else{
-                $notaPeriodo = 0;
+                $textoConcepto = $notaFinalEstudiante->concepto_per3;
+                 $textoNota = floatval(isset($notaFinalEstudiante->nota_periodo_tres) ? $notaFinalEstudiante->nota_periodo_tres : 0);
             }
-            $newarrayActividad = array(
-                "id" => $materia->id,
-                "nombre" => $materia->nombre,
-                "nota" =>$notaPeriodo
-            );
-            array_push($actividadArray, $newarrayActividad);
-        }
-        $concepto = ConceptoFinalTransicion::where('id_estudiante',$estudiante->id)->where('id_anio',$estudiante->id_anio)->where('id_periodo',$idPeriodo)->first();
-         $textoConcepto = "";
-        if($concepto != null){
-            $textoConcepto = $concepto->concepto;
-        }
-        $notas = $actividadArray;
-        $total = 0;
-        $cantidad = count($actividadArray); // reemplaza $tuArray por el nombre de tu variable
-
-        foreach ($actividadArray as $item) {
-            $total += floatval($item['nota']); // asegúrate de convertir a número
-        }
-      
-        $promedio = $cantidad > 0 ? $total / $cantidad : 0;
-        $notaFinal = round($promedio,2);
-        $desempenio = "";
-        if ($notaFinal >= 1.5) {
-            $desempenio = 'Logro Alcanzado';
-        } elseif ($notaFinal > 0) {
-            $desempenio = 'Logro En Proceso';
-        } else {
-            $desempenio = '';
         }
 
-        return response()->json([ 'notas' => $notas,'nota_final' => $notaFinal, 'desempenio' => $desempenio,'textoConcepto' => $textoConcepto],200);
+        return response()->json(['textoConcepto' => $textoConcepto, 'textoNota' =>  $textoNota],200);
 
     }
 
@@ -1003,29 +953,19 @@ class EvaluacionController extends Controller
         
         $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
         $periodo = PeriodosClases::find($request->input('periodo'));
-        $filas = $request->input('filas');
-        $desempeno = $filas[0]['desempeno'];
         $usuarioactual = Auth::user();
         $docente = Docentes::find($usuarioactual->id_persona);
-        
-        $concepto = ConceptoFinalTransicion::where('id_estudiante',$estudiante->id)->where('id_anio',$estudiante->id_anio)->where('id_periodo',$periodo->id)->first();
-        if ($concepto) {
-            $concepto->concepto = $request->input('conceptos')?$request->input('conceptos'):"";
-            $concepto->desempenio = $desempeno;
-        }else{
-            $concepto = new ConceptoFinalTransicion();
-            $concepto->id_anio = $estudiante->id_anio;
-            $concepto->nom_anio = $estudiante->desc_anio;
-            $concepto->id_estudiante = $estudiante->id_estudiante;
-            $concepto->nom_estudiante = $estudiante->nombre_estudiante;
-            $concepto->desempenio = $desempeno;
-            $concepto->concepto = $request->input('conceptos')?$request->input('conceptos'):"";
-            $concepto->id_periodo = $periodo->id;
-            $concepto->nom_periodo = $periodo->nombre;
-            $concepto->id_docente = $docente->id;
-            $concepto->nom_docente = $docente->nom_completo;
-        }
 
+        $concepto = NotaFinalTransicion::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_grado",$estudiante->id_curso)->where("id_docente",$docente->id)->first();
+        if($periodo->id == 1){
+            $concepto->concepto_per1 = $request->input('conceptos')?$request->input('conceptos'):"";
+        }elseif($periodo->id == 2){
+            $concepto->concepto_per2 = $request->input('conceptos')?$request->input('conceptos'):"";
+        }else{
+            $concepto->concepto_per3 = $request->input('conceptos')?$request->input('conceptos'):"";
+        }
+        
         if($concepto->save()){
             return view("evaluacion.mensajes.msj_confirmacion")->with("msj","El concepto fue almacenado exitosamente");
         }else{

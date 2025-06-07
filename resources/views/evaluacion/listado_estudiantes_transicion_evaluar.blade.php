@@ -36,6 +36,7 @@
                 <th scope="col" class="th-gris text-left" >Desenpeño</th>
                 <th scope="col" class="th-gris text-center" >Nota Final</th>
                 <th scope="col" class="th-gris text-center " >Evaluar</th>
+                <th scope="col" class="th-gris text-center " >Observaciónes</th>
               </tr>
             </thead>
             <tbody>
@@ -96,6 +97,13 @@
                   <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="evaluarEstudianteTransicion({{$estudiante->id}})" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-list" title="Evaluar estudiante" style=""></i><br>
+                      </div>
+                    </a>
+                  </td>
+                  <td>
+                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="generarConceptoTransicion({{$estudiante->id}})" id="subirfile" >
+                      <div class="nav-link-icon__wrapper">
+                        <i class="fa fa-edit" title="Adicionar Observaciones de la evaluación" style=""></i><br>
                       </div>
                     </a>
                   </td>

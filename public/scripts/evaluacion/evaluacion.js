@@ -490,45 +490,25 @@ function validarNotasMateriasTransicion(idPeriodo){
   $.ajax({
     url: miurl
     }).done( function(resul){
-      // Asumiendo que resul es un solo objeto, no un array de filas
-   
-    const fila = $('#tablaDatos tr').first(); // O selecciona correctamente según tu estructura
-
-    $(fila).find('.limitado').each(function(_, celda) {
-      const tipoId = $(celda).data('id');
-      const notaObj = resul.notas.find(n => n.id == tipoId);
-      if (notaObj) {
-         let imagenHtml = '';
-        if(notaObj.nota >= 1.5){
-          imagenHtml = `<img src="${rutaFeliz}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">`;
-        }else if(notaObj.nota > 0 ){
-          imagenHtml = `<img src="${rutaNeutro}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">`;
+      if(resul.textoNota > 0){
+        if(resul.textoConcepto != ""){
+          document.getElementById("conceptos").value = resul.textoConcepto;
+        }else{
+          document.getElementById("conceptos").value = "";
         }
-        $(celda).html(imagenHtml);
-      } else {
-         $(celda).html('');
+        document.getElementById('btn_actualizar').disabled = false;
+      }else{
+        swal({
+          title: "Advertencia",
+          text: "EL estudiante no ha sido evaluado en este periodo. Por favor, evalúe al estudiante.",
+          type: "warning"
+        },function (isConfirm) {  $(".preloader").hide();  });
+          document.getElementById("conceptos").value = "";
+        document.getElementById('btn_actualizar').disabled = true;
+        return;
       }
-    });
-
-    // Pintar nota final
-    let imagenHtmlFinal = '';
-    if(resul.nota_final >= 1.5 ){
-        imagenHtmlFinal = `<img src="${rutaFeliz}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">`;
-    }else if(resul.nota_final > 0){
-        imagenHtmlFinal = `<img src="${rutaNeutro}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">`;
-    }
-    $(fila).find('.nota-final').html(imagenHtmlFinal);
-
-    // Pintar desempeño
-    $(fila).find('.desempeno').text(resul.desempenio || '');
-    if(resul.textoConcepto != ""){
-      document.getElementById("conceptos").value = resul.textoConcepto;
-    }else{
-      document.getElementById("conceptos").value = "";
-    }
-    
-
-    $('.preloader').fadeOut();
+     
+      $('.preloader').fadeOut();
    
     }).fail( function() 
    {
@@ -573,32 +553,6 @@ $(document).on("submit", "#f_adicionar_concepto_transicion", function(e) {
     var urlraiz = $("#url_raiz_proyecto").val();
     var varurl = urlraiz + "/evaluacion/crear_concepto_transicion";
 
-    formu.find('.input-dinamico').remove();
-    $('#tablaDatos tr').each(function(index, fila) {
-      const notasArray = [];
-      $(fila).find('.limitado').each(function(i, celda) {
-        const id = $(celda).data('id');
-        const valor = parseFloat($(celda).text()) || 0;
-        notasArray.push({ id: id, value: valor });
-      });
-
-      // Convertir el array en JSON para enviarlo
-      $('<input>').attr({
-        type: 'hidden',
-        name: `filas[${index}][notas]`,
-        value: JSON.stringify(notasArray),
-        class: 'input-dinamico'
-      }).appendTo(formu);
-    // Adjuntar desempeño
-      const desempeno = $(fila).find('.desempeno').text();
-      $('<input>').attr({
-        type: 'hidden',
-        name: `filas[${index}][desempeno]`,
-        value: desempeno,
-        class: 'input-dinamico'
-      }).appendTo(formu);
-    });
-
     // Enviar AJAX
     $.ajax({
       url: varurl,
@@ -614,7 +568,7 @@ $(document).on("submit", "#f_adicionar_concepto_transicion", function(e) {
       SU_revise_conexion();
     });
   }else{
-     toastr.warning('Antes de almacenar el registro de debe generar el concepto de la evaluación', '¡Advertencia!');
+     toastr.warning('Antes de almacenar el registro de debe adicionar una observación sobre la evaluación del estudiante', '¡Advertencia!');
      e.preventDefault();
     $('.preloader').fadeOut();
   }
