@@ -943,6 +943,9 @@ class EvaluacionController extends Controller
                 $textoConcepto = $notaFinalEstudiante->concepto_per3;
                  $textoNota = floatval(isset($notaFinalEstudiante->nota_periodo_tres) ? $notaFinalEstudiante->nota_periodo_tres : 0);
             }
+        }else{
+            $textoConcepto = null;
+            $textoNota = 0;
         }
 
         return response()->json(['textoConcepto' => $textoConcepto, 'textoNota' =>  $textoNota],200);
@@ -965,7 +968,7 @@ class EvaluacionController extends Controller
         }else{
             $concepto->concepto_per3 = $request->input('conceptos')?$request->input('conceptos'):"";
         }
-        
+
         if($concepto->save()){
             return view("evaluacion.mensajes.msj_confirmacion")->with("msj","El concepto fue almacenado exitosamente");
         }else{
