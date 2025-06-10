@@ -1,5 +1,5 @@
 function generarReportePorPeriodo() {
-  debugger;
+
   var idCurso = $('#curso').val();
   var idAnio = $('#anio').val();
   var idPeriodo = $('#periodo').val();
