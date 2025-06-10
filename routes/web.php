@@ -69,10 +69,6 @@ Route::group(['middleware' => 'auth'], function () {
    Route::post('/docentes/adicionar_director_grupo', 'DocentesController@adicionar_director_grupo');
    Route::get('/docentes/borrar_director_grupo/{id_docente}', 'DocentesController@borrar_director_grupo');
    
-
-   
-   
-
    // Rutas Configuracion
 
    Route::get('/configuracion/index_configuracion', 'ConfiguracionController@index_configuracion');
@@ -118,7 +114,6 @@ Route::group(['middleware' => 'auth'], function () {
    Route::post('/configuracion/editar_clasificacion', 'ConfiguracionController@editar_clasificacion');
    Route::get('/configuracion/borrar_clasificacion/{idClasificacion?}', 'ConfiguracionController@borrar_clasificacion');
 
-
    Route::get('/configuracion/listado_docentes', 'ConfiguracionController@listado_docentes');
    Route::get('/configuracion/listado_estudiantes', 'ConfiguracionController@listado_estudiantes');
    Route::get('/configuracion/frm_asociar_curso/{idEstudiante?}', 'ConfiguracionController@frm_asociar_curso');
@@ -128,6 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/configuracion/listado_docentes', 'ConfiguracionController@listado_docentes');
    Route::get('/configuracion/consultar_lista_director_grupo/{idDocente?}/{idAnio?}', 'ConfiguracionController@consultar_lista_director_grupo');
 
+
+   // Rutas Evaluacion
 
    Route::get('/evaluacion/listado_anios_evaluacion', 'EvaluacionController@listado_anios_evaluacion');
    Route::get('/evaluacion/listado_periodos_evaluar/{id_anio?}', 'EvaluacionController@listado_periodos_evaluar');
@@ -152,6 +149,13 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_estudiantes_evaluar_transicion/{id_persona?}/{id_anio?}', 'EvaluacionController@listado_estudiantes_evaluar_transicion');
    Route::get('/evaluacion/form_evaluacion_comportamiento_transicion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion_comportamiento_transicion');
    Route::post('/evaluacion/crear_evaluacion_comportamiento_transicion', 'EvaluacionController@crear_evaluacion_comportamiento_transicion');
+
+
+   // Rutas Inforermes
+
+   Route::get('/informes/index_reportes', 'InformesController@index_reportes');
+   Route::get('/informes/form_generar_reporte_notas', 'InformesController@form_generar_reporte_notas');
+   Route::get('/informes/pdf_infomre_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo');
    
 });
 

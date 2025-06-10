@@ -45,10 +45,12 @@ return [
     
     'pdf' => [
         'enabled' => true,
-        'binary'  => env('WKHTML_PDF_BINARY', '/usr/local/bin/wkhtmltopdf'),
-        'timeout' => false,
-        'options' => [],
-        'env'     => [],
+        'binary' => '"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe"', // <-- comillas dentro del string
+        'options' => [
+            'encoding' => 'UTF-8',
+            'enable-local-file-access' => true,
+            'lowquality' => true
+        ],
     ],
 
 

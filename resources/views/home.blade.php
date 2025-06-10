@@ -75,7 +75,7 @@
            
                 <a href="{{ url('/configuracion/index_configuracion') }}" style='width: 100%'>
             
-                <img src="{{ asset('/assets/img/informes.svg') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+                <img src="{{ asset('/assets/img/settings.svg') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
               
                 <h4 style='margin-bottom: 1px;' >Configuración</h4>
                 <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración del sistema</span>
@@ -107,7 +107,7 @@
           <div class="card-body px-0 pb-0" >
            <div class="d-flex px-3 text-center">
            
-                <a href="{{ url('/configuracion/index_configuracion') }}" style='width: 100%'>
+                <a href="{{ url('/informes/index_reportes') }}" style='width: 100%'>
             
                 <img src="{{ asset('/assets/img/informes.svg') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
               
