@@ -264,16 +264,20 @@ class InformesController extends Controller
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         
-      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
+      $pdf = /Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
             'anio'           => $anio,
             'fechaReporte'   => $fechaReporte
-      ]);
-        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
-        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+        ])
+        ->setOption('encoding', 'UTF-8')
+        ->setOption('margin-top', 45)
+        ->setOption('header-html', view('informes.pdf.header')->render())
+        ->setOption('margin-bottom', 20)
+        ->setOption('enable-local-file-access', true)
+        ->setOption('footer-html', view('informes.pdf.footer')->render());
 
         $filename = 'boletin_periodo_' . time() . '.pdf';
         $path = public_path('pdf/' . $filename);

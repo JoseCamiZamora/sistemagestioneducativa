@@ -28,7 +28,7 @@
   <table border  class='table table-generic table-strech table-font-normal table-hover' >
       <thead class="bg-light">
         <TR>
-          <TD ALIGN=center ROWSPAN=4 COLSPAN=1 style="width: 120px"> <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width:6em;margin-top: 0px" 
+          <TD ALIGN=center ROWSPAN=4 COLSPAN=1 style="width: 120px"> <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width:4em;margin-top: 0px" 
             src="{{ asset('/assets/img/proinco1.png') }}" alt="logo proinco"></TD>
           <TD style="text-align: center; " ROWSPAN=2 COLSPAN=1>FUNDACION PROINCO </TD>
           <TD style="text-align: center">CÓDIGO </TD>
@@ -45,7 +45,5 @@
             <TD style="text-align: center"> 23/01/2025</TD>
         </TR>
       </thead>
-  </table>
-  <table border  class='table table-generic table-strech table-font-normal table-hover' >
   </table>
 </html>
