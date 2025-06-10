@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <div class="reporte-box">
+  <div class="reporte-box" style="display: none;">
     <h3>Generar Reporte Individual por Estudiante</h3>
     <div class="form-row col-md-12 mt-2">
       <div class="col-md-2">
@@ -130,7 +130,7 @@
       </div>
     </div>
   </div>
-  <div class="reporte-box">
+  <div class="reporte-box" style="display: none;">
     <h3>Generar Reporte por curso final</h3>
     <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
