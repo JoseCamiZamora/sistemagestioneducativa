@@ -21,7 +21,7 @@
     <div class="row">
 
  @if($usuario_actual->rol == 1)
-    <div class="col-12 col-md-6 col-lg-3 mb-4">
+    <div class="col-12 col-md-6 col-lg-3 mb-4" style="display: none;">
       <div class="stats-small card card-small">
         <div class="card-body px-0 pb-0" >
           <div class="d-flex px-3 text-center">
