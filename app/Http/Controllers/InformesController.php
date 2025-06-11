@@ -108,11 +108,11 @@ class InformesController extends Controller
             if (!empty($comportamiento)) {
                 if ($idPeriodo == 1) {
 
-                    if ( $item['nota_periodo_uno'] >= 5) {
+                    if ( $item['nota_periodo_uno'] >= 4.6) {
                         $desempenio1 = 'Superior';
-                    } elseif ( $item['nota_periodo_uno'] >= 4.5) {
+                    } elseif ( $item['nota_periodo_uno'] >= 4.0) {
                         $desempenio1 = 'Alto';
-                    } elseif ( $item['nota_periodo_uno'] >= 3.9) {
+                    } elseif ( $item['nota_periodo_uno'] >= 3.0) {
                         $desempenio1 = 'Básico';
                     } else {
                         $desempenio1 = 'Bajo';
@@ -124,11 +124,11 @@ class InformesController extends Controller
                         'desempenio' => $desempenio1
                     ];
                 } elseif ($idPeriodo == 2) {
-                    if ( $item['nota_periodo_dos'] >= 5) {
+                    if ( $item['nota_periodo_dos'] >= 4.6) {
                         $desempenio2 = 'Superior';
-                    } elseif ( $item['nota_periodo_dos'] >= 4.5) {
+                    } elseif ( $item['nota_periodo_dos'] >= 4.0) {
                         $desempenio2 = 'Alto';
-                    } elseif ( $item['nota_periodo_dos'] >= 3.9) {
+                    } elseif ( $item['nota_periodo_dos'] >= 3.0) {
                         $desempenio2 = 'Básico';
                     } else {
                         $desempenio2 = 'Bajo';
@@ -140,11 +140,11 @@ class InformesController extends Controller
                     ];
                 } else {
                     
-                    if ( $item['nota_periodo_tres'] >= 5) {
+                    if ( $item['nota_periodo_tres'] >= 4.6) {
                         $desempenio3 = 'Superior';
-                    } elseif ( $item['nota_periodo_tres'] >= 4.5) {
+                    } elseif ( $item['nota_periodo_tres'] >= 4.0) {
                         $desempenio3 = 'Alto';
-                    } elseif ( $item['nota_periodo_tres'] >= 3.9) {
+                    } elseif ( $item['nota_periodo_tres'] >= 3.0) {
                         $desempenio3 = 'Básico';
                     } else {
                         $desempenio3 = 'Bajo';
@@ -187,11 +187,11 @@ class InformesController extends Controller
 
             // Determinar el periodo y sus datos
             if($idPeriodo == 1){
-                if ( $item['nota_periodo_uno'] >= 5) {
+                if ( $item['nota_periodo_uno'] >= 4.6) {
                     $desempenio1 = 'Superior';
-                } elseif ( $item['nota_periodo_uno'] >= 4.5) {
+                } elseif ( $item['nota_periodo_uno'] >= 4.0) {
                     $desempenio1 = 'Alto';
-                } elseif ( $item['nota_periodo_uno'] >= 3.9) {
+                } elseif ( $item['nota_periodo_uno'] >= 3.0) {
                     $desempenio1 = 'Básico';
                 } else {
                     $desempenio1 = 'Bajo';
@@ -202,11 +202,11 @@ class InformesController extends Controller
                 ];
 
             }elseif($idPeriodo == 2){
-                if ( $item['nota_periodo_dos'] >= 5) {
+                if ( $item['nota_periodo_dos'] >= 4.6) {
                     $desempenio2 = 'Superior';
-                } elseif ( $item['nota_periodo_dos'] >= 4.5) {
+                } elseif ( $item['nota_periodo_dos'] >= 4.0) {
                     $desempenio2 = 'Alto';
-                } elseif ( $item['nota_periodo_dos'] >= 3.9) {
+                } elseif ( $item['nota_periodo_dos'] >= 3.0) {
                     $desempenio2 = 'Básico';
                 } else {
                     $desempenio2 = 'Bajo';
@@ -218,11 +218,11 @@ class InformesController extends Controller
 
             }else{
 
-                if ( $item['nota_periodo_tres'] >= 5) {
+                if ( $item['nota_periodo_tres'] >= 4.6) {
                     $desempenio3 = 'Superior';
-                } elseif ( $item['nota_periodo_tres'] >= 4.5) {
+                } elseif ( $item['nota_periodo_tres'] >= 4.0) {
                     $desempenio3 = 'Alto';
-                } elseif ( $item['nota_periodo_tres'] >= 3.9) {
+                } elseif ( $item['nota_periodo_tres'] >= 3.0) {
                     $desempenio3 = 'Básico';
                 } else {
                     $desempenio3 = 'Bajo';
