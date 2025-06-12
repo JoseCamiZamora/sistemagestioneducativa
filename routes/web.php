@@ -156,6 +156,8 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/informes/index_reportes', 'InformesController@index_reportes');
    Route::get('/informes/form_generar_reporte_notas', 'InformesController@form_generar_reporte_notas');
    Route::get('/informes/pdf_infomre_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo');
+   Route::get('/informes/pdf_infomre_periodo_transicion/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_transicion');
+   
    
 });
 

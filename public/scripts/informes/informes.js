@@ -19,11 +19,17 @@ function generarReportePorPeriodo() {
     toastr.warning('Antes de generar el reporte debes seleccionar el periodo', 'Atención');
     return;
   }
+  var rutaUrl = '';
+  if(idCurso == 1){
+    rutaUrl = "pdf_infomre_periodo_transicion"
+  }else{
+    rutaUrl = "pdf_infomre_periodo";
+  }
 
   if(todoCompleto){
   $('.preloader').fadeIn();
     var urlraiz = $("#url_raiz_proyecto").val();
-    var miurl = urlraiz + "/informes/pdf_infomre_periodo/" + idCurso + "/" + idAnio + "/" + idPeriodo;
+    var miurl = urlraiz + "/informes/"+rutaUrl+"/" + idCurso + "/" + idAnio + "/" + idPeriodo;
 
     $.ajax({
       url: miurl,

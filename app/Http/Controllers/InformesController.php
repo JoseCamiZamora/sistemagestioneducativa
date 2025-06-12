@@ -18,6 +18,8 @@ use App\PeriodosClases;
 use App\EstudiantesCurso;
 use App\NotaFinalEstudiante;
 use App\EvaluacionComportamiento;
+use App\EvaluacionTransicion;
+use App\NotaFinalTransicion;
 
 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -284,4 +286,193 @@ class InformesController extends Controller
         // 📤 Retornar la URL del archivo para abrirlo o descargarlo
         return response()->json(['url' => asset('pdf/' . $filename)]);
     }
+
+    public function pdf_infomre_periodo_transicion($idCurso=null,$idAnio=null,$idPeriodo=null){
+
+        $evaluaciones = EvaluacionTransicion::where("id_anio",$idAnio)->where("id_periodo",$idPeriodo)->get();
+        $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
+        $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
+        $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $grado = Grados::find($idCurso);
+        $periodoClases = PeriodosClases::find($idPeriodo);
+        $anio = ConfAnios::find($idAnio);
+
+        $reporte = [];
+        foreach ($evaluaciones as $item) {
+            $idEstudiante = $item['id_estudiante'];
+
+             $comportamiento = array_values(array_filter($evaluacionComportamiento->toArray(), function($itemComp) use ($idEstudiante) {
+                return $itemComp['id_estudiante'] == $idEstudiante;
+            }));
+
+             $periodosComp = [];
+            if (!empty($comportamiento)) {
+                if ($idPeriodo == 1) {
+
+                    if ( $item['nota_periodo_uno'] = 3) {
+                        $desempenio1 = 'Alto';
+                    } elseif ( $item['nota_periodo_uno'] == 2) {
+                        $desempenio1 = 'Medio';
+                    } else {
+                        $desempenio1 = 'Bajo';
+                    }
+
+                    $periodosComp = [
+                        'nota' => $comportamiento[0]['nota_periodo_uno'],
+                        'concepto' => $comportamiento[0]['concepto_per1'],
+                        'desempenio' => $desempenio1
+                    ];
+                } elseif ($idPeriodo == 2) {
+                    
+                    if ( $item['nota_periodo_dos'] = 3) {
+                        $desempenio2 = 'Alto';
+                    } elseif ( $item['nota_periodo_dos'] == 2) {
+                        $desempenio2 = 'Medio';
+                    } else {
+                        $desempenio2 = 'Bajo';
+                    }
+                    $periodosComp = [
+                        'nota' => $comportamiento[0]['nota_periodo_dos'],
+                        'concepto' => $comportamiento[0]['concepto_per2'],
+                        'desempenio' => $desempenio2
+                    ];
+                } else {
+
+                    if ( $item['nota_periodo_tres'] = 3) {
+                        $desempenio3 = 'Alto';
+                    } elseif ( $item['nota_periodo_tres'] == 2) {
+                        $desempenio3 = 'Medio';
+                    } else {
+                        $desempenio3 = 'Bajo';
+                    }
+
+                    $periodosComp = [
+                        'nota' => $comportamiento[0]['nota_periodo_tres'],
+                        'concepto' => $comportamiento[0]['concepto_per3'],
+                        'desempenio' => $desempenio3
+                    ];
+                }
+            }
+            
+            $notaFinal = array_values(array_filter($notaFinalEstudiante->toArray(), function($itemComp) use ($idEstudiante) {
+                return $itemComp['id_estudiante'] == $idEstudiante;
+            }));
+            $constLogroAlcanzado = "LOGRO ALCANZADO";
+            $constLogroPorceso = "LOGRO EN PROCESO";
+            $conceptoFinal = "";
+            $desempenioFinal = "";
+            if(!empty($notaFinal)){
+                if ($idPeriodo == 1) {
+                    $desempenioFinal = $notaFinal[0]['concepto_per1'];
+                    if(intval($notaFinal[0]['nota_periodo_uno']) >= 1.5){
+                        $conceptoFinal = $constLogroAlcanzado;
+                    }else{
+                        $conceptoFinal = $constLogroPorceso;
+                    }
+                } elseif ($idPeriodo == 2) {
+                   $desempenioFinal = $notaFinal[0]['concepto_per2'];
+                    if(intval($notaFinal[0]['nota_periodo_uno']) >= 1.5){
+                        $conceptoFinal = $constLogroAlcanzado;
+                    }else{
+                        $conceptoFinal = $constLogroPorceso;
+                    }
+
+                } else {
+                   $desempenioFinal = $notaFinal[0]['concepto_per3'];
+                    if(intval($notaFinal[0]['nota_periodo_uno']) >= 1.5){
+                        $conceptoFinal = $constLogroAlcanzado;
+                    }else{
+                        $conceptoFinal = $constLogroPorceso;
+                    }
+                }
+            }
+
+            // ✅ Inicializar el estudiante si aún no está
+            if (!isset($reporte[$idEstudiante])) {
+                $reporte[$idEstudiante] = [
+                    'data_estudiante' => [
+                        'id_estudiante'  => $item['id_estudiante'],
+                        'nom_estudiante' => $item['nom_estudiante'],
+                        'anio'           => $item['des_anio'],
+                        'concepto_final' => $conceptoFinal,
+                        'desempenio_final' => $desempenioFinal
+                    ],
+                    'data_comportamiento' => !empty($periodosComp) ? [
+                        'nom_materia'       => 'COMPORTAMIENTO',
+                        'periodo'           => $idPeriodo,
+                        'nota'              => $periodosComp['nota'],
+                        'concepto'          => $periodosComp['concepto'],
+                        'desempenio'        => $periodosComp['desempenio'],
+                    ] : null,
+                    'data_materia' => []
+                ];
+            }
+
+            if ($item->json_evaluaciones != null) {
+                $evaluacionesTransicion = json_decode($item->json_evaluaciones, true);
+                
+                $agrupado = [];
+
+                foreach ($evaluacionesTransicion as $itemEva) {
+                    $dim = $itemEva['dimencion'];
+
+                    if (!isset($agrupado[$dim])) {
+                        $agrupado[$dim] = [
+                            'dimencion'     => $dim,
+                            'id_dimencion'  => $itemEva['id_dimencion'],
+                            'items'         => []
+                        ];
+                    }
+
+                    $agrupado[$dim]['items'][] = [
+                        'dimencion'     => $itemEva['id'],
+                        'nom_dimencion'  => $itemEva['nombre'],
+                        'nota' => intval($itemEva['nota'])
+                    ];
+                }
+
+                // Convertir a array indexado para guardar en data_materia
+                foreach ($agrupado as $dimData) {
+                    $reporte[$idEstudiante]['data_materia'][] = $dimData;
+                }
+            }
+
+        }
+        //dd($reporte);
+         // Reindexar por si lo necesitas como array plano:
+        $reporte = array_values($reporte);
+
+        setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
+        Carbon::setLocale('es'); // Para métodos de Carbon
+
+        $fecha = Carbon::now();
+        // Mes (ej: junio)
+        $mes = $fecha->translatedFormat('F');
+        $diaNumero = $fecha->day;
+
+        $fechaReporte = strtoupper($mes).' '.$diaNumero;
+        
+      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_transicion', [
+            'docente'        => $docente,
+            'reporte'        => $reporte,
+            'grado'          => $grado,
+            'periodoClases'  => $periodoClases,
+            'anio'           => $anio,
+            'fechaReporte'   => $fechaReporte
+      ]);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+
+        $filename = 'boletin_periodo_' . time() . '.pdf';
+        $path = public_path('pdf/' . $filename);
+
+        // 💾 Guardar el archivo
+        $pdf->save($path);
+
+        // 📤 Retornar la URL del archivo para abrirlo o descargarlo
+        return response()->json(['url' => asset('pdf/' . $filename)]);
+
+    }
+
+    
 }
