@@ -95,6 +95,8 @@
     <h3 style="color: #649dd0;"><strong>SUS DERECHOS, NUESTROS DEBERES</strong></h3>
   </div>
   <div class="content" >
+    
+    @foreach($reporte as $boletin)
     <table class="tabla-interpre table table-generic table-strech table-font-normal table-hover" style="margin: 7 auto;">
       <tr>
         <th colspan="2">INTERPRETACIÓN</th>
@@ -109,7 +111,6 @@
         <td ><img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'"></td>
       </tr>
     </table>
-    @foreach($reporte as $boletin)
     <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 8px;" >
       <thead>
         <tr>
