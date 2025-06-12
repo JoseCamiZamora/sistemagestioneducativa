@@ -289,6 +289,7 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo_transicion($idCurso=null,$idAnio=null,$idPeriodo=null){
 
+        ini_set('memory_limit', '812M');
         $evaluaciones = EvaluacionTransicion::where("id_anio",$idAnio)->where("id_periodo",$idPeriodo)->get();
         $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
