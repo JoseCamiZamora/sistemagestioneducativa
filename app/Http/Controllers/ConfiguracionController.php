@@ -361,7 +361,6 @@ class ConfiguracionController extends Controller
     public function crear_actividad(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $actividad = new ConfEvaluaciones();
         
         $actividad->descripcion= strtoupper($request->input('actividad')?$request->input('actividad'):'');
@@ -386,7 +385,6 @@ class ConfiguracionController extends Controller
 
     public function editar_actividad(Request $request){
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $actividad = ConfEvaluaciones::find($request->input('id_actividad'));
         
         $actividad->descripcion= strtoupper($request->input('actividad')?$request->input('actividad'):'');
@@ -424,7 +422,6 @@ class ConfiguracionController extends Controller
     public function crear_periodo(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $periodo = new PeriodosClases();
         
         $periodo->nombre= strtoupper($request->input('periodo')?$request->input('periodo'):'');
@@ -449,7 +446,6 @@ class ConfiguracionController extends Controller
 
     public function editar_periodo(Request $request){
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $periodo = PeriodosClases::find($request->input('id_periodo'));
         
         $periodo->nombre= strtoupper($request->input('periodo')?$request->input('periodo'):'');
@@ -490,7 +486,6 @@ class ConfiguracionController extends Controller
     public function crear_curso(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $curso = new Grados();
         $idClasificacion = $request->input('tipo')?$request->input('tipo'):'';
         $clasificacion = TipoCursos::find($idClasificacion);
@@ -519,7 +514,6 @@ class ConfiguracionController extends Controller
 
     public function editar_curso(Request $request){
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $curso = Grados::find($request->input('id_curso'));
         $idClasificacion = $request->input('tipo')?$request->input('tipo'):'';
         $clasificacion = TipoCursos::find($idClasificacion);
@@ -599,17 +593,17 @@ class ConfiguracionController extends Controller
     public function  borrar_clasificacion($idClasificacion=null) {
         $clasificacion = TipoCursos::find($idClasificacion);
         $clasificacion->delete();
-        return response()->json([ 'estado' => 'borrada' ],200);  
+        return response()->json([ 'estado' => 'borrada' ],200);
     }
 
     public function  consultar_lista_anios($idDocente=null,$idAnio=null ) {
         $lstAnio = ConfClasesDocente::where("id_docente",$idDocente)->where("id_anio",$idAnio)->get();
-        return response()->json([ 'lstAnio' => $lstAnio ],200);  
+        return response()->json([ 'lstAnio' => $lstAnio ],200);
     }
 
      public function  consultar_lista_director_grupo($idDocente=null,$idAnio=null ) {
         $lstDirector = ConfDirectorGrupo::where("id_docente",$idDocente)->where("id_anio",$idAnio)->get();
-        return response()->json([ 'lstDirector' => $lstDirector ],200);  
+        return response()->json([ 'lstDirector' => $lstDirector ],200);
     }
 
     public function  validar_curso_asociado($idAnio=null,$idCurso=null,$idEstudiante=null ) {
@@ -619,7 +613,7 @@ class ConfiguracionController extends Controller
         }else{
             $estado = false;  
         }
-        return response()->json([ 'estado' => $estado ],200);  
+        return response()->json([ 'estado' => $estado ],200);
     }
 
     public function adicionar_curso_estudiante(Request $request){

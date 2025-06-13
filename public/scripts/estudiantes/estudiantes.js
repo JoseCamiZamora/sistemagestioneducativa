@@ -164,3 +164,69 @@ function FC_cambiar_filtro_grado($idGrado){
   
 
 }
+
+function inactivarEstudiante(idEstudiante){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea inactivar el estudiante..!",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/estudiantes/inactivarEstudiante/"+idEstudiante+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="OK"){  location.reload();  }
+        toastr.success('El estudiante fue inactivado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function activarEstudiante(idEstudiante){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea activar el estudiante..!",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/estudiantes/activarEstudiante/"+idEstudiante+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="OK"){  location.reload();  }
+        toastr.success('El estudiante fue activado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+
+
+

@@ -481,12 +481,21 @@ class EstudiantesController extends Controller
 
         if($estudiante->save()){
             $estudiantesCurso = EstudiantesCurso::all();
-            foreach ($estudiantesCurso as $estudiante) {
-                if($estudiante->id_estudiante == $estudiante->id){
-                    $estudiantesCurso->nombre_estudiante = $estudiante->primer_nombre." ". $estudiante->segundo_nombre." ".$estudiante->primer_apellido." ".$estudiante->segundo_apellido;
+
+            foreach ($estudiantesCurso as $estu) {
+                if ($estu->id_estudiante == $estudiante->id) {
+                    $estudiantesCursoActualizar = EstudiantesCurso::find($estu->id_estudiante);
+
+                    
+                    $estudiantesCursoActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
+                                                    $estudiante->segundo_nombre . " " .
+                                                    $estudiante->primer_apellido . " " .
+                                                    $estudiante->segundo_apellido;
+                    //dd($estudiantesCursoActualizar);
+                    $estudiantesCursoActualizar->save(); // ✅ guardamos el modelo actual
                 }
             }
-            $estudiantesCurso->save();
+           
             return view("estudiantes.mensajes.msj_actualziado")->with("msj","Estudiante fue actualizado exitosamente")
             										   ->with("estado",$estudiante->estado);
         }else{
@@ -499,6 +508,11 @@ class EstudiantesController extends Controller
 
         $usuario_actual=Auth::user();
         $dato=$request->input("dato_buscado");
+        $estado=$request->input("estado");
+        $filtro = 'I';
+        $grados = Grados::all();
+        $anios = ConfAnios::all();
+
         $lstEstudiantes=Estudiantes::where("identificacion","like","%".$dato."%")
                   ->orWhere("primer_nombre","like","%".$dato."%")
                   ->orWhere("segundo_nombre","like","%".$dato."%")
@@ -508,8 +522,34 @@ class EstudiantesController extends Controller
                   ->appends(request()->query());
         return view('estudiantes.listado_estudiantes')->with("usuario_actual",$usuario_actual)
                                                 ->with("busqueda",true)
+                                                ->with("estado", $estado)
+                                                ->with("filtro",$filtro)
+                                                ->with("grados",$grados)
+                                                ->with("anios",$anios)
                                                 ->with("lstEstudiantes", $lstEstudiantes);
       }
+
+       public function inactivarEstudiante($id_estudiante= null){
+
+            $estudiante = Estudiantes::find($id_estudiante);
+            $estudiante->estado ='I';
+            $estudianteCurso = EstudiantesCurso::find($id_estudiante);
+            $estudianteCurso->estado = 'I';
+            $estudianteCurso->save();
+            $estudiante->save();
+            return response()->json([ 'estado' => 'OK' ],200);
+       }
+
+       public function activarEstudiante($id_estudiante= null){
+
+            $estudiante = Estudiantes::find($id_estudiante);
+            $estudiante->estado ='A';
+            $estudianteCurso = EstudiantesCurso::find($id_estudiante);
+            $estudianteCurso->estado = 'A';
+            $estudianteCurso->save();
+            $estudiante->save();
+            return response()->json([ 'estado' => 'OK' ],200);
+       }
 
     
 

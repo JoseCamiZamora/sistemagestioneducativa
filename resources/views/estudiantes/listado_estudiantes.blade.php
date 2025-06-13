@@ -40,6 +40,7 @@
                 <input type="text" id='dato_buscadoDBP' name='dato_buscado' required class="form-control" style='background-color: white !important;' placeholder="Buscar estudiante por identificación o nombres y apellidos aquí...." aria-label="Buscar estudiante" aria-describedby="basic-addon2">
                 <input type="hidden" id='busdbp_pagina' name='busdbp_pagina' value='1'  >
                 <input type="hidden" id='busdbp_next' name='busdbp_next' value='0'  >
+                <input type="hidden" id='estado' name='estado' value='{{$estado}}'  >
                 <div class="input-group-append">
                   <button class="btn btn-white" type="submit">Buscar</button>
                   @if(isset($busqueda))
@@ -101,6 +102,11 @@
                 <th scope="col" class="th-gris text-left" >Telefono</th>
                 <th scope="col" class="th-gris text-center " >Info</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
+                @if($estado == 'A')
+                  <th scope="col" class="th-gris text-center " >Inactivar</th>
+                @else
+                  <th scope="col" class="th-gris text-center " >Activar</th>
+                @endif
               </tr>
             </thead>
             <tbody>
@@ -141,7 +147,7 @@
                     <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
                     onclick="verInfoEstidiante({{$estudiante->id}})" role="button" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
-                        <i class="fa fa-eye" title="Editar Insumo" style=""></i><br>
+                        <i class="fa fa-eye" title="Ver ficha tecnica del estudiante" style=""></i><br>
                       </div>
                     </a>
                   </td>
@@ -151,10 +157,27 @@
                       <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
                       onclick="editarEstudiante({{$estudiante->id}},'{{$estudiante->estado}}')" role="button" id="subirfile" >
                         <div class="nav-link-icon__wrapper">
-                          <i class="fa fa-edit" title="Editar Insumo" style=""></i><br>
+                          <i class="fa fa-edit" title="Editar Estudiante" style=""></i><br>
                         </div>
                       </a>
                      @endif
+                  </td>
+                  <td>
+                    @if($estado == 'A')
+                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
+                      onclick="inactivarEstudiante({{$estudiante->id}})" role="button" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-list" title="Inactivar Estudiante" style=""></i><br>
+                        </div>
+                      </a>
+                    @else
+                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
+                      onclick="activarEstudiante({{$estudiante->id}})" role="button" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-list" title="Activar Estudiante" style=""></i><br>
+                        </div>
+                      </a>
+                    @endif
                   </td>
                   
                 </tr>

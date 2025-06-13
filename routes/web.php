@@ -55,6 +55,9 @@ Route::group(['middleware' => 'auth'], function () {
    Route::post('/estudiantes/editar_estudiante', 'EstudiantesController@editar_estudiante');
    Route::post('/estudiantes/buscar_estudiantes', 'EstudiantesController@buscar_estudiantes');
    Route::get('/estudiantes/listado_estudiantes_filtro/{idAnio}/{idGrado}', 'EstudiantesController@listado_estudiantes_filtro');
+   Route::get('/estudiantes/inactivarEstudiante/{id_estudiante}', 'EstudiantesController@inactivarEstudiante');
+   Route::get('/estudiantes/activarEstudiante/{id_estudiante}', 'EstudiantesController@activarEstudiante');
+   
 
    // Rutas para docentes
    Route::get('/docentes/listado_docentes', 'DocentesController@listado_docentes');
