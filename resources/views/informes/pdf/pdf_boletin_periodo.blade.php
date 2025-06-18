@@ -206,7 +206,7 @@
                   <img src="{{ asset('/assets/img/firmas/FirmaAstrid2.png') }}" style="max-height: 60px;">
                 @endif
                 @if($grado->nombre == "GRADO 3")
-                  <img src="{{ asset('/assets/img/firmas/FirmaJaime.png') }}" style="max-height: 60px;">
+                  <img src="{{ asset('/assets/img/firmas/FirmaJaime2.png') }}" style="max-height: 60px;">
                 @endif
                 @if($grado->nombre == "GRADO 4")
                   <img src="{{ asset('/assets/img/firmas/FirmaCarlos.png') }}" style="max-height: 60px;">
