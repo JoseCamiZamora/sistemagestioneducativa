@@ -674,3 +674,24 @@ function validarobservacionesRegistradas(idPeriodo){
     }) ;
 
 }
+
+function consultarMateriasEvaluadas(idEstudiante, idAnio, idPeriodo){
+  
+  $('#modal_materias_evaluadas').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_materias_evaluadas/"+idEstudiante+"/"+idPeriodo+"/"+idAnio+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_materias_evaluadas").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+

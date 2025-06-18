@@ -85,7 +85,7 @@
                     @endif
                   </td>
                   <td>
-                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/generar_observacion_periodo/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/generar_observacion_periodo/'.$usuarioactual->id_persona.'/'.$anio->id.'/1') }}" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-edit" title="Generar Observación" style=""></i><br>
                       </div>

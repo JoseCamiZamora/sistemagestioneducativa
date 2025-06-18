@@ -152,11 +152,11 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_estudiantes_evaluar_transicion/{id_persona?}/{id_anio?}', 'EvaluacionController@listado_estudiantes_evaluar_transicion');
    Route::get('/evaluacion/form_evaluacion_comportamiento_transicion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion_comportamiento_transicion');
    Route::post('/evaluacion/crear_evaluacion_comportamiento_transicion', 'EvaluacionController@crear_evaluacion_comportamiento_transicion');
-   Route::get('/evaluacion/generar_observacion_periodo/{id_persona?}/{id_anio?}', 'EvaluacionController@generar_observacion_periodo');
+   Route::get('/evaluacion/generar_observacion_periodo/{id_persona?}/{id_anio?}/{estado?}', 'EvaluacionController@generar_observacion_periodo');
    Route::get('/evaluacion/form_generar_observacion_final/{idEstudiante?}/{idCurso?}/{idAnio?}', 'EvaluacionController@form_generar_observacion_final');
    Route::post('/evaluacion/crear_observacion_final', 'EvaluacionController@crear_observacion_final');
    Route::get('/evaluacion/consultar_observacion_periodo/{idEstudiante?}/{idAnio?}/{idDirectorGrupo?}/{idPeriodo?}', 'EvaluacionController@consultar_observacion_periodo');
-
+   Route::get('/evaluacion/form_materias_evaluadas/{idEstudiante?}/{idPeriodo?}/{idAnio?}', 'EvaluacionController@form_materias_evaluadas');
    
    
 

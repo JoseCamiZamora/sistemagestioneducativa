@@ -1002,16 +1002,62 @@ class EvaluacionController extends Controller
 
     }
 
-    public function generar_observacion_periodo($idPersona=null, $idAnio=null){
+    public function generar_observacion_periodo($idPersona=null, $idAnio=null,$estadoPeriodo=null){
 
         $directorGrupo =  ConfDirectorGrupo::where("id_docente",$idPersona)->where("id_anio", $idAnio)->first();
         $lstEstudiantes = EstudiantesCurso::where("id_curso",$directorGrupo->id_curso)->where("id_anio",$idAnio)->get();
         $periodos = PeriodosClases::all();
+        $estado = $estadoPeriodo;
         $anios = ConfAnios::find($idAnio);
+        $cantMaterias = Materias::where("tipo_curso", "=", 3)->count();
+
+        foreach ($lstEstudiantes as $estudiante) {
+
+            $evaluacionComportamiento = EvaluacionComportamiento::where("id_estudiante",$estudiante->id)->where("id_grado",$estudiante->id_curso)->first();
+            $cantEvaluaciones = EvaluacionEstudiante::where("id_estudiante",$estudiante->id)->where("id_anio", $idAnio)->where("id_periodo",$estado)->count();
+            
+            if($cantEvaluaciones > 0){
+                $estudiante->materias_evaluadas = $cantEvaluaciones;
+                $estudiante->pendientes_evaluar = $cantMaterias - $cantEvaluaciones;
+                
+            }else{
+                $estudiante->materias_evaluadas = 0;
+                $estudiante->pendientes_evaluar = 0;
+               
+            }
+
+            if($evaluacionComportamiento != null){
+
+                if($estado == 1){
+                    if(floatval($evaluacionComportamiento->nota_periodo_uno) > 0){
+                        $estudiante->comportamiento_evaluado = "SI";
+                    }else{
+                        $estudiante->comportamiento_evaluado = "NO";
+                    }
+                }elseif($estado == 2){
+                    if(floatval($evaluacionComportamiento->nota_periodo_dos) > 0){
+                        $estudiante->comportamiento_evaluado = "SI";
+                    }else{
+                        $estudiante->comportamiento_evaluado = "NO";
+                    }
+                }else{
+                    if(floatval($evaluacionComportamiento->nota_periodo_tres) > 0){
+                        $estudiante->comportamiento_evaluado = "SI";
+                    }else{
+                        $estudiante->comportamiento_evaluado = "NO";
+                    }
+                }
+            }else{
+                 $estudiante->comportamiento_evaluado = "NO";
+            }
+
+
+        }
 
         return view('evaluacion.form_observacion_periodo')->with('directorGrupo',$directorGrupo)
                                                         ->with("anios",$anios)
                                                         ->with("lstEstudiantes",$lstEstudiantes)
+                                                        ->with("estado",$estado)
                                                         ->with("periodos",$periodos);
     }
 
@@ -1021,9 +1067,11 @@ class EvaluacionController extends Controller
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::find($idAnio);
         $directorGrupo =  ConfDirectorGrupo::find($idCurso);
+        $estado = 1;
 
         return view('evaluacion.form_observacion_director_grupo')->with("anios",$anios)->with("directorGrupo",$directorGrupo)
                                                         ->with("estudiante",$estudiante)
+                                                        ->with("estado",$estado)
                                                         ->with("periodos",$periodos);
     }
 
@@ -1095,6 +1143,16 @@ class EvaluacionController extends Controller
 
         return response()->json(['textoConcepto' => $textoConcepto],200);
     }
+
+    public function form_materias_evaluadas($idEstudiante=null, $idPeriodo=null, $idAnio=null){
+
+
+        $evaluaciones = EvaluacionEstudiante::where("id_estudiante",$idEstudiante)->where("id_anio", $idAnio)->where("id_periodo",$idPeriodo)->get();
+
+        return view('evaluacion.form_materias_evaluadas')->with('evaluaciones',$evaluaciones);
+    }
+
+    
 
     
 
