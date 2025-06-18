@@ -187,25 +187,40 @@
       </tr>
       </tbody>
     </table>
-    <br><br>
-    <div class="firma">
-      
-        ___________________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;___________________________<br>
-        LIGIA MURIEL ARTEAGA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$docente->nom_docente}}<br>
-        Directora C.E. Corazón de María&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directora de Grupo
-    </div>
+    <table style="width: 100%; margin-top: 40px; text-align: center;border: none;">
+        <tr>
+            <!-- Firma 1 -->
+            <td style="width: 50%;border: none;">
+                <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;"><br>
+                <hr style="width: 200px; border: 1px solid black;">
+                <strong>LIGIA MURIEL ARTEAGA</strong><br>
+                Directora C.E. Corazón de María
+            </td>
+
+            <!-- Firma 2 -->
+            <td style="width: 50%;border: none;">
+                @if($grado->nombre == "GRADO 1")
+                  <img src="{{ asset('/assets/img/firmas/FirmaCristina.png') }}" style="max-height: 60px;">
+                @endif
+                @if($grado->nombre == "GRADO 2")
+                  <img src="{{ asset('/assets/img/firmas/FirmaAstrid2.png') }}" style="max-height: 60px;">
+                @endif
+                @if($grado->nombre == "GRADO 3")
+                  <img src="{{ asset('/assets/img/firmas/FirmaJaime.png') }}" style="max-height: 60px;">
+                @endif
+                @if($grado->nombre == "GRADO 4")
+                  <img src="{{ asset('/assets/img/firmas/FirmaCarlos.png') }}" style="max-height: 60px;">
+                @endif
+                @if($grado->nombre == "GRADO 5")
+                  <img src="{{ asset('/assets/img/firmas/FirmaJairo.png') }}" style="max-height: 60px;">
+                @endif
+                <br>
+                <hr style="width: 200px; border: 1px solid black;">
+                <strong>ASTRID ALEJANDRA BETANCOURT</strong><br>
+                Directora de Grupo
+            </td>
+        </tr>
+    </table>
     <div style="page-break-after: always;"></div>
     @endforeach
   </div>
