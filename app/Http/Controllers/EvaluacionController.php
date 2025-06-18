@@ -27,6 +27,7 @@ use App\EvaluacionComportamiento;
 use App\ConfDirectorGrupo;
 use App\ConceptoFinalTransicion;
 use App\NotaFinalTransicion;
+use App\ObservacionEstudiante;
 
 
 
@@ -347,6 +348,10 @@ class EvaluacionController extends Controller
         $notas = json_decode($filas[0]['notas'], true);
         $notaFinal = $filas[0]['nota_final'];
         $desempeno = $filas[0]['desempeno'];
+
+        $faltasJustificadas = $request->input('faltas_justificadas')?$request->input('faltas_justificadas'):0;
+        $faltasNoJustificadas = $request->input('faltas_no_justificadas')?$request->input('faltas_no_justificadas'):0;
+
         $notasArray = array();
         $evaluacion = EvaluacionEstudiante::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$periodo->id)
                                             ->where("id_materia",$claseDocente->id_materia)->first();
@@ -362,7 +367,8 @@ class EvaluacionController extends Controller
             $evaluacion->nom_materia =  $claseDocente->nom_materia;
             $evaluacion->id_periodo = $periodo->id;
             $evaluacion->nom_perido = $periodo->nombre;
-
+            $evaluacion->nro_horas_justificadas = $faltasJustificadas;
+            $evaluacion->nro_horas_no_justificadas = $faltasNoJustificadas;
            
             foreach ($notas as $dataNota) {
                 $actividad = ConfEvaluaciones::find($dataNota["id"]);
@@ -383,6 +389,8 @@ class EvaluacionController extends Controller
                 );
                 array_push($notasArray, $newarraynotas);
             }
+            $evaluacion->nro_horas_justificadas = $faltasJustificadas;
+            $evaluacion->nro_horas_no_justificadas = $faltasNoJustificadas;
         }
 
         $evaluacion->sum_nota = round($notaFinal,2);
@@ -395,6 +403,7 @@ class EvaluacionController extends Controller
                                                     ->where("id_grado",$estudiante->id_curso)
                                                     ->where("id_materia",$claseDocente->id_materia)
                                                     ->where("id_docente",$claseDocente->id_docente)->first();
+       
         if($notaFinalEstudiante == null){
             $notaFinalEstudiante = new NotaFinalEstudiante();
             $notaFinalEstudiante->id_anio =$estudiante->id_anio;
@@ -413,17 +422,23 @@ class EvaluacionController extends Controller
                 $notaFinalEstudiante->nota_periodo_dos = 0;
                 $notaFinalEstudiante->nota_periodo_tres = 0;
                 $notaFinalEstudiante->concepto_per1 = $evaluacion->conceptos;
+                $notaFinalEstudiante->faltas_just_per1 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per1 = $evaluacion->nro_horas_no_justificadas;
 
             }elseif($periodo->id == 2){
                 $notaFinalEstudiante->nota_periodo_dos = $notaFinal;
                 $notaFinalEstudiante->nota_periodo_uno = 0;
                 $notaFinalEstudiante->nota_periodo_tres = 0;
                 $notaFinalEstudiante->concepto_per2 = $evaluacion->conceptos;
+                $notaFinalEstudiante->faltas_just_per2 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per2 = $evaluacion->nro_horas_no_justificadas;
             }else{
                 $notaFinalEstudiante->nota_periodo_tres = $notaFinal;
                 $notaFinalEstudiante->nota_periodo_uno = 0;
                 $notaFinalEstudiante->nota_periodo_dos = 0;
                 $notaFinalEstudiante->concepto_per3 = $evaluacion->conceptos;
+                $notaFinalEstudiante->faltas_just_per3 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per3 = $evaluacion->nro_horas_no_justificadas;
             }
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0) +
@@ -438,13 +453,18 @@ class EvaluacionController extends Controller
             if($periodo->id == 1){
                 $notaFinalEstudiante->nota_periodo_uno = $notaFinal;
                 $notaFinalEstudiante->concepto_per1 = $evaluacion->conceptos;
+                $notaFinalEstudiante->faltas_just_per1 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per1 = $evaluacion->nro_horas_no_justificadas;
             }elseif($periodo->id == 2){
                 $notaFinalEstudiante->nota_periodo_dos = $notaFinal;
                 $notaFinalEstudiante->concepto_per2 = $evaluacion->conceptos;
+                $notaFinalEstudiante->faltas_just_per2 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per2 = $evaluacion->nro_horas_no_justificadas;
             }else{
                 $notaFinalEstudiante->nota_periodo_tres = $notaFinal;
                 $notaFinalEstudiante->concepto_per3 = $evaluacion->conceptos;
-                
+                $notaFinalEstudiante->faltas_just_per3 =  $evaluacion->nro_horas_justificadas;
+                $notaFinalEstudiante->faltas_no_just_per3 = $evaluacion->nro_horas_no_justificadas;
             }
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0) +
@@ -619,13 +639,18 @@ class EvaluacionController extends Controller
             $notaFinal = $evaluacion->sum_nota;
             $desempenio = $evaluacion->desempenio;
             $conceptos = $evaluacion->conceptos;
+            $horasJustificadas = $evaluacion->nro_horas_justificadas;
+            $horasNoJustificadas = $evaluacion->nro_horas_no_justificadas;
         }else{
             $notas = [];
             $notaFinal = 0;
             $desempenio = 'Bajo';
             $conceptos = '';
+            $horasJustificadas = 0;
+            $horasNoJustificadas = 0;
         }
-        return response()->json([ 'notas' => $notas,'nota_final' =>$notaFinal, 'desempenio' => $desempenio,'conceptos' =>$conceptos],200);
+        return response()->json([ 'notas' => $notas,'nota_final' =>$notaFinal, 'desempenio' => $desempenio,'conceptos' =>$conceptos,
+                                  'horasJustificadas' =>$horasJustificadas,'horasNoJustificadas' =>$horasNoJustificadas],200);
 
     }
 
@@ -976,6 +1001,108 @@ class EvaluacionController extends Controller
         }
 
     }
+
+    public function generar_observacion_periodo($idPersona=null, $idAnio=null){
+
+        $directorGrupo =  ConfDirectorGrupo::where("id_docente",$idPersona)->where("id_anio", $idAnio)->first();
+        $lstEstudiantes = EstudiantesCurso::where("id_curso",$directorGrupo->id_curso)->where("id_anio",$idAnio)->get();
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::find($idAnio);
+
+        return view('evaluacion.form_observacion_periodo')->with('directorGrupo',$directorGrupo)
+                                                        ->with("anios",$anios)
+                                                        ->with("lstEstudiantes",$lstEstudiantes)
+                                                        ->with("periodos",$periodos);
+    }
+
+     public function form_generar_observacion_final($idEstudiante=null, $idCurso=null, $idAnio=null){
+
+        $estudiante = EstudiantesCurso::find($idEstudiante);
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::find($idAnio);
+        $directorGrupo =  ConfDirectorGrupo::find($idCurso);
+
+        return view('evaluacion.form_observacion_director_grupo')->with("anios",$anios)->with("directorGrupo",$directorGrupo)
+                                                        ->with("estudiante",$estudiante)
+                                                        ->with("periodos",$periodos);
+    }
+
+    public function crear_observacion_final(Request $request){
+        
+        $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
+        $anios = ConfAnios::find($request->input('id_anio'));
+        $periodo = PeriodosClases::find($request->input('periodo'));
+        $observacion = $request->input('observacion')?$request->input('observacion'):"";
+        $directorGrupo =  ConfDirectorGrupo::find($request->input('id_director_grupo'));
+
+        $observacionFinal = ObservacionEstudiante::where("id_anio",$anios->id)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_curso",$estudiante->id_curso)
+                                                    ->where("id_docente",$directorGrupo->id_docente)->first();
+        if($observacionFinal == null){
+
+            $observacionFinal = new ObservacionEstudiante();
+            $observacionFinal->id_anio =  $anios->id;
+            $observacionFinal->id_estudiante = $estudiante->id;
+            $observacionFinal->id_periodo = $periodo->id;
+            $observacionFinal->id_curso = $directorGrupo->id_curso;
+            $observacionFinal->id_docente = $directorGrupo->id_docente;
+            if($periodo->id == 1){
+                $observacionFinal->obs_per1 = $observacion;
+            }elseif($periodo->id == 2){
+                $observacionFinal->obs_per2 = $observacion;
+            }else{
+                $observacionFinal->obs_per3 = $observacion;
+            }
+        }else{
+            if($periodo->id == 1){
+                $observacionFinal->obs_per1 = $observacion;
+            }elseif($periodo->id == 2){
+                $observacionFinal->obs_per2 = $observacion;
+            }else{
+                $observacionFinal->obs_per3 = $observacion;
+            }
+        }
+
+        if($observacionFinal->save()){
+            return view("evaluacion.mensajes.msj_confirmacion")->with("msj","La observación fue alamcenada exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function consultar_observacion_periodo($idEstudiante=null, $idAnio=null, $idDirectorGrupo=null, $idPeriodo=null){
+
+        $estudiante = EstudiantesCurso::find($idEstudiante);
+        $anios = ConfAnios::find($idAnio);
+        $periodo = PeriodosClases::find($idPeriodo);
+        $directorGrupo =  ConfDirectorGrupo::find($idDirectorGrupo);
+
+        $observacionFinal = ObservacionEstudiante::where("id_anio",$anios->id)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_curso",$estudiante->id_curso)
+                                                    ->where("id_docente",$directorGrupo->id_docente)->first();
+
+        if($observacionFinal != null){
+            if($periodo->id == 1){
+                $textoConcepto = $observacionFinal->obs_per1;
+            }elseif($periodo->id == 2){
+                $textoConcepto = $observacionFinal->obs_per2;
+            }else{
+                $textoConcepto = $observacionFinal->obs_per3;
+            }
+        }else{
+            $textoConcepto = "";
+        }
+
+        return response()->json(['textoConcepto' => $textoConcepto],200);
+    }
+
+    
+
+    
+
+    
+
+    
 
     
 

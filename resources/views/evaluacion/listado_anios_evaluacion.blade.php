@@ -35,6 +35,7 @@
                   <th scope="col" class="th-gris text-center " >Evaluar Materias</th>
                 @endif
                 <th scope="col" class="th-gris text-center " >Evaluar Comportamiento</th>
+                <th scope="col" class="th-gris text-center " >Observaciones</th>
               </tr>
             </thead>
             <tbody>
@@ -81,12 +82,20 @@
                         <i class="fa fa-user" title="Editar Listado de Periodos" style=""></i><br>
                       </div>
                     </a>
-
                     @endif
+                  </td>
+                  <td>
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('evaluacion/generar_observacion_periodo/'.$usuarioactual->id_persona.'/'.$anio->id.'') }}" id="subirfile" >
+                      <div class="nav-link-icon__wrapper">
+                        <i class="fa fa-edit" title="Generar Observación" style=""></i><br>
+                      </div>
+                    </a>
                   </td>
                   @else
                    <td></td>
+                   <td></td>
                   @endif
+                  
                   
                   
                 </tr>

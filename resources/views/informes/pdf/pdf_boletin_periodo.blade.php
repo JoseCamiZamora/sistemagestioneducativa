@@ -91,11 +91,11 @@
       </thead>
       <tbody>
         <tr>
-          <td>{{$boletin['data_estudiante']['nom_estudiante']}}</td>
-          <td>{{$grado->nombre}}</td>
+          <td style="text-align: left; width: 270px;">{{$boletin['data_estudiante']['nom_estudiante'] ?? ''}}</td>
+          <td>{{$grado->nombre ?? ''}}</td>
           <td>{{$periodoClases->nombre}}</td>
-          <td>{{$fechaReporte}}</td>
-          <td>{{$anio->anio_inicio}}</td>
+          <td>{{$fechaReporte ?? ''}}</td>
+          <td>{{$anio->anio_inicio ?? ''}}</td>
         </tr>
       </tbody>
     </table>
@@ -103,33 +103,41 @@
       <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 15px;" >
         <thead>
           <tr>
-            <th style="text-align: left;">{{ $materia['nom_materia'] }}</th>
-            <th>IHS</th>
-            <th>1° TRIM</th>
-            <th>2° TRIM</th>
-            <th>3° TRIM</th>
-            <th>FNJ</th>
-            <th>FJ</th>
-            <th>PROMEDIO</th>
-            <th>DESEMPEÑO</th>
+            <th style="text-align: left;">{{ $materia['nom_materia'] ?? '' }}</th>
+            <th style="text-align: center; width: 20px;">IHS</th>
+            <th style="text-align: center; width: 30px;">1° TRIM</th>
+            <th style="text-align: center; width: 30px;">2° TRIM</th>
+            <th style="text-align: center; width: 30px;">3° TRIM</th>
+            <th style="text-align: center; width: 20px;">FNJ</th>
+            <th style="text-align: center; width: 20px;">FJ</th>
+            <th style="text-align: center; width: 40px;">PROMEDIO</th>
+            <th style="text-align: center; width: 50px;">DESEMPEÑO</th>
           </tr>
         </thead>
         <tbody>
             <tr>
-              <td style="text-align: left; width: 270px;">Docente: {{$materia['nom_docente']}}</td>
-              <td>{{ $materia['intensidad_horas'] }}</td>
-              <td>{{ $materia['nota'] }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{{ $materia['nota'] }}</td>
-              <td>{{ $materia['desempenio'] }}</td>
+              <td style="text-align: left; width: 270px;">Docente: {{$materia['nom_docente'] ?? ''}}</td>
+              <td>{{ $materia['intensidad_horas'] ?? '' }}</td>
+              <td style="text-align: center; width: 30px;">{{ $materia['nota'] ?? '' }}</td>
+              <td style="text-align: center; width: 30px;"></td>
+              <td style="text-align: center; width: 30px;"></td>
+              @if($materia['horas_justificadas'] > 0)
+                <td style="text-align: center; width: 20px;">{{ $materia['horas_justificadas'] ?? '' }}</td>
+              @else
+                <td style="text-align: center; width: 20px;"></td>
+              @endif
+              @if($materia['horas_no_justificadas'] > 0)
+                <td style="text-align: center; width: 20px;">{{ $materia['horas_no_justificadas'] ?? '' }}</td>
+              @else
+                <td style="text-align: center; width: 20px;"></td>
+              @endif
+              <td style="text-align: center; width: 40px;">{{ $materia['nota'] ?? '' }}</td>
+              <td style="text-align: center; width: 40px;">{{ $materia['desempenio'] ?? '' }}</td>
             </tr>
         </tbody>
         <tbody >
         <tr>
-          <td colspan="9" style="text-align: justify;">{{ $materia['concepto'] }}</td>
+          <td colspan="9" style="text-align: justify;">{{ $materia['concepto'] ?? '' }}</td>
         </tr>
         </tbody>
       </table>
@@ -137,7 +145,7 @@
     <table border  class='table table-generic table-strech table-font-normal table-hover' >
       <thead>
         <tr>
-          <th style="text-align: left; width: 270px;">{{ $boletin['data_comportamiento']['nom_materia'] }}</th>
+          <th style="text-align: left; width: 270px;">{{ $boletin['data_comportamiento']['nom_materia']  ?? '' }}</th>
           <th>IHS</th>
           <th>1° TRIM</th>
           <th>2° TRIM</th>
@@ -152,26 +160,34 @@
           <tr>
             <td style="text-align: left;  width: 270px;">Docente: {{$docente->nom_docente}}</td>
             <td></td>
-            <td>{{ $boletin['data_comportamiento']['nota'] }}</td>
+            <td>{{ $boletin['data_comportamiento']['nota'] ?? '' }}</td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
-            <td>{{ $boletin['data_comportamiento']['nota'] }}</td>
-            <td>{{ $boletin['data_comportamiento']['desempenio'] }}</td>
+            <td>{{ $boletin['data_comportamiento']['nota'] ?? '' }}</td>
+            <td>{{ $boletin['data_comportamiento']['desempenio'] ?? '' }}</td>
           </tr>
       </tbody>
       <tbody >
       <tr>
-        <td colspan="9" style="text-align: justify;">{{ $boletin['data_comportamiento']['concepto'] }}</td>
+        <td colspan="9" style="text-align: justify;">{{ $boletin['data_comportamiento']['concepto'] ?? '' }}</td>
       </tr>
       </tbody>
     </table>
-    <h3>OBSERVACIONES</h3>
-    <div class="observaciones">
-      <textarea id="conceptos" name="conceptos" rows="5" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
-    </div>
-    <br><br><br><br>
+    <table border  class='table table-generic table-strech table-font-normal table-hover' >
+      <thead>
+        <tr>
+          <th style="text-align: center;">OBSERVACIONES</th>
+        </tr>
+      </thead>
+      <tbody >
+      <tr style="height: 80px">
+        <td style="text-align: justify; min-height: 30px;">{{ $boletin['data_estudiante']['observacion'] ?? '' }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <br><br>
     <div class="firma">
       
         ___________________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -190,7 +206,6 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Directora de Grupo
     </div>
-    <br><br><br><br><br><br><br><br>
     <div style="page-break-after: always;"></div>
     @endforeach
   </div>

@@ -349,8 +349,10 @@ var idClase = $('#id_clase').val();
 
     // Pintar desempeño
     $(fila).find('.desempeno').text(resul.desempenio || 'Bajo');
-
+    
     document.getElementById("conceptos").value = resul.conceptos;
+    document.getElementById("faltas_justificadas").value = resul.horasJustificadas;
+    document.getElementById("faltas_no_justificadas").value = resul.horasNoJustificadas;
 
     $('.preloader').fadeOut();
    
@@ -544,6 +546,38 @@ $(document).on("submit", "#f_adicionar_evaluacion_transicion", function(e) {
   });
 });
 
+
+
+$(document).on("submit", "#f_adicionar_observacion_final", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+  var concepto = document.getElementById("observacion").value;
+  if(concepto != ''){
+    var formu = $(this);
+    var urlraiz = $("#url_raiz_proyecto").val();
+    var varurl = urlraiz + "/evaluacion/crear_observacion_final";
+
+    // Enviar AJAX
+    $.ajax({
+      url: varurl,
+      data: formu.serialize(),
+      method: 'POST',
+      dataType: 'html'
+    })
+    .done(function(resul) {
+      $('.preloader').fadeOut();
+      $("#contenido_modal_observacion").html(resul);
+    }).fail(function(err) {
+      $('.preloader').fadeOut();
+      SU_revise_conexion();
+    });
+  }else{
+     toastr.warning('Antes de almacenar el registro de debe adicionar una observación sobre la evaluación del estudiante', '¡Advertencia!');
+     e.preventDefault();
+    $('.preloader').fadeOut();
+  }
+});
+
 $(document).on("submit", "#f_adicionar_concepto_transicion", function(e) {
   e.preventDefault();
   $('.preloader').fadeIn();
@@ -596,10 +630,47 @@ function evaluarEstudianteComportamientoTransicion(id_estudiante){
 
 }
 
+function GenerarObservacion(idEstudiante, idAnio, idCurso){
+  
+  $('#modal_observacion').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_generar_observacion_final/"+idEstudiante+"/"+idCurso+"/"+idAnio+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_observacion").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
 
+function validarobservacionesRegistradas(idPeriodo){
 
+  var idEstudiante = $('#id_estudiante_curso').val();
+  var idAnio = $('#id_anio').val();
+  var idDirectorGrupo = $('#id_director_grupo').val();
 
+    $('.preloader').fadeIn();
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/evaluacion/consultar_observacion_periodo/"+idEstudiante+"/"+idAnio+"/"+idDirectorGrupo+"/"+idPeriodo+"";
+    $.ajax({
+      url: miurl
+      }).done( function(resul){
+        // Asumiendo que resul es un solo objeto, no un array de filas
+      document.getElementById("observacion").value = resul.textoConcepto;
+      $('.preloader').fadeOut();
+    
+      }).fail( function() 
+    {
+      $('.preloader').fadeOut();
+      SU_revise_conexion();
+    }) ;
 
-
-
-
+}

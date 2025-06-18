@@ -119,6 +119,17 @@
       </tr>
     </tbody>
     </table>
+    <div class="form-row col-md-12 mt-2">
+      <div class="form-group col-md-6">
+        <label for="feLastName">Nro. Faltas Justificadas</label>
+        <input type="number" maxlength="12" class="form-control" id="faltas_justificadas" name="faltas_justificadas" value="0" >
+      </div>
+      <div class="form-group col-md-6">
+        <label for="feLastName">Nro. Faltas no Justificadas</label>
+        <input type="number" maxlength="125" class="form-control" id="faltas_no_justificadas" name="faltas_no_justificadas" value="0" >
+      </div>
+    </div>
+
     <div class="form-row col-md-12 mt-2  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Evaluación</button>
     </div>
