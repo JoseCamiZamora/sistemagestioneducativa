@@ -1005,7 +1005,7 @@ class EvaluacionController extends Controller
     public function generar_observacion_periodo($idPersona=null, $idAnio=null,$estadoPeriodo=null){
 
         $directorGrupo =  ConfDirectorGrupo::where("id_docente",$idPersona)->where("id_anio", $idAnio)->first();
-        $lstEstudiantes = EstudiantesCurso::where("id_curso",$directorGrupo->id_curso)->where("id_anio",$idAnio)->get();
+        $lstEstudiantes = EstudiantesCurso::where("id_curso",$directorGrupo->id_curso)->where("id_anio",$idAnio)->where("estado", "A")->get();
         $periodos = PeriodosClases::all();
         $estado = $estadoPeriodo;
         $anios = ConfAnios::find($idAnio);
