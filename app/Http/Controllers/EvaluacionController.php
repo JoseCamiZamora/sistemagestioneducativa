@@ -1010,7 +1010,7 @@ class EvaluacionController extends Controller
         $estado = $estadoPeriodo;
         $anios = ConfAnios::find($idAnio);
         $cantMaterias = Materias::where("tipo_curso", "=", 3)->count();
-
+        dd($lstEstudiantes);
         foreach ($lstEstudiantes as $estudiante) {
 
             $evaluacionComportamiento = EvaluacionComportamiento::where("id_estudiante",$estudiante->id)->where("id_grado",$estudiante->id_curso)->first();
