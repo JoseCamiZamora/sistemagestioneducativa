@@ -216,7 +216,7 @@
                 @endif
                 <br>
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>ASTRID ALEJANDRA BETANCOURT</strong><br>
+                <strong>{{$docente->nom_docente}}</strong><br>
                 Directora de Grupo
             </td>
         </tr>
