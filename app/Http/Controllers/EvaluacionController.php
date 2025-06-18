@@ -1013,8 +1013,8 @@ class EvaluacionController extends Controller
        
         foreach ($lstEstudiantes as $estudiante) {
 
-            $evaluacionComportamiento = EvaluacionComportamiento::where("id_estudiante",$estudiante->id)->where("id_grado",$estudiante->id_curso)->first();
-            $cantEvaluaciones = EvaluacionEstudiante::where("id_estudiante",$estudiante->id)->where("id_anio", $idAnio)->where("id_periodo",$estado)->count();
+            $evaluacionComportamiento = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)->first();
+            $cantEvaluaciones = EvaluacionEstudiante::where("id_estudiante",$estudiante->id_estudiante)->where("id_anio", $idAnio)->where("id_periodo",$estado)->count();
             
             if($cantEvaluaciones > 0){
                 $estudiante->materias_evaluadas = $cantEvaluaciones;
@@ -1053,8 +1053,6 @@ class EvaluacionController extends Controller
 
 
         }
-         dd($lstEstudiantes);
-
         return view('evaluacion.form_observacion_periodo')->with('directorGrupo',$directorGrupo)
                                                         ->with("anios",$anios)
                                                         ->with("lstEstudiantes",$lstEstudiantes)
