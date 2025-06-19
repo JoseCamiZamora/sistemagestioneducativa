@@ -108,7 +108,7 @@
           <div class="card-body px-0 pb-0" >
            <div class="d-flex px-3 text-center">
            
-                <a href="{{ url('/informes/index_reportes') }}" style='width: 100%'>
+                <a href="{{ url('/estadisticas/index_estadisticas') }}" style='width: 100%'>
             
                 <img src="{{ asset('/assets/img/estadistica.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
               

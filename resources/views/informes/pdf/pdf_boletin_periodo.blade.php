@@ -103,15 +103,15 @@
       <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 15px;" >
         <thead>
           <tr>
-            <th style="text-align: left;">{{ $materia['nom_materia'] ?? '' }}</th>
+            <th style="text-align: left; width: 270px;">{{ $materia['nom_materia'] ?? '' }}</th>
             <th style="text-align: center; width: 20px;">IHS</th>
-            <th style="text-align: center; width: 30px;">1° TRIM</th>
-            <th style="text-align: center; width: 30px;">2° TRIM</th>
-            <th style="text-align: center; width: 30px;">3° TRIM</th>
+            <th style="text-align: center; width: 47px;">1° TRIM</th>
+            <th style="text-align: center; width: 47px;">2° TRIM</th>
+            <th style="text-align: center; width: 47px;">3° TRIM</th>
             <th style="text-align: center; width: 20px;">FNJ</th>
             <th style="text-align: center; width: 20px;">FJ</th>
             <th style="text-align: center; width: 40px;">PROMEDIO</th>
-            <th style="text-align: center; width: 50px;">DESEMPEÑO</th>
+            <th style="text-align: center; width: 40px;">DESEMPEÑO</th>
           </tr>
         </thead>
         <tbody>
@@ -190,7 +190,7 @@
     <table style="width: 100%; margin-top: 40px; text-align: center;border: none;">
         <tr>
             <!-- Firma 1 -->
-            <td style="width: 50%;border: none;">
+            <td style="width: 40%;border: none;">
                 <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;"><br>
                 <hr style="width: 200px; border: 1px solid black;">
                 <strong>LIGIA MURIEL ARTEAGA</strong><br>
@@ -198,7 +198,7 @@
             </td>
 
             <!-- Firma 2 -->
-            <td style="width: 50%;border: none;">
+            <td style="width: 40%;border: none;">
                 @if($grado->nombre == "GRADO 1")
                   <img src="{{ asset('/assets/img/firmas/FirmaCristina.png') }}" style="max-height: 60px;">
                 @endif

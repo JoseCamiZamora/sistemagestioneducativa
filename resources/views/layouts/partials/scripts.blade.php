@@ -22,6 +22,7 @@
     <script src="{{ asset('/scripts/configuracion/configuracion.js') }}"></script>
     <script src="{{ asset('/scripts/evaluacion/evaluacion.js') }}"></script>
     <script src="{{ asset('/scripts/informes/informes.js') }}"></script>
+    <script src="{{ asset('/scripts/estadisticas/estadisticas.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 <script>
