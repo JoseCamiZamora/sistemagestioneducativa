@@ -1089,7 +1089,7 @@ class EvaluacionController extends Controller
 
             $observacionFinal = new ObservacionEstudiante();
             $observacionFinal->id_anio =  $anios->id;
-            $observacionFinal->id_estudiante = $estudiante->id;
+            $observacionFinal->id_estudiante = $estudiante->id_estudiante;
             $observacionFinal->id_periodo = $periodo->id;
             $observacionFinal->id_curso = $directorGrupo->id_curso;
             $observacionFinal->id_docente = $directorGrupo->id_docente;

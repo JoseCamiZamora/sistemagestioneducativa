@@ -39,7 +39,7 @@
 </style>
 <form  method="post"  action="adicionar_observacion_final" id="f_adicionar_observacion_final"   >
    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"> 
-   <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id_estudiante}}">
+   <input type="hidden" id="id_estudiante_curso" name="id_estudiante_curso" value="{{$estudiante->id}}">
    <input type="hidden" id="id_anio" name="id_anio" value="{{$anios->id}}">
    <input type="hidden" id="id_director_grupo" name="id_director_grupo" value="{{$directorGrupo->id}}">
 
