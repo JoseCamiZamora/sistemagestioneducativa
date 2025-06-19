@@ -113,6 +113,8 @@ class InformesController extends Controller
                 $item['desc_materia'] = 'CIENCIAS SOCIALES';
             }elseif($item['desc_materia'] == 'INFORMATICA' ){
                 $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
             }elseif($item['desc_materia'] == 'ARTISTICA' ){
                 $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
             }
