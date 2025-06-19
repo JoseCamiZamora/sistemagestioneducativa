@@ -168,6 +168,10 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/informes/pdf_infomre_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo');
    Route::get('/informes/pdf_infomre_periodo_transicion/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_transicion');
    Route::get('/informes/pdf_informe_director_grupo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_informe_director_grupo');
+
+   // rutas estadisticas
+   Route::get('/estadisticas/index_estadisticas', 'InformesController@index_estadisticas');
+
    
    
    
