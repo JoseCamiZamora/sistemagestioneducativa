@@ -146,14 +146,14 @@
       <thead>
         <tr>
           <th style="text-align: left; width: 270px;">{{ $boletin['data_comportamiento']['nom_materia']  ?? '' }}</th>
-          <th>IHS</th>
-          <th>1° TRIM</th>
-          <th>2° TRIM</th>
-          <th>3° TRIM</th>
-          <th>FNJ</th>
-          <th>FJ</th>
-          <th>PROMEDIO</th>
-          <th>DESEMPEÑO</th>
+           <th style="text-align: center; width: 20px;">IHS</th>
+            <th style="text-align: center; width: 47px;">1° TRIM</th>
+            <th style="text-align: center; width: 47px;">2° TRIM</th>
+            <th style="text-align: center; width: 47px;">3° TRIM</th>
+            <th style="text-align: center; width: 20px;">FNJ</th>
+            <th style="text-align: center; width: 20px;">FJ</th>
+            <th style="text-align: center; width: 40px;">PROMEDIO</th>
+            <th style="text-align: center; width: 40px;">DESEMPEÑO</th>
         </tr>
       </thead>
       <tbody>
