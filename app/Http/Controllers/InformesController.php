@@ -98,9 +98,25 @@ class InformesController extends Controller
         $anio = ConfAnios::find($idAnio);
         $observacionesFinales = ObservacionEstudiante::all();
         
-
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
         $reporte = [];
-        foreach ($evaluaciones as $item) {
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
             $idEstudiante = $item['id_estudiante'];
             $idMateria = $item['id_materia'];
 
@@ -287,7 +303,6 @@ class InformesController extends Controller
 
         // Reindexar por si lo necesitas como array plano:
         $reporte = array_values($reporte);
-        //dd($reporte);
 
         setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
         Carbon::setLocale('es'); // Para métodos de Carbon
