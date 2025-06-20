@@ -58,7 +58,6 @@ class informe1Export implements FromView
     $periodoFinal = PeriodosClases::find($periodo);
 
     $notaFinalEstudiante = NotaFinalEstudiante::where("id_anio",$anio)->where("id_grado",$curso)->get();
-    dd( $notaFinalEstudiante);
     foreach ($notaFinalEstudiante as $item) {
         array_push($newArray, $item); // Siempre agregamos la materia normal
 
@@ -69,7 +68,7 @@ class informe1Export implements FromView
         });
 
         if (!$yaTieneComportamiento) {
-            $evaluacion = EvaluacionComportamiento::where("id_estudiante", $item->id_estudiante)
+            $evaluacion = EvaluacionComportamiento::where("id_estudiante", $item->id_estudiante)->where("id_anio",$anio)
                 ->where("id_grado", $curso)
                 ->first();
 
@@ -79,7 +78,8 @@ class informe1Export implements FromView
             }
         }
     }
-   
+
+   dd($newArray);
 
     $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA','COMPORTAMIENTO'];
     $materiasOrdenadas = collect($newArray)->sortBy(function ($materia) use ($ordenDeseado) {
