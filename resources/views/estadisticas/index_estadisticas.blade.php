@@ -44,7 +44,7 @@
 	        <h4 class="page-title" >Formulario para la selección de item para generar el reporte<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
-	        <a href="{{ url('informes/index_reportes') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
+	        <a href="{{ url('home') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
 	      </div>
 	    </div>
 	  </div>
