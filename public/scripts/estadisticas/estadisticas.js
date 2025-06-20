@@ -30,18 +30,34 @@ function infoCursos(idAnio, idDocente){
   $('#curso').html(mateHtmlteams);
   document.getElementById("curso").disabled = false;
 
+}
 
-  /*var lstCursos = [];
+function generarReporteRankigEstudiantes (){
+  var anio = document.getElementById("anio").value;
+  var curso = document.getElementById("curso").value;
+  var periodo = document.getElementById("periodo").value;
 
-  filtrados.forEach(function(value){
-    if(value.tipo_  == idTipo){
-      lstMaterias.push(value);
-    }
-  });
-  let result = lstMaterias.filter((item,index)=>{
-    return lstMaterias.indexOf(item) === index;
-  })
-  
-  
-  validarChexbox(idTipo);*/
+  $('.preloader').fadeIn();
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/estadisticas/reporte_estudiantes_excel_materias/"+anio+"/"+curso+"/"+periodo+"";
+    $.ajax({
+      url: miurl
+      }).done( function(resul){
+        const base64 = resul.file;
+        const fileName = resul.filename;
+
+        // Crear y forzar descarga
+        const link = document.createElement('a');
+        link.href = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,' + base64;
+        link.download = fileName;
+        link.click();
+      $('.preloader').fadeOut();
+    
+    }).fail( function() 
+    {
+      $('.preloader').fadeOut();
+      SU_revise_conexion();
+    }) ;
+
 }

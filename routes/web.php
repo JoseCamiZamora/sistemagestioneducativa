@@ -171,6 +171,7 @@ Route::group(['middleware' => 'auth'], function () {
 
    // rutas estadisticas
    Route::get('/estadisticas/index_estadisticas', 'EstadisticasController@index_estadisticas');
+   Route::get('/estadisticas/reporte_estudiantes_excel_materias/{anio?}/{curso?}/{periodo?}', 'EstadisticasController@reporte_estudiantes_excel_materias');
 
    
    

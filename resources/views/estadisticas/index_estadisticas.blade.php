@@ -81,7 +81,7 @@
           </select>
       </div>
       <div class="col-md-2" style="margin-top: 28px;" >
-       <button onclick="generarReportePorPeriodo()"><i class="fa fa-download" style=""></i> Generar Informe</button>
+       <button onclick="generarReporteRankigEstudiantes()"><i class="fa fa-download" style=""></i> Generar Informe</button>
       </div>
     </div>
   </div>

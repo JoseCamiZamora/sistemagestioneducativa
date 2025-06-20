@@ -10,6 +10,8 @@ use App\TiposDocumentos;
 use App\Grados;
 use App\EstudiantesCurso;
 use App\ConfAnios;
+use App\NotaFinalEstudiante;
+use App\EvaluacionEstudiante;
 
 
 use PDF;
@@ -485,17 +487,37 @@ class EstudiantesController extends Controller
             foreach ($estudiantesCurso as $estu) {
                 if ($estu->id_estudiante == $estudiante->id) {
                     $estudiantesCursoActualizar = EstudiantesCurso::find($estu->id_estudiante);
-
-                    
                     $estudiantesCursoActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
                                                     $estudiante->segundo_nombre . " " .
                                                     $estudiante->primer_apellido . " " .
                                                     $estudiante->segundo_apellido;
-                    //dd($estudiantesCursoActualizar);
                     $estudiantesCursoActualizar->save(); // ✅ guardamos el modelo actual
                 }
             }
-           
+
+            $evaluacionEstudiante = EvaluacionEstudiante::all();
+            foreach ($evaluacionEstudiante as $estuEva) {
+                if ($estuEva->id_estudiante == $estudiante->id) {
+                    $evaluacionActualizar = EvaluacionEstudiante::find($estuEva->id_estudiante);
+                    $evaluacionActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
+                                                    $estudiante->segundo_nombre . " " .
+                                                    $estudiante->primer_apellido . " " .
+                                                    $estudiante->segundo_apellido;
+                    $evaluacionActualizar->save(); // ✅ guardamos el modelo actual
+                }
+            }
+
+            $notaFinal = NotaFinalEstudiante::all();
+            foreach ($notaFinal as $estuEvaFinal) {
+                if ($estuEvaFinal->id_estudiante == $estudiante->id) {
+                    $evaluacionFinalActualizar = NotaFinalEstudiante::find($estuEvaFinal->id_estudiante);
+                    $evaluacionFinalActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
+                                                    $estudiante->segundo_nombre . " " .
+                                                    $estudiante->primer_apellido . " " .
+                                                    $estudiante->segundo_apellido;
+                    $evaluacionFinalActualizar->save(); // ✅ guardamos el modelo actual
+                }
+            }
             return view("estudiantes.mensajes.msj_actualziado")->with("msj","Estudiante fue actualizado exitosamente")
             										   ->with("estado",$estudiante->estado);
         }else{
