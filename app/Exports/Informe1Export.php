@@ -58,6 +58,7 @@ class informe1Export implements FromView
     $periodoFinal = PeriodosClases::find($periodo);
 
     $notaFinalEstudiante = NotaFinalEstudiante::where("id_anio",$anio)->where("id_grado",$curso)->get();
+    dd( $notaFinalEstudiante);
     foreach ($notaFinalEstudiante as $item) {
         array_push($newArray, $item); // Siempre agregamos la materia normal
 
