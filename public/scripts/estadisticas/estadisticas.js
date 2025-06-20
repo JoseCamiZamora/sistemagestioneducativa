@@ -5,7 +5,6 @@ function infoCursos(idAnio, idDocente){
 
   const anioFiltro = idAnio;
   const docenteFiltro = idDocente;
-  console.log(anioFiltro,docenteFiltro, arrayDirectores);
 
   const filtrados = arrayDirectores.filter(est =>
     parseInt(est.id_anio) === parseInt(anioFiltro) &&
@@ -14,14 +13,12 @@ function infoCursos(idAnio, idDocente){
 
   // Extraemos los ID de curso desde los directores filtrados
   const idsCursos = filtrados.map(item => parseInt(item.id_curso));
-  console.log(idsCursos,arrayCursos);
 
   // Filtramos los cursos que coincidan con esos ID
   const cursosFiltrados = arrayCursos.filter(curso =>
     idsCursos.includes(parseInt(curso.id))
   );
 
-  console.log(cursosFiltrados);
   var mateHtmlteams = '';
   mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
   cursosFiltrados.forEach(function(citi){
