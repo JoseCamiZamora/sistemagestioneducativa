@@ -55,7 +55,7 @@
               </tr>
               <tr>
                <th scope="col" class="th-gris text-center" style="text-align: center;width: 95px;" ><strong>No</strong></th>
-               <th scope="col" class="th-gris text-left; width: 120px;" style="text-align: center;width: 230px;" ><strong>Nombres y Apellidos</strong></th>
+               <th scope="col" class="th-gris text-left; width: 120px;" style="text-align: center;width: 280px;" ><strong>Nombres y Apellidos</strong></th>
                 <th scope="col" class="th-gris text-center; width: 100px;" style="text-align: center;width: 100px;"><strong>MATEMATICAS</strong></th>
                 <th scope="col" class="th-gris text-center; width: 100px;" style="text-align: center;width: 90px;"><strong>CASTELLANO</strong></th>
                 <th scope="col" class="th-gris text-center; width: 100px;" style="text-align: center;width: 60px;"><strong>INGLES</strong></th>
