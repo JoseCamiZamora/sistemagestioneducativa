@@ -79,8 +79,6 @@ class informe1Export implements FromView
         }
     }
 
-   dd($newArray);
-
     $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA','COMPORTAMIENTO'];
     $materiasOrdenadas = collect($newArray)->sortBy(function ($materia) use ($ordenDeseado) {
         return array_search($materia->desc_materia, $ordenDeseado);
