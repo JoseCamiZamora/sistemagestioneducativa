@@ -350,19 +350,21 @@ class InformesController extends Controller
 
         $reporte = [];
         foreach ($evaluaciones as $item) {
+           
             $idEstudiante = $item['id_estudiante'];
 
              $comportamiento = array_values(array_filter($evaluacionComportamiento->toArray(), function($itemComp) use ($idEstudiante) {
                 return $itemComp['id_estudiante'] == $idEstudiante;
             }));
+             //dd($comportamiento);
 
              $periodosComp = [];
             if (!empty($comportamiento)) {
                 if ($idPeriodo == 1) {
 
-                    if ( $item['nota_periodo_uno'] == 3) {
+                    if ( $comportamiento[0]['nota_periodo_uno'] == 3) {
                         $desempenio1 = 'Alto';
-                    } elseif ( $item['nota_periodo_uno'] == 2) {
+                    } elseif ( $comportamiento[0]['nota_periodo_uno'] == 2) {
                         $desempenio1 = 'Medio';
                     } else {
                         $desempenio1 = 'Bajo';
@@ -375,9 +377,9 @@ class InformesController extends Controller
                     ];
                 } elseif ($idPeriodo == 2) {
                     
-                    if ( $item['nota_periodo_dos'] == 3) {
+                    if ( $comportamiento[0]['nota_periodo_dos'] == 3) {
                         $desempenio2 = 'Alto';
-                    } elseif ( $item['nota_periodo_dos'] == 2) {
+                    } elseif ( $comportamiento[0]['nota_periodo_dos'] == 2) {
                         $desempenio2 = 'Medio';
                     } else {
                         $desempenio2 = 'Bajo';
@@ -389,9 +391,9 @@ class InformesController extends Controller
                     ];
                 } else {
 
-                    if ( $item['nota_periodo_tres'] == 3) {
+                    if ( $comportamiento[0]['nota_periodo_tres'] == 3) {
                         $desempenio3 = 'Alto';
-                    } elseif ( $item['nota_periodo_tres'] == 2) {
+                    } elseif ( $comportamiento[0]['nota_periodo_tres'] == 2) {
                         $desempenio3 = 'Medio';
                     } else {
                         $desempenio3 = 'Bajo';

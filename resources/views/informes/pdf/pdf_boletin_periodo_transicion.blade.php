@@ -175,7 +175,7 @@
             <img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
           @endif
           @if($boletin['data_comportamiento']['desempenio'] == 'Bajo')
-            <img src="{{ asset('/assets/img/triste1.svg') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
+            <img src="{{ asset('/assets/img/triste2.png') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
           @endif
         </td>
       </tr>
