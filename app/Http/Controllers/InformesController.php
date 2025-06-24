@@ -360,7 +360,7 @@ class InformesController extends Controller
             if (!empty($comportamiento)) {
                 if ($idPeriodo == 1) {
 
-                    if ( $item['nota_periodo_uno'] = 3) {
+                    if ( $item['nota_periodo_uno'] == 3) {
                         $desempenio1 = 'Alto';
                     } elseif ( $item['nota_periodo_uno'] == 2) {
                         $desempenio1 = 'Medio';
@@ -375,7 +375,7 @@ class InformesController extends Controller
                     ];
                 } elseif ($idPeriodo == 2) {
                     
-                    if ( $item['nota_periodo_dos'] = 3) {
+                    if ( $item['nota_periodo_dos'] == 3) {
                         $desempenio2 = 'Alto';
                     } elseif ( $item['nota_periodo_dos'] == 2) {
                         $desempenio2 = 'Medio';
@@ -389,7 +389,7 @@ class InformesController extends Controller
                     ];
                 } else {
 
-                    if ( $item['nota_periodo_tres'] = 3) {
+                    if ( $item['nota_periodo_tres'] == 3) {
                         $desempenio3 = 'Alto';
                     } elseif ( $item['nota_periodo_tres'] == 2) {
                         $desempenio3 = 'Medio';

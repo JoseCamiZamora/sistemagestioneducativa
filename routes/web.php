@@ -123,8 +123,11 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/configuracion/consultar_lista_anios/{idDocente?}/{idAnio?}', 'ConfiguracionController@consultar_lista_anios');
    Route::get('/configuracion/validar_curso_asociado/{idAnio?}/{idCurso?}/{idEstudiante?}', 'ConfiguracionController@validar_curso_asociado');
    Route::post('/configuracion/adicionar_curso_estudiante', 'ConfiguracionController@adicionar_curso_estudiante');
-   Route::get('/configuracion/listado_docentes', 'ConfiguracionController@listado_docentes');
    Route::get('/configuracion/consultar_lista_director_grupo/{idDocente?}/{idAnio?}', 'ConfiguracionController@consultar_lista_director_grupo');
+
+   Route::get('/configuracion/listado_conceptos', 'ConfiguracionController@listado_conceptos');
+   Route::get('/configuracion/form_nuevo_concepto', 'ConfiguracionController@form_nuevo_concepto');
+
 
 
    // Rutas Evaluacion

@@ -86,7 +86,7 @@
     <table border class='table table-generic table-strech table-hover'>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN COGNITIVA</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN COGNITIVA</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -110,7 +110,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN COMUNICATIVA</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN COMUNICATIVA</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -134,7 +134,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ETICA</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN ETICA</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -158,7 +158,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ESTETICA</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN ESTETICA</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -182,7 +182,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN SOCIOAFECTIVA</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN SOCIOAFECTIVA</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -206,7 +206,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN CORPORAL</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN CORPORAL</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>
@@ -230,7 +230,7 @@
       </tbody>
       <thead>
         <tr>
-          <th colspan="3" class="text-center">EVALUACIÓN DIMENCIÓN ESPIRITUAL</th>
+          <th colspan="3" class="text-center">EVALUACIÓN DIMENSIÓN ESPIRITUAL</th>
         </tr>
         <tr>
           <th style="font-size: 14px;">Ítem Evaluar</th>

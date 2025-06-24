@@ -17,6 +17,7 @@ use App\EstudiantesCurso;
 use App\TipoCursos;
 use App\ConfClasesDocente;
 use App\ConfDirectorGrupo;
+use App\ConceptosEvaluacion;
 
 
 use PDF;
@@ -88,6 +89,13 @@ class ConfiguracionController extends Controller
         $usuarioactual = Auth::user();
         $lstAnios = ConfAnios::where("estado", "=", 'A')->paginate(50);
         return view("configuracion.listado_anios")->with("lstAnios", $lstAnios)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
+    public function  listado_conceptos() {
+        $usuarioactual = Auth::user();
+        $lstConceptos = ConceptosEvaluacion::where("estado", "=", 'A')->paginate(50);
+        return view("configuracion.listado_conceptos")->with("lstConceptos", $lstConceptos)
         ->with("usuarioactual", $usuarioactual);
     }
 
@@ -654,6 +662,23 @@ class ConfiguracionController extends Controller
         $accion->delete();
         return response()->json([ 'estado' => 'borrada' ],200);  
     }
+
+    public function form_nuevo_concepto(){
+        $usuario_actual=Auth::user();
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::all();
+        $cursos = Grados::all();
+        $materias = Materias::all();
+
+
+        if( $usuario_actual->rol!=1 ){  
+            return view("mensajes.msj_no_autorizado")->with("msj","no tiene autorizacion para acceder a esta seccion"); 
+        }
+        return view("configuracion.form_nueva_clasificacion")
+            ->with("usuario_actual",$usuario_actual);
+    }
+
+   
 
     
 

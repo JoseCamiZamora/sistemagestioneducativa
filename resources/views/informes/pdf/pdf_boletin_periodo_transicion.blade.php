@@ -135,7 +135,7 @@
       <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 15px;" >
         <thead>
           <tr>
-            <th style="text-align: left;">DIMENCION {{ $materia['dimencion'] }}</th>
+            <th style="text-align: left;">DIMENSIÓN {{ $materia['dimencion'] }}</th>
             <th style="text-align: Center;">Logro</th>
           </tr>
         </thead>

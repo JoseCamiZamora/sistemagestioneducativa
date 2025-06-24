@@ -18,6 +18,11 @@ function IN_form_crear_new_anio(){
    }) ;
 }
 
+function mostrarTextoCompleto(texto) {
+  $("#contenido_modal_concepto").html(texto);
+  $('#modalTextoConcepto').modal('show');
+}
+
 function IN_form_crear_new_materia(){
   
   $('#modal_materia').modal();
@@ -117,6 +122,28 @@ function IN_form_crear_new_clasificacion(){
      SU_revise_conexion();
    }) ;
 }
+
+function IN_form_crear_new_concepto(){
+  
+  $('#modal_concepto').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_concepto";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_concepto").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+
 
 $(document).on("submit","#f_adicionar_nueva_materia",function(e){
   //funcion para crear un nuevo usuario
