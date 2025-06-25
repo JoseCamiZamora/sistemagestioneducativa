@@ -125,7 +125,7 @@ function IN_form_crear_new_clasificacion(){
 
 function IN_form_crear_new_concepto(){
   
-  $('#modal_concepto').modal();
+  $('#modal_nuevo_concepto').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -134,7 +134,7 @@ function IN_form_crear_new_concepto(){
     url: miurl
     }).done( function(resul){
       $('.preloader').fadeOut();
-      $("#contenido_modal_concepto").html(resul);
+      $("#contenido_modal_nuevo_concepto").html(resul);
    
     }).fail( function() 
    {
@@ -1002,3 +1002,94 @@ function eliminarAsociacion(idAsociacion){
   });
 
 }
+
+function infoMateriasConcepto(idAnio,idDocente){
+ 
+  $('.preloader').fadeIn();
+
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/info_materia_docente/"+idAnio+"/"+idDocente+"";
+  $.ajax({
+  // la URL para la petición
+    url : miurl,
+  })
+  .done(function(resul) {
+    var data = resul.materias;
+    var mateHtmlteams = '';
+    mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
+    data.forEach(function(citi){
+      mateHtmlteams += '<option value="'+citi.id_materia+'" class="">'+citi.nom_materia+'</option>';
+    })
+    $('#materia').html(mateHtmlteams);
+    document.getElementById("materia").disabled = false;
+
+  $('.preloader').fadeOut();
+     
+  }).fail(function(err){
+      $('.preloader').fadeOut();
+      SU_revise_conexion();    
+  });
+
+
+}
+
+function infoCursosConcepto(idMateria, idDocente){
+ 
+  $('.preloader').fadeIn();
+  var idAnio = document.getElementById("anio").value;
+
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/info_cursos_docente/"+idAnio+"/"+idDocente+"/"+idMateria+"";
+  $.ajax({
+  // la URL para la petición
+    url : miurl,
+  })
+  .done(function(resul) {
+    var dataC = resul.cursos;
+    var mateHtmlteams = '';
+    mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
+    dataC.forEach(function(curso){
+      mateHtmlteams += '<option value="'+curso.id+'" class="">'+curso.nombre+'</option>';
+    })
+    $('#curso').html(mateHtmlteams);
+    document.getElementById("curso").disabled = false;
+
+  $('.preloader').fadeOut();
+     
+  }).fail(function(err){
+      $('.preloader').fadeOut();
+      SU_revise_conexion();    
+  });
+
+
+}
+
+$(document).on("submit","#f_nuevo_concepto",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/nuevo_concepto";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+  console.log(resul);
+     $('.preloader').fadeOut();
+     $("#contenido_modal_nuevo_concepto").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+

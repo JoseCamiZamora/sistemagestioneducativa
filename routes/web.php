@@ -127,6 +127,10 @@ Route::group(['middleware' => 'auth'], function () {
 
    Route::get('/configuracion/listado_conceptos', 'ConfiguracionController@listado_conceptos');
    Route::get('/configuracion/form_nuevo_concepto', 'ConfiguracionController@form_nuevo_concepto');
+   Route::get('/configuracion/info_materia_docente/{idAnio?}/{idDocente?}', 'ConfiguracionController@info_materia_docente');
+   Route::get('/configuracion/info_cursos_docente/{idAnio?}/{idDocente?}/{idMateria?}', 'ConfiguracionController@info_cursos_docente');
+   Route::post('/configuracion/nuevo_concepto', 'ConfiguracionController@nuevo_concepto');
+   
 
 
 

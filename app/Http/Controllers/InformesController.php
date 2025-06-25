@@ -537,10 +537,30 @@ class InformesController extends Controller
         $anio = ConfAnios::find($idAnio);
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
+        $observacionesFinales = ObservacionEstudiante::all();
 
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
 
         $reporte = [];
-        foreach ($evaluaciones as $item) {
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
             $idEstudiante = $item['id_estudiante'];
             $idMateria = $item['id_materia'];
 
@@ -603,6 +623,28 @@ class InformesController extends Controller
                 }
             }
 
+            $anioFiltro = $anio->id;
+            $cursoFiltro = $grado->id;
+            $periodoFiltro = $periodoClases->id;
+
+            $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro, $periodoFiltro) {
+                return $item['id_estudiante'] == $idEstudiante &&
+                       $item['id_anio'] == $anioFiltro &&
+                       $item['id_curso'] == $cursoFiltro &&
+                       $item['id_periodo'] == $periodoFiltro;
+            }));
+
+            $observacionFinal = "";
+            if(!empty($filtradosObs)){
+                if ($idPeriodo == 1) {
+                    $observacionFinal = $filtradosObs[0]['obs_per1']?? '';
+                } elseif ($idPeriodo == 2) {
+                   $observacionFinal = $filtradosObs[0]['obs_per2'] ?? '';
+                } else {
+                   $observacionFinal = $filtradosObs[0]['obs_per3'] ?? '';
+                }
+            }
+
             // ✅ Inicializar el estudiante si aún no está
             if (!isset($reporte[$idEstudiante])) {
                 $reporte[$idEstudiante] = [
@@ -610,6 +652,7 @@ class InformesController extends Controller
                         'id_estudiante'  => $item['id_estudiante'],
                         'nom_estudiante' => $item['nom_estudiante'],
                         'anio'           => $item['des_anio'],
+                        'observacion'    => $observacionFinal ?? "",
                     ],
                     'data_comportamiento' => !empty($periodosComp) ? [
                         'id_materia'        => null,

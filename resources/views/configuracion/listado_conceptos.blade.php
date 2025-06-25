@@ -25,7 +25,8 @@
     @endphp
 	  <div class="row">
 	    <div class="col">
-        <a href="javascript:void(0);" onclick="IN_form_crear_new_concepto();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registrar Nueva Materia</a>
+        <a href="javascript:void(0);" onclick="IN_form_crear_new_concepto();" class="mb-2 btn btn-sm btn-outline-primary mr-1" >
+          <i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registrar Nuevo Concepto</a>
 	    </div>
 	  </div>
 	  <div class="row">
@@ -89,16 +90,16 @@
 </div>
   <!-- End Default Light Table -->
 </div>
-<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_concepto">
-  <div class="modal-dialog modal-lg" style="max-width: 50%;">
+<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_nuevo_concepto">
+  <div class="modal-dialog modal-lg" style="max-width: 70%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nueva Concepto</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nuevo Concepto</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
-      <div class="modal-body" id="contenido_modal_concepto" style='min-height: 260px;'>
+      <div class="modal-body" id="contenido_modal_nuevo_concepto" style='min-height: 260px;'>
       </div>
     </div>
   </div>
@@ -121,7 +122,7 @@
   <div class="modal-dialog modal-lg" style="max-width: 40%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Tecto concepto completo</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Texto concepto completo</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
       </div>
       <div class="modal-body" id="contenido_modal_concepto" style='min-height: 260px;'>

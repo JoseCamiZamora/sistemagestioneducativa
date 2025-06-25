@@ -85,7 +85,7 @@
     </div>
     
     <div class="form-row col-md-12 mt-2">
-     <textarea id="observacion" name="observacion" rows="5" maxlength="2000" style="width: 100%;font-size: 15px;"></textarea>
+     <textarea id="observacion" name="observacion" rows="5" maxlength="1000" style="width: 100%;font-size: 15px;"></textarea>
     </div>
     <br>
     <div class="form-row col-md-12 mt-2  text-center">

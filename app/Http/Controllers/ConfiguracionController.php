@@ -664,19 +664,100 @@ class ConfiguracionController extends Controller
     }
 
     public function form_nuevo_concepto(){
+       
         $usuario_actual=Auth::user();
+        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::all();
         $cursos = Grados::all();
         $materias = Materias::all();
 
-
-        if( $usuario_actual->rol!=1 ){  
-            return view("mensajes.msj_no_autorizado")->with("msj","no tiene autorizacion para acceder a esta seccion"); 
-        }
-        return view("configuracion.form_nueva_clasificacion")
-            ->with("usuario_actual",$usuario_actual);
+        return view("configuracion.form_nuevo_concepto")
+            ->with("docente",$docente)
+            ->with("periodos",$periodos)
+            ->with("anios",$anios)
+            ->with("cursos",$cursos)
+            ->with("materias",$materias);
     }
+
+    public function  info_materia_docente($idAnio=null,$idDocente=null) {
+
+        $clasesDocente =  ConfClasesDocente::where("id_docente",$idDocente)->where("id_anio", $idAnio)->get();
+        $agrupados = [];
+
+        foreach ($clasesDocente as $item) {
+            $clave = $item['id_materia'] . '-' . $item['nom_materia'] . '-' . $item['json_cursos'];
+
+            if (!isset($agrupados[$clave])) {
+                $agrupados[$clave] = [
+                    'id_materia' => $item['id_materia'],
+                    'nom_materia' => $item['nom_materia'],
+                    'json_cursos' => json_decode($item['json_cursos'], true),
+                ];
+            }
+        }
+
+        // Si prefieres un array indexado en lugar de asociativo:
+        $agrupadosFinal = array_values($agrupados);
+       
+        return response()->json([ 'materias' => $agrupadosFinal ],200);
+
+    }
+
+    public function  info_cursos_docente($idAnio=null,$idDocente=null,$idMateria=null) {
+
+        $clasesDocente =  ConfClasesDocente::where("id_docente",$idDocente)->where("id_anio", $idAnio)->where("id_materia", $idMateria)->first();
+        $dataCursos = json_decode($clasesDocente->json_cursos);
+       
+        return response()->json([ 'cursos' => $dataCursos, 'docente' => $clasesDocente  ],200);
+
+    }
+
+    public function nuevo_concepto(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idMateria = $request->input('materia');
+        $materia = Materias::find($idMateria);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $clasesDocente =  ConceptosEvaluacion::where("id_anio", $idAnio)
+                                            ->where("id_materia", $idMateria)
+                                            ->where("id_grado", $idCurso)
+                                            ->where("id_periodo", $idPeriodo)
+                                            ->where("desempenio", (string)$desempenio)->first();
+        //dd($clasesDocente);
+        if($clasesDocente != null){
+             return response()->json([
+                'success' => false,
+                'message' => 'La cantidad no puede ser negativa'
+            ], 400);
+
+        }
+        $concepto = new ConceptosEvaluacion();
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_grado = $curso->id;
+        $concepto->nom_grado = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->id_materia = $materia->id;
+        $concepto->nom_materia = $materia->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('concepto')?$request->input('concepto'):"";
+
+        if($concepto->save()){
+            return view("configuracion.mensajes.msj_confirmacion")->with("msj","La clasificación fue creado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
 
    
 
