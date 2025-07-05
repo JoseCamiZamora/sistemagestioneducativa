@@ -53,7 +53,7 @@
                 <img src="{{ asset('/assets/img/cognitivo.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
             
               <h4 style='margin-bottom: 1px;'>Dimensiones</h4>
-              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de dimensiones</span>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de dimen</span>
               </a>
             
           </div>
@@ -96,6 +96,80 @@
       </div>
     </div>
     @endif
+    @if($usuario_actual->rol == 2)
+    @if($docenteCurso->id_curso != 1)
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/configuracion/listado_conceptos') }}" style='width: 100%'>
+          
+                <img src="{{ asset('/assets/img/satisfaccion.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;'>Evaluación</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    @else
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/configuracion/listado_dimensiones') }}" style='width: 100%'>
+          
+                <img src="{{ asset('/assets/img/cognitivo.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;'>Dimensiones</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de dimen</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/configuracion/listado_conceptos_trans') }}" style='width: 100%'>
+          
+                <img src="{{ asset('/assets/img/conceptos.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;'>Conceptos</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    @endif
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/configuracion/listado_concepto_comportamiento') }}" style='width: 100%'>
+          
+                <img src="{{ asset('/assets/img/decision.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;'>Comportamiento</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    @endif
+    
 
 
       <div class="col-md-12 ">
