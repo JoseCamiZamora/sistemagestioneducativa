@@ -78,15 +78,15 @@
           <TD style="text-align: center">CÓDIGO </TD>
         </TR>
         <TR>
-          <TD style="text-align: center">EF-FO-11</TD>
+          <TD style="text-align: center">EF-FO-29</TD>
         </TR>
         <TR>
-          <TD style="text-align: center">EDUCACION FORMAL – CENTRO EDUCATIVO CORAZON DE MARIA </TD>
+          <TD style="text-align: center">PROCESO DE EDUCACIÓN FORMAL CENTRO EDUCATIVO CORAZON DE MARIA</TD>
           <TD style="text-align: center">VERSION 2</TD>
         </TR>
         <TR>
-            <TD style="text-align: center">FORMATO DE EVIDENCIAS DE CALIFICACIONES</TD>
-            <TD style="text-align: center"> 23/01/2025</TD>
+            <TD style="text-align: center">INFORME ESCOLAR DE VALORACION</TD>
+            <TD style="text-align: center">28/05/2024</TD>
         </TR>
       </thead>
     </table>

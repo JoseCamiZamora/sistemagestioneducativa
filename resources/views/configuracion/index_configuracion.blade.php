@@ -94,7 +94,7 @@
         <div class="card-body px-0 pb-0" >
           <div class="d-flex px-3 text-center">
           
-              <a href="{{ url('/configuracion/listado_conceptos') }}" style='width: 100%'>
+              <a href="{{ url('/configuracion/index_conceptos') }}" style='width: 100%'>
           
                 <img src="{{ asset('/assets/img/papeleria.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
             

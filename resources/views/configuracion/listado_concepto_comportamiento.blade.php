@@ -11,7 +11,7 @@
 	  <div class="page-header row no-gutters py-4">
 	    <div class="col">
 	      <span class="page-subtitle">Modulo Configuracion </span>
-	        <h4 class="page-title" >Listado de conceptos para evaluación<span style='font-size: 0.6em;'></span> </h4>
+	        <h4 class="page-title" >Listado de conceptos para evaluar el comportamiento<span style='font-size: 0.6em;'></span> </h4>
 	       <div  class=" ml-auto" style="text-align: right; margin-top: -35px;">
 	        Atrás
 	        <a href="{{ url('configuracion/index_conceptos') }}" class="mb-2 btn btn-sm  mr-1 btn-redondo-suave text-primary" title="salir a menu" ><i class="fa fa-chevron-left" aria-hidden="true"></i> </a>
@@ -25,7 +25,7 @@
     @endphp
 	  <div class="row">
 	    <div class="col">
-        <a href="javascript:void(0);" onclick="IN_form_crear_new_concepto();" class="mb-2 btn btn-sm btn-outline-primary mr-1" >
+        <a href="javascript:void(0);" onclick="IN_form_crear_new_concepto_comp();" class="mb-2 btn btn-sm btn-outline-primary mr-1" >
           <i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registrar Nuevo Concepto</a>
 	    </div>
 	  </div>
@@ -36,9 +36,8 @@
               <tr>
                 <th scope="col" class="th-gris text-center" style="width: 50px;">No.</th>
                 <th scope="col" class="th-gris text-left" >Año concepto</th>
-                <th scope="col" class="th-gris text-left" >Grado</th>
                 <th scope="col" class="th-gris text-left" >Periodo</th>
-                <th scope="col" class="th-gris text-left " >Materia</th>
+                <th scope="col" class="th-gris text-left" >Grado</th>
                 <th scope="col" class="th-gris text-left " >Desempeño</th>
                 <th scope="col" class="th-gris text-left " >Concepto</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
@@ -47,29 +46,27 @@
             </thead>
             <tbody>
 
-             @foreach($lstConceptos as $concepto)
+             @foreach($lstConceptosComp as $concepto)
               <tr>
                 <td class='text-center'>{{ $loop->index + 1 }}</td>
                 <td class='td-titulo text-left'>{{ $concepto->nom_anio }}</td>
-                <td class='td-titulo text-left'>{{ $concepto->nom_grado }}</td>
                 <td class='td-titulo text-left'>{{ $concepto->nom_periodo }}</td>
-                <td class='td-titulo text-left'>{{ $concepto->nom_materia }}</td>
+                <td class='td-titulo text-left'>{{ $concepto->nom_curso }}</td>
                 <td class='td-titulo text-left'>{{ $concepto->desempenio }}</td>
-
                 <td class='td-titulo text-left' style="max-width: 550px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                   {{ \Illuminate\Support\Str::limit($concepto->descripcion, 140) }}
                  <a href="javascript:void(0);" onclick="mostrarTextoCompleto({{ json_encode($concepto->descripcion) }})">Ver más</a>
                 </td>
 
                 <td>
-                  <a class="nav-link nav-link-icon text-center" href="javascript:void(0);" onclick="editarconcepto({{ $concepto->id }})">
+                  <a class="nav-link nav-link-icon text-center" href="javascript:void(0);" onclick="editarconceptoComp({{ $concepto->id }})">
                     <div class="nav-link-icon__wrapper">
                       <i class="fa fa-edit" title="Editar concepto"></i><br>
                     </div>
                   </a>
                 </td>
                 <td>
-                  <a class="nav-link nav-link-icon text-center" href="javascript:void(0);" onclick="borrarconcepto({{ $concepto->id }})">
+                  <a class="nav-link nav-link-icon text-center" href="javascript:void(0);" onclick="borrarconceptoComp({{ $concepto->id }})">
                     <div class="nav-link-icon__wrapper">
                       <i class="fa fa-trash" title="Borrar concepto"></i><br>
                     </div>
@@ -80,36 +77,36 @@
             </tbody>
                <tfoot>
               <tr>
-                   <td colspan='4'><span style='font-size:0.9em'><b>Total:</b> {{ $lstConceptos->count() }} Conceptos </span></td>
+                   <td colspan='4'><span style='font-size:0.9em'><b>Total:</b> {{ $lstConceptosComp->count() }} Conceptos </span></td>
               </tr>
               </tfoot>
           </table>
-          {{ $lstConceptos->links() }}
+          {{ $lstConceptosComp->links() }}
 	    </div> 
 	  </div>
 </div>
   <!-- End Default Light Table -->
 </div>
-<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_nuevo_concepto">
+<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_nuevo_concepto_comp">
   <div class="modal-dialog modal-lg" style="max-width: 70%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nuevo Concepto</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Crear Nuevo Concepto Comportamiento</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">x</button>
       </div>
-      <div class="modal-body" id="contenido_modal_nuevo_concepto" style='min-height: 260px;'>
+      <div class="modal-body" id="contenido_modal_nuevo_concepto_comp" style='min-height: 260px;'>
       </div>
     </div>
   </div>
 </div>
-<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_editar_concepto">
+<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_editar_concepto_comp">
   <div class="modal-dialog modal-lg" style="max-width: 70%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Actualziar Concepto</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Actualziar Concepto Comportamiento</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">x</button>
       </div>
-      <div class="modal-body" id="contenido_modal_editar_concepto" style='min-height: 260px;'>
+      <div class="modal-body" id="contenido_modal_editar_concepto_comp" style='min-height: 260px;'>
       </div>
     </div>
   </div>
@@ -118,7 +115,7 @@
   <div class="modal-dialog modal-lg" style="max-width: 40%;">
     <div class="modal-content">
       <div class="modal-header" id="datohtml">
-        <h4 class="modal-title" id="titul_modal_usuarios">Texto concepto completo</h4>
+        <h4 class="modal-title" id="titul_modal_usuarios">Texto concepto comportamiento completo</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar">X</button>
       </div>
       <div class="modal-body" id="contenido_modal_concepto" style='min-height: 260px;'>

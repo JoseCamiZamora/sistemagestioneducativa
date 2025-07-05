@@ -18,6 +18,10 @@ use App\TipoCursos;
 use App\ConfClasesDocente;
 use App\ConfDirectorGrupo;
 use App\ConceptosEvaluacion;
+use App\ConceptosComportamiento;
+use App\ConceptosEvaluacionTransicion;
+use App\ItemEvaluarTransicion;
+
 
 
 use PDF;
@@ -64,6 +68,14 @@ class ConfiguracionController extends Controller
 
     }
 
+    public function index_conceptos() {
+        
+        $usuarioactual=Auth::user();
+        $docenteCurso =  ConfDirectorGrupo::where("id_docente",$usuarioactual->id_persona)->first();
+        return view('configuracion.index_conceptos')->with('usuario_actual', $usuarioactual)->with('docenteCurso', $docenteCurso);
+
+    }
+
     public function listado_docentes() {
         $usuarioactual = Auth::user();
         $lstDocentes = Docentes::where("estado", "=", 'A')->paginate(50);
@@ -96,6 +108,27 @@ class ConfiguracionController extends Controller
         $usuarioactual = Auth::user();
         $lstConceptos = ConceptosEvaluacion::where("estado", "=", 'A')->paginate(50);
         return view("configuracion.listado_conceptos")->with("lstConceptos", $lstConceptos)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
+    public function  listado_concepto_comportamiento() {
+        $usuarioactual = Auth::user();
+        $lstConceptosComp = ConceptosComportamiento::where("estado", "=", 'A')->paginate(50);
+        return view("configuracion.listado_concepto_comportamiento")->with("lstConceptosComp", $lstConceptosComp)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
+    public function  listado_conceptos_trans() {
+        $usuarioactual = Auth::user();
+        $lstConceptos = ConceptosEvaluacionTransicion::where("estado", "=", 'A')->paginate(50);
+        return view("configuracion.listado_conceptos_trans")->with("lstConceptos", $lstConceptos)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
+    public function  listado_dimensiones() {
+        $usuarioactual = Auth::user();
+        $lstDimensiones = ItemEvaluarTransicion::where("estado", "=", 'A')->paginate(20);
+        return view("configuracion.listado_dimensiones")->with("lstDimensiones", $lstDimensiones)
         ->with("usuarioactual", $usuarioactual);
     }
 
@@ -666,10 +699,12 @@ class ConfiguracionController extends Controller
     public function form_nuevo_concepto(){
        
         $usuario_actual=Auth::user();
+        
         $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::all();
         $cursos = Grados::all();
+       
         $materias = Materias::all();
 
         return view("configuracion.form_nuevo_concepto")
@@ -677,6 +712,51 @@ class ConfiguracionController extends Controller
             ->with("periodos",$periodos)
             ->with("anios",$anios)
             ->with("cursos",$cursos)
+            ->with("materias",$materias);
+    }
+
+    public function form_nuevo_concepto_trans(){
+       
+        $usuario_actual=Auth::user();
+        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+        $idCurso = $docente->id_curso;
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::all();
+        $cursos = Grados::where("id",$idCurso )->get();
+        
+
+        return view("configuracion.form_nuevo_concepto_trans")
+            ->with("docente",$docente)
+            ->with("periodos",$periodos)
+            ->with("anios",$anios)
+            ->with("cursos",$cursos);
+    }
+
+    public function form_nuevo_concepto_comp(){
+       
+        $usuario_actual=Auth::user();
+        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+        $idCurso = $docente->id_curso;
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::all();
+        $cursos = Grados::where("id",$idCurso )->get();
+        
+
+        return view("configuracion.form_nuevo_concepto_comp")
+            ->with("docente",$docente)
+            ->with("periodos",$periodos)
+            ->with("anios",$anios)
+            ->with("cursos",$cursos);
+    }
+
+    public function form_nueva_dimension(){
+       
+        $usuario_actual=Auth::user();
+        $materias = Materias::where("tipo_curso", "=", 1)->paginate(50);
+        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+
+        return view("configuracion.form_nueva_dimension")
+            ->with("docente",$docente)
             ->with("materias",$materias);
     }
 
@@ -735,8 +815,8 @@ class ConfiguracionController extends Controller
         if($clasesDocente != null){
              return response()->json([
                 'success' => false,
-                'message' => 'La cantidad no puede ser negativa'
-            ], 400);
+                'message' => 'NO'
+            ], 200);
 
         }
         $concepto = new ConceptosEvaluacion();
@@ -749,14 +829,357 @@ class ConfiguracionController extends Controller
         $concepto->id_materia = $materia->id;
         $concepto->nom_materia = $materia->nombre;
         $concepto->desempenio = $desempenio;
-        $concepto->descripcion = $request->input('concepto')?$request->input('concepto'):"";
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+        $concepto->estado = 'A';
 
         if($concepto->save()){
-            return view("configuracion.mensajes.msj_confirmacion")->with("msj","La clasificación fue creado exitosamente");
+           return response()->json([
+                'success' => true,
+                'message' => 'SI'
+            ], 200);
         }else{
             return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
         }
     }
+
+    public function nuevo_concepto_comp(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $clasesDocente =  ConceptosComportamiento::where("id_anio", $idAnio)
+                                            ->where("id_curso", $idCurso)
+                                            ->where("id_periodo", $idPeriodo)
+                                            ->where("desempenio", (string)$desempenio)->first();
+        //dd($clasesDocente);
+        if($clasesDocente != null){
+             return response()->json([
+                'success' => false,
+                'message' => 'NO'
+            ], 200);
+
+        }
+        $concepto = new ConceptosComportamiento();
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_curso = $curso->id;
+        $concepto->nom_curso = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+        $concepto->estado = 'A';
+
+        if($concepto->save()){
+           return response()->json([
+                'success' => true,
+                'message' => 'SI'
+            ], 200);
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function nuevo_concepto_trans(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $clasesDocente =  ConceptosEvaluacionTransicion::where("id_anio", $idAnio)
+                                            ->where("id_grado", $idCurso)
+                                            ->where("id_periodo", $idPeriodo)
+                                            ->where("desempenio", (string)$desempenio)->first();
+        //dd($clasesDocente);
+        if($clasesDocente != null){
+             return response()->json([
+                'success' => false,
+                'message' => 'NO'
+            ], 200);
+
+        }
+        $concepto = new ConceptosEvaluacionTransicion();
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_grado = $curso->id;
+        $concepto->nom_grado = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+        $concepto->estado = 'A';
+
+        if($concepto->save()){
+           return response()->json([
+                'success' => true,
+                'message' => 'SI'
+            ], 200);
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function nueva_dimension(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idMateria = $request->input('materia');
+        $materia = Materias::find($idMateria);
+
+        $dimension = new ItemEvaluarTransicion();
+        $dimension->id_materia = $materia->id;
+        $dimension->nom_materia = $materia->nombre;
+        $dimension->descripcion = $request->input('dimension')?$request->input('dimension'):"";
+        $dimension->estado = 'A';
+
+        if($dimension->save()){
+           return view("configuracion.mensajes.msj_confirmacion")->with("msj","La dimension fue almacenada exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    
+
+    
+
+    public function frm_editar_concepto($idConcepto= null){
+
+        $concepto = ConceptosEvaluacion::find($idConcepto);
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
+        $anios = ConfAnios::all();
+        $periodos = PeriodosClases::all();
+        
+        $clasesDocente =  ConfClasesDocente::where("id_docente",$docente->id)->where("id_anio", $concepto->id_anio)->get();
+       
+        $agrupados = [];
+        foreach ($clasesDocente as $item) {
+            $clave = $item->id_materia . '-' . $item->nom_materia;
+
+            if (!isset($agrupados[$clave])) {
+                $agrupados[$clave] = [
+                    'id' => $item->id_materia,
+                    'nombre' => $item->nom_materia
+                ];
+            }
+        }
+
+        $materias = array_values($agrupados);
+        $clasesDocenteCurso =  ConfClasesDocente::where("id_docente",$docente->id)->where("id_anio", $concepto->id_anio)->where("id_materia", $concepto->id_materia)->first();
+        $cursos = json_decode($clasesDocenteCurso->json_cursos);
+
+
+        return view('configuracion.form_editar_concepto')->with('docente',$docente)
+                                                        ->with("concepto",$concepto)
+                                                        ->with("docente",$docente)
+                                                        ->with("periodos",$periodos)
+                                                        ->with("anios",$anios)
+                                                        ->with("cursos",$cursos)
+                                                        ->with("materias",$materias);
+    }
+
+    public function frm_editar_concepto_comp($idConcepto= null){
+
+        $concepto = ConceptosComportamiento::find($idConcepto);
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
+        $anios = ConfAnios::all();
+        $periodos = PeriodosClases::all();
+
+        $docenteCurso =  ConfDirectorGrupo::where("id_docente",$docente->id)->first();
+        $idCurso = $docenteCurso->id_curso;
+        $cursos = Grados::where("id",$idCurso )->get();
+        
+
+        return view('configuracion.form_editar_concepto_comp')->with('docente',$docente)
+                                                        ->with("concepto",$concepto)
+                                                        ->with("docente",$docente)
+                                                        ->with("periodos",$periodos)
+                                                        ->with("anios",$anios)
+                                                        ->with("cursos",$cursos);
+    }
+
+    public function frm_editar_concepto_trans($idConcepto= null){
+
+        $concepto = ConceptosEvaluacionTransicion::find($idConcepto);
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
+        $anios = ConfAnios::all();
+        $periodos = PeriodosClases::all();
+
+        $docenteCurso =  ConfDirectorGrupo::where("id_docente",$docente->id)->first();
+        $idCurso = $docenteCurso->id_curso;
+        $cursos = Grados::where("id",$idCurso )->get();
+        
+
+        return view('configuracion.form_editar_concepto_trans')->with('docente',$docente)
+                                                        ->with("concepto",$concepto)
+                                                        ->with("docente",$docente)
+                                                        ->with("periodos",$periodos)
+                                                        ->with("anios",$anios)
+                                                        ->with("cursos",$cursos);
+    }
+
+    public function frm_editar_dimension($idDimension= null){
+
+        $dimension = ItemEvaluarTransicion::find($idDimension);
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
+        $materias = Materias::where("tipo_curso", "=", 1)->get();
+
+        return view('configuracion.form_editar_dimension')->with('docente',$docente)
+                                                        ->with("dimension",$dimension)
+                                                        ->with("materias",$materias);
+    }
+
+    public function  borrar_concepto($idConcepto=null) {
+        $concepto = ConceptosEvaluacion::find($idConcepto);
+        $concepto->delete();
+        return response()->json([ 'estado' => 'borrada' ],200);
+    }
+
+    public function  borrar_concepto_comp($idConcepto=null) {
+        $concepto = ConceptosComportamiento::find($idConcepto);
+        $concepto->delete();
+        return response()->json([ 'estado' => 'borrada' ],200);
+    }
+
+    public function  borrar_concepto_trans($idConcepto=null) {
+        $concepto = ConceptosEvaluacionTransicion::find($idConcepto);
+        $concepto->delete();
+        return response()->json([ 'estado' => 'borrada' ],200);
+    }
+
+    public function  borrar_dimension($idDimencion=null) {
+        $dimension = ItemEvaluarTransicion::find($idDimencion);
+        $dimension->delete();
+        return response()->json([ 'estado' => 'borrada' ],200);
+    }
+    
+
+    public function editar_concepto(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idMateria = $request->input('materia');
+        $materia = Materias::find($idMateria);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $concepto = ConceptosEvaluacion::find($request->input('id_concepto'));
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_grado = $curso->id;
+        $concepto->nom_grado = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->id_materia = $materia->id;
+        $concepto->nom_materia = $materia->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+
+        if($concepto->save()){
+           return view("configuracion.mensajes.msj_confirmacion")->with("msj","El concepto fue actualziado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function editar_concepto_comp(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $concepto = ConceptosComportamiento::find($request->input('id_concepto'));
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_curso = $curso->id;
+        $concepto->nom_curso = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+
+        if($concepto->save()){
+           return view("configuracion.mensajes.msj_confirmacion")->with("msj","El concepto fue actualziado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function editar_concepto_trans(Request $request){
+        
+        //crea una cuenta en el sistema
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
+        $idCurso = $request->input('curso');
+        $curso = Grados::find($idCurso);
+        $idPeriodo = $request->input('periodo');
+        $periodo = PeriodosClases::find($idPeriodo);
+        $desempenio = $request->input('desempenio');
+
+        $concepto = ConceptosEvaluacionTransicion::find($request->input('id_concepto'));
+        $concepto->id_anio = $anio->id;
+        $concepto->nom_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+        $concepto->id_grado = $curso->id;
+        $concepto->nom_grado = $curso->nombre;
+        $concepto->id_periodo = $periodo->id;
+        $concepto->nom_periodo = $periodo->nombre;
+        $concepto->desempenio = $desempenio;
+        $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+
+        if($concepto->save()){
+           return view("configuracion.mensajes.msj_confirmacion")->with("msj","El concepto fue actualziado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+     public function editar_dimension(Request $request){
+        
+         //crea una cuenta en el sistema
+        $idMateria = $request->input('materia');
+        $materia = Materias::find($idMateria);
+
+        $dimension = ItemEvaluarTransicion::find($request->input('id_dimension'));
+        $dimension->id_materia = $materia->id;
+        $dimension->nom_materia = $materia->nombre;
+        $dimension->descripcion = $request->input('dimension')?$request->input('dimension'):"";
+        $dimension->estado = 'A';
+
+        if($dimension->save()){
+           return view("configuracion.mensajes.msj_confirmacion")->with("msj","La dimension fue actualizada exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+
+
+    
+
+    
 
 
    

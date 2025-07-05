@@ -130,9 +130,41 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/configuracion/info_materia_docente/{idAnio?}/{idDocente?}', 'ConfiguracionController@info_materia_docente');
    Route::get('/configuracion/info_cursos_docente/{idAnio?}/{idDocente?}/{idMateria?}', 'ConfiguracionController@info_cursos_docente');
    Route::post('/configuracion/nuevo_concepto', 'ConfiguracionController@nuevo_concepto');
+   Route::get('/configuracion/frm_editar_concepto/{idConcepto?}', 'ConfiguracionController@frm_editar_concepto');
+   Route::get('/configuracion/borrar_concepto/{idConcepto?}', 'ConfiguracionController@borrar_concepto');
+   Route::post('/configuracion/editar_concepto', 'ConfiguracionController@editar_concepto');
+   Route::get('/configuracion/index_conceptos', 'ConfiguracionController@index_conceptos');
+
+   Route::get('/configuracion/listado_concepto_comportamiento', 'ConfiguracionController@listado_concepto_comportamiento');
+   Route::get('/configuracion/form_nuevo_concepto_comp', 'ConfiguracionController@form_nuevo_concepto_comp');
+   Route::post('/configuracion/nuevo_concepto_comp', 'ConfiguracionController@nuevo_concepto_comp');
+   Route::get('/configuracion/frm_editar_concepto_comp/{idConcepto?}', 'ConfiguracionController@frm_editar_concepto_comp');
+   Route::post('/configuracion/editar_concepto_comp', 'ConfiguracionController@editar_concepto_comp');
+   Route::get('/configuracion/borrar_concepto_comp/{idConcepto?}', 'ConfiguracionController@borrar_concepto_comp');
+
+   Route::get('/configuracion/listado_conceptos_trans', 'ConfiguracionController@listado_conceptos_trans');
+   Route::get('/configuracion/form_nuevo_concepto_trans', 'ConfiguracionController@form_nuevo_concepto_trans');
+   Route::post('/configuracion/nuevo_concepto_trans', 'ConfiguracionController@nuevo_concepto_trans');
+   Route::get('/configuracion/frm_editar_concepto_trans/{idConcepto?}', 'ConfiguracionController@frm_editar_concepto_trans');
+   Route::post('/configuracion/editar_concepto_trans', 'ConfiguracionController@editar_concepto_trans');
+   Route::get('/configuracion/borrar_concepto_trans/{idConcepto?}', 'ConfiguracionController@borrar_concepto_trans');
+
+   Route::get('/configuracion/listado_dimensiones', 'ConfiguracionController@listado_dimensiones');
+   Route::get('/configuracion/form_nueva_dimension', 'ConfiguracionController@form_nueva_dimension');
+   Route::post('/configuracion/nueva_dimension', 'ConfiguracionController@nueva_dimension');
+   Route::get('/configuracion/frm_editar_dimension/{idDimencion?}', 'ConfiguracionController@frm_editar_dimension');
+   Route::post('/configuracion/editar_dimension', 'ConfiguracionController@editar_dimension');
+    Route::get('/configuracion/borrar_dimension/{idDimension?}', 'ConfiguracionController@borrar_dimension');
+   
+   
+   
+   
    
 
+   
 
+   
+   
 
    // Rutas Evaluacion
 

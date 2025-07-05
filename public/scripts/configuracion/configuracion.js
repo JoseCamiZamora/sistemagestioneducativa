@@ -1,6 +1,6 @@
 function IN_form_crear_new_anio(){
   
-  $('#modal_anio').modal();
+  $('#modal_anio').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -25,7 +25,7 @@ function mostrarTextoCompleto(texto) {
 
 function IN_form_crear_new_materia(){
   
-  $('#modal_materia').modal();
+  $('#modal_materia').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -45,7 +45,7 @@ function IN_form_crear_new_materia(){
 
 function IN_form_crear_new_actividad(){
   
-  $('#modal_actividad').modal();
+  $('#modal_actividad').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -65,7 +65,7 @@ function IN_form_crear_new_actividad(){
 
 function IN_form_crear_new_periodo(){
   
-  $('#modal_periodo').modal();
+  $('#modal_periodo').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -85,7 +85,7 @@ function IN_form_crear_new_periodo(){
 
 function IN_form_crear_new_curso(){
   
-  $('#modal_curso').modal();
+  $('#modal_curso').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -105,7 +105,7 @@ function IN_form_crear_new_curso(){
 
 function IN_form_crear_new_clasificacion(){
   
-  $('#modal_clasificacion').modal();
+  $('#modal_clasificacion').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -135,6 +135,67 @@ function IN_form_crear_new_concepto(){
     }).done( function(resul){
       $('.preloader').fadeOut();
       $("#contenido_modal_nuevo_concepto").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_concepto_comp(){
+  
+  $('#modal_nuevo_concepto_comp').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_concepto_comp";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_nuevo_concepto_comp").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+
+function IN_form_crear_new_concepto_trans(){
+  
+  $('#modal_nuevo_concepto_trans').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nuevo_concepto_trans";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_nuevo_concepto_trans").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+}
+
+function IN_form_crear_new_dimension(){
+  
+  $('#modal_nuevo_dimension').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/form_nueva_dimension";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_nuevo_dimension").html(resul);
    
     }).fail( function() 
    {
@@ -399,7 +460,7 @@ function validarCheckboxes() {
 }
 
 function editarMateria(idMateria){
-    $('#modal_editar_materia').modal();
+    $('#modal_editar_materia').modal('show');
     $('.preloader').fadeIn();
     var urlraiz=$("#url_raiz_proyecto").val();
     var miurl='';
@@ -421,7 +482,7 @@ function editarMateria(idMateria){
 }
 
 function editarActividad(idActividad){
-  $('#modal_editar_actividad').modal();
+  $('#modal_editar_actividad').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -443,7 +504,7 @@ function editarActividad(idActividad){
 }
 
 function editarPeriodo(idPeriodo){
-  $('#modal_editar_periodo').modal();
+  $('#modal_editar_periodo').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -465,7 +526,7 @@ function editarPeriodo(idPeriodo){
 }
 
 function editarCurso(idCurso){
-  $('#modal_editar_curso').modal();
+  $('#modal_editar_curso').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -487,7 +548,7 @@ function editarCurso(idCurso){
 }
 
 function editarClasificacion(idClasificacion){
-  $('#modal_editar_clasificacion').modal();
+  $('#modal_editar_clasificacion').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -666,6 +727,58 @@ $(document).on("submit","#f_adicionar_editar_anio",function(e){
  });
 });
 
+$(document).on("submit","#f_nueva_dimension",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/nueva_dimension";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_nuevo_dimension").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_editar_dimension",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/editar_dimension";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType : 'html'
+ })
+ .done(function(resul) {
+     $('.preloader').fadeOut();
+     $("#contenido_modal_editar_dimension").html(resul);
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
 
 function borrarMateria(idMateria){
 
@@ -833,7 +946,7 @@ function borrarClasificacion(idClasificacion){
 }
 
 function editarAnio(idAnio){
-  $('#modal_editar_anio').modal();
+  $('#modal_editar_anio').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -853,6 +966,30 @@ function editarAnio(idAnio){
  }) ;
 // body...
 }
+
+function editarDimencion(idDimension){
+  $('#modal_editar_dimension').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_dimension/"+idDimension+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_dimension").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+
 
 function infoClasesConfig(idDocente,idAnio){
   const tbody = document.querySelector("#miTabla tbody");
@@ -932,7 +1069,7 @@ function infoDirGrupo(idDocente,idAnio){
 }
 
 function matricularEstudiante(idEstudiante){
-  $('#modal_asociar_estudiantes').modal();
+  $('#modal_asociar_estudiantes').modal('show');
   $('.preloader').fadeIn();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
@@ -1080,16 +1217,379 @@ $(document).on("submit","#f_nuevo_concepto",function(e){
    url : varurl,
    data : formu.serialize(),
    method: 'POST',
-   dataType : 'html'
+   dataType: 'json',
  })
  .done(function(resul) {
   console.log(resul);
+  if(resul.message == 'NO'){
+    toastr.warning('EL concepto que esta intentanto adicionar ya se enceuntra almacenado. Valida la información e intenta nuevamente ', '¡Advertencia!');
+  }else{
+    toastr.success('EL concepto fue alamacenado exitosamente ', 'Exito!');
+    $('#conceptos').val('');
+
+     //$("#contenido_modal_nuevo_concepto").html(resul);
+  }
      $('.preloader').fadeOut();
-     $("#contenido_modal_nuevo_concepto").html(resul);
   })
  .fail(function(err){
      $('.preloader').fadeOut();
      SU_revise_conexion();    
  });
 });
+
+$(document).on("submit","#f_nuevo_concepto_comp",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/nuevo_concepto_comp";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType: 'json',
+ })
+ .done(function(resul) {
+  console.log(resul);
+  if(resul.message == 'NO'){
+    toastr.warning('EL concepto que esta intentanto adicionar ya se enceuntra almacenado. Valida la información e intenta nuevamente ', '¡Advertencia!');
+  }else{
+    toastr.success('EL concepto fue alamacenado exitosamente ', 'Exito!');
+    $('#conceptos').val('');
+
+     //$("#contenido_modal_nuevo_concepto").html(resul);
+  }
+     $('.preloader').fadeOut();
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+$(document).on("submit","#f_nuevo_concepto_trans",function(e){
+  //funcion para crear un nuevo usuario
+ e.preventDefault();
+ $('.preloader').fadeIn();
+
+ var formu=$(this);
+ var urlraiz=$("#url_raiz_proyecto").val();
+ var varurl=urlraiz+"/configuracion/nuevo_concepto_trans";
+ 
+ $.ajax({
+   // la URL para la petición
+   url : varurl,
+   data : formu.serialize(),
+   method: 'POST',
+   dataType: 'json',
+ })
+ .done(function(resul) {
+  console.log(resul);
+  if(resul.message == 'NO'){
+    toastr.warning('EL concepto que esta intentanto adicionar ya se enceuntra almacenado. Valida la información e intenta nuevamente ', '¡Advertencia!');
+  }else{
+    toastr.success('EL concepto fue alamacenado exitosamente ', 'Exito!');
+    $('#conceptos').val('');
+
+     //$("#contenido_modal_nuevo_concepto").html(resul);
+  }
+     $('.preloader').fadeOut();
+  })
+ .fail(function(err){
+     $('.preloader').fadeOut();
+     SU_revise_conexion();    
+ });
+});
+
+
+
+function editarconcepto(idConcepto){
+  $('#modal_editar_concepto').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_concepto/"+idConcepto+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_concepto").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function editarconceptoComp(idConcepto){
+  $('#modal_editar_concepto_comp').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_concepto_comp/"+idConcepto+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_concepto_comp").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+function editarconceptoTrans(idConcepto){
+  $('#modal_editar_concepto_trans').modal('show');
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/configuracion/frm_editar_concepto_trans/"+idConcepto+"";
+
+  $.ajax({
+  url: miurl
+  }).done( function(resul){
+  
+    $('.preloader').fadeOut();
+    $("#contenido_modal_editar_concepto_trans").html(resul);
+ 
+  }).fail( function() 
+ {
+  $('.preloader').fadeOut();
+   SU_revise_conexion();
+ }) ;
+// body...
+}
+
+
+
+function borrarconcepto(idConcepto){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar el concepto..",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_concepto/"+idConcepto+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarconceptoComp(idConcepto){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar el concepto..",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_concepto_comp/"+idConcepto+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarconceptoTrans(idConcepto){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar el concepto..",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_concepto_trans/"+idConcepto+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+function borrarDimencion(idDimension){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea borrar la dimensión..",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/borrar_dimension/"+idDimension+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+$(document).on("submit","#f_editar_concepto",function(e){
+  //funcion para crear un nuevo usuario
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu=$(this);
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var varurl=urlraiz+"/configuracion/editar_concepto";
+  
+  $.ajax({
+    // la URL para la petición
+    url : varurl,
+    data : formu.serialize(),
+    method: 'POST',
+    dataType : 'html'
+  })
+  .done(function(resul) {
+      $('.preloader').fadeOut();
+      $("#contenido_modal_editar_concepto").html(resul);
+    })
+  .fail(function(err){
+      $('.preloader').fadeOut();
+      SU_revise_conexion();    
+  });
+});
+
+$(document).on("submit","#f_editar_concepto_comp",function(e){
+  //funcion para crear un nuevo usuario
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu=$(this);
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var varurl=urlraiz+"/configuracion/editar_concepto_comp";
+  
+  $.ajax({
+    // la URL para la petición
+    url : varurl,
+    data : formu.serialize(),
+    method: 'POST',
+    dataType : 'html'
+  })
+  .done(function(resul) {
+      $('.preloader').fadeOut();
+      $("#contenido_modal_editar_concepto_comp").html(resul);
+    })
+  .fail(function(err){
+      $('.preloader').fadeOut();
+      SU_revise_conexion();    
+  });
+});
+
+$(document).on("submit","#f_editar_concepto_trans",function(e){
+  //funcion para crear un nuevo usuario
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu=$(this);
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var varurl=urlraiz+"/configuracion/editar_concepto_trans";
+  
+  $.ajax({
+    // la URL para la petición
+    url : varurl,
+    data : formu.serialize(),
+    method: 'POST',
+    dataType : 'html'
+  })
+  .done(function(resul) {
+      $('.preloader').fadeOut();
+      $("#contenido_modal_editar_concepto_trans").html(resul);
+    })
+  .fail(function(err){
+      $('.preloader').fadeOut();
+      SU_revise_conexion();    
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 

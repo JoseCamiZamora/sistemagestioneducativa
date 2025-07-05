@@ -61,15 +61,15 @@
           <TD style="text-align: center">CÓDIGO </TD>
         </TR>
         <TR>
-          <TD style="text-align: center">EF-FO-11</TD>
+          <TD style="text-align: center">EF-FO-29</TD>
         </TR>
         <TR>
-          <TD style="text-align: center">EDUCACION FORMAL – CENTRO EDUCATIVO CORAZON DE MARIA </TD>
+          <TD style="text-align: center">PROCESO DE EDUCACIÓN FORMAL CENTRO EDUCATIVO CORAZON DE MARIA</TD>
           <TD style="text-align: center">VERSION 2</TD>
         </TR>
         <TR>
-            <TD style="text-align: center">FORMATO DE EVIDENCIAS DE CALIFICACIONES</TD>
-            <TD style="text-align: center"> 23/01/2025</TD>
+            <TD style="text-align: center">INFORME ESCOLAR DE VALORACION</TD>
+            <TD style="text-align: center">28/05/2024</TD>
         </TR>
       </thead>
     </table>
@@ -194,7 +194,7 @@
                 <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;"><br>
                 <hr style="width: 200px; border: 1px solid black;">
                 <strong>LIGIA MURIEL ARTEAGA</strong><br>
-                Directora C.E. Corazón de María
+                Director(a) C.E. Corazón de María
             </td>
 
             <!-- Firma 2 -->
@@ -217,7 +217,7 @@
                 <br>
                 <hr style="width: 200px; border: 1px solid black;">
                 <strong>{{$docente->nom_docente}}</strong><br>
-                Directora de Grupo
+                Director(a) de Grupo.
             </td>
         </tr>
     </table>
