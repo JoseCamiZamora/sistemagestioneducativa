@@ -154,7 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::post('/configuracion/nueva_dimension', 'ConfiguracionController@nueva_dimension');
    Route::get('/configuracion/frm_editar_dimension/{idDimencion?}', 'ConfiguracionController@frm_editar_dimension');
    Route::post('/configuracion/editar_dimension', 'ConfiguracionController@editar_dimension');
-    Route::get('/configuracion/borrar_dimension/{idDimension?}', 'ConfiguracionController@borrar_dimension');
+   Route::get('/configuracion/borrar_dimension/{idDimension?}', 'ConfiguracionController@borrar_dimension');
    
    
    
@@ -204,9 +204,18 @@ Route::group(['middleware' => 'auth'], function () {
 
    Route::get('/informes/index_reportes', 'InformesController@index_reportes');
    Route::get('/informes/form_generar_reporte_notas', 'InformesController@form_generar_reporte_notas');
+   Route::get('/informes/form_generar_reporte_estudaintes', 'InformesController@form_generar_reporte_estudaintes');
    Route::get('/informes/pdf_infomre_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo');
    Route::get('/informes/pdf_infomre_periodo_transicion/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_transicion');
    Route::get('/informes/pdf_informe_director_grupo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_informe_director_grupo');
+   Route::get('/informes/pdf_infomre_certificado_notas_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo');
+   Route::get('/informes/info_estudiantes_cursos/{idAnio?}/{idCurso?}', 'InformesController@info_estudiantes_cursos');
+   Route::get('/informes/pdf_infomre_periodo_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_periodo_estudiante');
+   Route::get('/informes/pdf_infomre_cetirficado_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_cetirficado_estudiante');
+   Route::get('/informes/pdf_infomre_constancia_estudiante/{idCurso?}/{idAnio?}/{idEstudiante?}', 'InformesController@pdf_infomre_constancia_estudiante');
+   
+   
+   
 
    // rutas estadisticas
    Route::get('/estadisticas/index_estadisticas', 'EstadisticasController@index_estadisticas');

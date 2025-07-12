@@ -55,6 +55,23 @@
         </div>
       </div>
     </div>
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/informes/form_generar_reporte_estudaintes') }}" style='width: 100%'>
+          
+              <img src="{{ asset('/assets/img/estudiante.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;' >Reporte de Estudiantes</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Generación de reporte de notas</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div>
     @endif
 
 

@@ -221,7 +221,9 @@
             </td>
         </tr>
     </table>
-    <div style="page-break-after: always;"></div>
+    @if($individual == 'N')
+        <div style="page-break-after: always;"></div>
+    @endif
     @endforeach
   </div>
 </body>
