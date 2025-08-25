@@ -206,9 +206,13 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/informes/form_generar_reporte_notas', 'InformesController@form_generar_reporte_notas');
    Route::get('/informes/form_generar_reporte_estudaintes', 'InformesController@form_generar_reporte_estudaintes');
    Route::get('/informes/pdf_infomre_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo');
+   Route::get('/informes/pdf_infomre_periodo_dos/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_dos');
+   Route::get('/informes/pdf_infomre_periodo_tres/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_tres');
    Route::get('/informes/pdf_infomre_periodo_transicion/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_transicion');
    Route::get('/informes/pdf_informe_director_grupo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_informe_director_grupo');
    Route::get('/informes/pdf_infomre_certificado_notas_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo');
+   Route::get('/informes/pdf_infomre_certificado_notas_periodo_dos/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo_dos');
+   Route::get('/informes/pdf_infomre_certificado_notas_periodo_tres/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo_tres');
    Route::get('/informes/info_estudiantes_cursos/{idAnio?}/{idCurso?}', 'InformesController@info_estudiantes_cursos');
    Route::get('/informes/pdf_infomre_periodo_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_periodo_estudiante');
    Route::get('/informes/pdf_infomre_cetirficado_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_cetirficado_estudiante');

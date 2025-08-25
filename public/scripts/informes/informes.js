@@ -107,7 +107,13 @@ function generarReportePorPeriodo() {
   if(idCurso == 1){
     rutaUrl = "pdf_infomre_periodo_transicion"
   }else{
-    rutaUrl = "pdf_infomre_periodo";
+    if(idPeriodo == 1){
+        rutaUrl = "pdf_infomre_periodo";
+    }if(idPeriodo == 2){
+        rutaUrl = "pdf_infomre_periodo_dos";
+    }if(idPeriodo == 3){
+        rutaUrl = "pdf_infomre_periodo_tres";
+    }
   }
 
   if(todoCompleto){
@@ -162,7 +168,14 @@ function generarReporteCertificadoEstudiosPorPeriodo() {
   if(idCurso == 1){
     rutaUrl = "pdf_infomre_certificado_notas_periodo_transicion"
   }else{
-    rutaUrl = "pdf_infomre_certificado_notas_periodo";
+    if(idPeriodo == 1){
+        rutaUrl = "pdf_infomre_certificado_notas_periodo";
+    }if(idPeriodo == 2){
+        rutaUrl = "pdf_infomre_certificado_notas_periodo_dos";
+    }if(idPeriodo == 3){
+        rutaUrl = "pdf_infomre_certificado_notas_periodo_tres";
+    }
+    
   }
 
   if(todoCompleto){

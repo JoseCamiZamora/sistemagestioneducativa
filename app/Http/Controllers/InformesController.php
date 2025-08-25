@@ -363,6 +363,437 @@ class InformesController extends Controller
         return response()->json(['url' => asset('pdf/' . $filename)]);
     }
 
+    public function pdf_infomre_periodo_dos($idCurso=null,$idAnio=null,$idPeriodo=null){
+
+        ini_set('memory_limit', '712M');
+        $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
+        $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
+        $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
+        $grado = Grados::find($idCurso);
+        $periodoClases = PeriodosClases::find($idPeriodo);
+        $anio = ConfAnios::find($idAnio);
+        $observacionesFinales = ObservacionEstudiante::all();
+        
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
+        $reporte = [];
+        //dd("informe perido dos",$materiasOrdenadas);
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
+            $idEstudiante = $item['id_estudiante'];
+            $idMateria = $item['id_materia'];
+
+            $comportamiento = array_values(array_filter($evaluacionComportamiento->toArray(), function($itemComp) use ($idEstudiante) {
+                return $itemComp['id_estudiante'] == $idEstudiante;
+            }));
+            
+            $nota1 = 0;
+            $nota2 = 0;
+            $concepto = '';
+
+            foreach ($comportamiento as $comp => $data) {
+                $nota1 = $data['nota_periodo_uno'];
+                $nota2 = $data['nota_periodo_dos'];
+                $concepto = $data['concepto_per2'];
+
+            }
+           
+            // Determinar el dato del comportamiento por periodo (si existe)
+            $sumaComp = floatval(isset($nota1) ? $nota1 : 0) +
+                    floatval(isset($nota2) ? $nota2 : 0);
+            
+            $promedioComp = $sumaComp / 2;
+
+            $promFinalComp = round($promedioComp,2);
+
+            if ($promFinalComp >= 4.6) {
+                $desempenioComp = 'Superior';
+            } elseif ($promFinalComp >= 4.0) {
+                $desempenioComp = 'Alto';
+            } elseif ($promFinalComp >= 3.0) {
+                $desempenioComp = 'Básico';
+            } else {
+                $desempenioComp = 'Bajo';
+            }
+
+            $periodosComp = [
+                'nota1' => $nota1,
+                'nota2' => $nota2,
+                'concepto' => $concepto,
+                'desempenio' => $desempenioComp,
+                'promedio' => $promedioComp
+            ];
+
+            $anioFiltro = $anio->id;
+            $cursoFiltro = $grado->id;
+            $periodoFiltro = $periodoClases->id;
+
+            $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro, $periodoFiltro) {
+                return $item['id_estudiante'] == $idEstudiante &&
+                       $item['id_anio'] == $anioFiltro &&
+                       $item['id_curso'] == $cursoFiltro &&
+                       $item['id_periodo'] == $periodoFiltro;
+            }));
+
+           
+            $observacionFinal = "";
+            if(!empty($filtradosObs)){
+                if ($idPeriodo == 1) {
+                    $observacionFinal = $filtradosObs[0]['obs_per1']?? '';
+                } elseif ($idPeriodo == 2) {
+                   $observacionFinal = $filtradosObs[0]['obs_per2'] ?? '';
+                } else {
+                   $observacionFinal = $filtradosObs[0]['obs_per3'] ?? '';
+                }
+            }
+
+            // ✅ Inicializar el estudiante si aún no está
+            if (!isset($reporte[$idEstudiante])) {
+                $reporte[$idEstudiante] = [
+                    'data_estudiante' => [
+                        'id_estudiante'  => $item['id_estudiante'],
+                        'nom_estudiante' => $item['nom_estudiante'],
+                        'anio'           => $item['des_anio'],
+                        'observacion'    => $observacionFinal ?? "",
+                    ],
+                    'data_comportamiento' => !empty($periodosComp) ? [
+                        'id_materia'        => null,
+                        'nom_materia'       => 'COMPORTAMIENTO',
+                        'periodo'           => $idPeriodo,
+                        'nota1'              => $periodosComp['nota1'],
+                        'nota2'              => $periodosComp['nota2'],
+                        'concepto'          => $periodosComp['concepto'],
+                        'desempenio'        => $periodosComp['desempenio'],
+                        'promedio'          => $periodosComp['promedio'],
+                        'id_docente'        => null,
+                        'nom_docente'       => null,
+                        'intensidad_horas'  => null
+                    ] : null,
+                    'data_materia' => []
+                ];
+            }
+
+            $intensidadHoras = array_values(array_filter($lstMaterias->toArray(), function($item) use ($idMateria) {
+                return $item['id'] == $idMateria;
+            }));
+
+            // Determinar el periodo y sus datos
+           
+            $suma = floatval(isset($item['nota_periodo_uno']) ? $item['nota_periodo_uno'] : 0) +
+                    floatval(isset($item['nota_periodo_dos']) ? $item['nota_periodo_dos'] : 0);
+
+            $promedio = $suma / 2;
+
+            $promFinal = round($promedio,2);
+
+            if ($promFinal >= 4.6) {
+                $desempenio1 = 'Superior';
+            } elseif ($promFinal >= 4.0) {
+                $desempenio1 = 'Alto';
+            } elseif ($promFinal >= 3.0) {
+                $desempenio1 = 'Básico';
+            } else {
+                $desempenio1 = 'Bajo';
+            }
+
+            $periodos = [
+                1 => ['nota' => $item['nota_periodo_uno'],'nota1' => $item['nota_periodo_dos'], 'concepto' => $item['concepto_per2'], 'desempenio' => $desempenio1,
+                        'horas_justificadas' =>$item['faltas_just_per2'], 'horas_no_justificadas' =>$item['faltas_no_just_per2'],'promedio' => $promFinal]
+            ];
+            
+            foreach ($periodos as $periodo => $datos) {
+                // Solo agregamos si hay nota registrada
+                if ($datos['nota'] > 0) {
+                    $reporte[$idEstudiante]['data_materia'][] = [
+                        'id_materia'   => $item['id_materia'],
+                        'nom_materia'  => $item['desc_materia'],
+                        'periodo'      => $periodo,
+                        'nota'         => round($datos['nota'],2),
+                        'nota1'         => round($datos['nota1'],2),
+                        'concepto'     => $datos['concepto'],
+                        'promedio'     => round($datos['promedio'],2),
+                        'desempenio'   => $datos['desempenio'],
+                        'id_docente'   => $item['id_docente'],
+                        'nom_docente'  => $item['nom_docente'],
+                        'intensidad_horas' => $intensidadHoras[0]['intensidad_horas'] ?? null,
+                        'horas_justificadas' => $datos['horas_justificadas'],
+                        'horas_no_justificadas' => $datos['horas_no_justificadas']
+                    ];
+                }
+            }
+        }
+
+        // Reindexar por si lo necesitas como array plano:
+        $reporte = array_values($reporte);
+
+        setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
+        Carbon::setLocale('es'); // Para métodos de Carbon
+
+        $fecha = Carbon::now();
+        // Mes (ej: junio)
+        $mes = $fecha->translatedFormat('F');
+        $diaNumero = $fecha->day;
+
+        $fechaReporte = strtoupper($mes).' '.$diaNumero;
+        
+      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_dos', [
+            'docente'        => $docente,
+            'reporte'        => $reporte,
+            'grado'          => $grado,
+            'periodoClases'  => $periodoClases,
+            'anio'           => $anio,
+            'fechaReporte'   => $fechaReporte,
+            'individual'     => 'N'
+      ]);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+
+        $filename = 'boletin_periodo_' . time() . '.pdf';
+        $path = public_path('pdf/' . $filename);
+
+        // 💾 Guardar el archivo
+        $pdf->save($path);
+
+        // 📤 Retornar la URL del archivo para abrirlo o descargarlo
+        return response()->json(['url' => asset('pdf/' . $filename)]);
+    }
+
+    public function pdf_infomre_periodo_tres($idCurso=null,$idAnio=null,$idPeriodo=null){
+
+        ini_set('memory_limit', '712M');
+        $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
+        $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
+        $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
+        $grado = Grados::find($idCurso);
+        $periodoClases = PeriodosClases::find($idPeriodo);
+        $anio = ConfAnios::find($idAnio);
+        $observacionesFinales = ObservacionEstudiante::all();
+        
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
+        $reporte = [];
+         dd("informe perido tres");
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
+            $idEstudiante = $item['id_estudiante'];
+            $idMateria = $item['id_materia'];
+
+            $comportamiento = array_values(array_filter($evaluacionComportamiento->toArray(), function($itemComp) use ($idEstudiante) {
+                return $itemComp['id_estudiante'] == $idEstudiante;
+            }));
+
+            $nota1 = 0;
+            $nota2 = 0;
+            $concepto = '';
+
+            foreach ($comportamiento as $comp => $data) {
+                $nota1 = $data['nota_periodo_uno'];
+                $nota2 = $data['nota_periodo_dos'];
+                $nota3 = $data['nota_periodo_tres'];
+                $concepto = $data['concepto_per3'];
+
+            }
+
+            // Determinar el dato del comportamiento por periodo (si existe)
+            $sumaComp = floatval(isset($nota1) ? $nota1 : 0) +
+                    floatval(isset($nota2) ? $nota2 : 0) +
+                    floatval(isset($nota3) ? $nota3 : 0);
+            
+            $promedioComp = $sumaComp / 3;
+
+            $promFinalComp = round($promedioComp,2);
+
+            if ($promFinalComp >= 4.6) {
+                $desempenioComp = 'Superior';
+            } elseif ($promFinalComp >= 4.0) {
+                $desempenioComp = 'Alto';
+            } elseif ($promFinalComp >= 3.0) {
+                $desempenioComp = 'Básico';
+            } else {
+                $desempenioComp = 'Bajo';
+            }
+
+            $periodosComp = [
+                'nota1' => $nota1,
+                'nota2' => $nota2,
+                'nota3' => $nota3,
+                'concepto' => $concepto,
+                'desempenio' => $desempenioComp,
+                'promedio' => $promedioComp
+            ];
+
+            // Determinar el dato del comportamiento por periodo (si existe)
+
+            $anioFiltro = $anio->id;
+            $cursoFiltro = $grado->id;
+            $periodoFiltro = $periodoClases->id;
+
+            $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro, $periodoFiltro) {
+                return $item['id_estudiante'] == $idEstudiante &&
+                       $item['id_anio'] == $anioFiltro &&
+                       $item['id_curso'] == $cursoFiltro &&
+                       $item['id_periodo'] == $periodoFiltro;
+            }));
+
+           
+            $observacionFinal = "";
+            if(!empty($filtradosObs)){
+                if ($idPeriodo == 1) {
+                    $observacionFinal = $filtradosObs[0]['obs_per1']?? '';
+                } elseif ($idPeriodo == 2) {
+                   $observacionFinal = $filtradosObs[0]['obs_per2'] ?? '';
+                } else {
+                   $observacionFinal = $filtradosObs[0]['obs_per3'] ?? '';
+                }
+            }
+
+            // ✅ Inicializar el estudiante si aún no está
+            if (!isset($reporte[$idEstudiante])) {
+                $reporte[$idEstudiante] = [
+                    'data_estudiante' => [
+                        'id_estudiante'  => $item['id_estudiante'],
+                        'nom_estudiante' => $item['nom_estudiante'],
+                        'anio'           => $item['des_anio'],
+                        'observacion'    => $observacionFinal ?? "",
+                    ],
+                    'data_comportamiento' => !empty($periodosComp) ? [
+                        'id_materia'        => null,
+                        'nom_materia'       => 'COMPORTAMIENTO',
+                        'periodo'           => $idPeriodo,
+                        'nota1'              => $periodosComp['nota1'],
+                        'nota2'              => $periodosComp['nota2'],
+                        'nota3'              => $periodosComp['nota3'],
+                        'concepto'          => $periodosComp['concepto'],
+                        'desempenio'        => $periodosComp['desempenio'],
+                        'id_docente'        => null,
+                        'nom_docente'       => null,
+                        'intensidad_horas'  => null
+                    ] : null,
+                    'data_materia' => []
+                ];
+            }
+
+            $intensidadHoras = array_values(array_filter($lstMaterias->toArray(), function($item) use ($idMateria) {
+                return $item['id'] == $idMateria;
+            }));
+
+            $suma = floatval(isset($item['nota_periodo_uno']) ? $item['nota_periodo_uno'] : 0) +
+                    floatval(isset($item['nota_periodo_dos']) ? $item['nota_periodo_dos'] : 0) +
+                    floatval(isset($item['nota_periodo_tres']) ? $item['nota_periodo_tres'] : 0);
+
+            $promedio = $suma / 3;
+
+            $promFinal = round($promedio,2);
+
+            if ($promFinal >= 4.6) {
+                $desempenio1 = 'Superior';
+            } elseif ($promFinal >= 4.0) {
+                $desempenio1 = 'Alto';
+            } elseif ($promFinal >= 3.0) {
+                $desempenio1 = 'Básico';
+            } else {
+                $desempenio1 = 'Bajo';
+            }
+
+            $periodos = [
+                1 => ['nota1' => $item['nota_periodo_uno'],'nota2' => $item['nota_periodo_dos'], 'nota3' => $item['nota_periodo_tres'],
+                'concepto' => $item['concepto_per3'], 'desempenio' => $desempenio1,'horas_justificadas' =>$item['faltas_just_per2'], 
+                'horas_no_justificadas' =>$item['faltas_no_just_per2'],'promedio' => $promFinal]
+            ];
+
+            // Determinar el periodo y sus datos
+            
+            foreach ($periodos as $periodo => $datos) {
+                // Solo agregamos si hay nota registrada
+                if ($datos['nota'] > 0) {
+                    $reporte[$idEstudiante]['data_materia'][] = [
+                        'id_materia'   => $item['id_materia'],
+                        'nom_materia'  => $item['desc_materia'],
+                        'periodo'      => $periodo,
+                        'nota1'         => $datos['nota1'],
+                        'nota2'         => $datos['nota2'],
+                        'nota3'         => $datos['nota3'],
+                        'concepto'     => $datos['concepto'],
+                        'desempenio'   => $datos['desempenio'],
+                        'id_docente'   => $item['id_docente'],
+                        'nom_docente'  => $item['nom_docente'],
+                        'intensidad_horas' => $intensidadHoras[0]['intensidad_horas'] ?? null,
+                        'horas_justificadas' => $datos['horas_justificadas'],
+                        'horas_no_justificadas' => $datos['horas_no_justificadas']
+                    ];
+                }
+            }
+        }
+
+        // Reindexar por si lo necesitas como array plano:
+        $reporte = array_values($reporte);
+
+        setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
+        Carbon::setLocale('es'); // Para métodos de Carbon
+
+        $fecha = Carbon::now();
+        // Mes (ej: junio)
+        $mes = $fecha->translatedFormat('F');
+        $diaNumero = $fecha->day;
+
+        $fechaReporte = strtoupper($mes).' '.$diaNumero;
+        
+      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_tres', [
+            'docente'        => $docente,
+            'reporte'        => $reporte,
+            'grado'          => $grado,
+            'periodoClases'  => $periodoClases,
+            'anio'           => $anio,
+            'fechaReporte'   => $fechaReporte,
+            'individual'     => 'N'
+      ]);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+
+        $filename = 'boletin_periodo_' . time() . '.pdf';
+        $path = public_path('pdf/' . $filename);
+
+        // 💾 Guardar el archivo
+        $pdf->save($path);
+
+        // 📤 Retornar la URL del archivo para abrirlo o descargarlo
+        return response()->json(['url' => asset('pdf/' . $filename)]);
+    }
+
     public function pdf_infomre_periodo_estudiante($idCurso=null,$idAnio=null,$idPeriodo=null,$idEstudiante=null){
 
         ini_set('memory_limit', '712M');
@@ -637,6 +1068,348 @@ class InformesController extends Controller
             return array_search($materia->desc_materia, $ordenDeseado);
         });
         $reporte = [];
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
+            $idEstudiante = $item['id_estudiante'];
+            $idMateria = $item['id_materia'];
+
+            $infoEstudiante = array_values(array_filter($dataEstudiantes->toArray(), function($itemEstu) use ($idEstudiante) {
+                return $itemEstu['id'] == $idEstudiante;
+            }));
+
+            // ✅ Inicializar el estudiante si aún no está
+            if (!isset($reporte[$idEstudiante])) {
+                $reporte[$idEstudiante] = [
+                    'data_estudiante' => [
+                        'id_estudiante'  => $item['id_estudiante'],
+                        'nom_estudiante' => $item['nom_estudiante'],
+                        'identificacion' => $infoEstudiante[0]['identificacion'],
+                        'anio'           => $item['des_anio'],
+                        'observacion'    => $observacionFinal ?? "",
+                    ],
+                    'data_materia' => []
+                ];
+            }
+
+            $intensidadHoras = array_values(array_filter($lstMaterias->toArray(), function($item) use ($idMateria) {
+                return $item['id'] == $idMateria;
+            }));
+
+            // Determinar el periodo y sus datos
+            if($idPeriodo == 1){
+                if ( $item['nota_periodo_uno'] >= 4.6) {
+                    $desempenio1 = 'Superior';
+                } elseif ( $item['nota_periodo_uno'] >= 4.0) {
+                    $desempenio1 = 'Alto';
+                } elseif ( $item['nota_periodo_uno'] >= 3.0) {
+                    $desempenio1 = 'Básico';
+                } else {
+                    $desempenio1 = 'Bajo';
+                }
+
+                $periodos = [
+                    1 => ['nota' => $item['nota_periodo_uno'], 'concepto' => $item['concepto_per1'], 'desempenio' => $desempenio1,
+                          'horas_justificadas' =>$item['faltas_just_per1'], 'horas_no_justificadas' =>$item['faltas_no_just_per1']]
+                ];
+
+            }elseif($idPeriodo == 2){
+                if ( $item['nota_periodo_dos'] >= 4.6) {
+                    $desempenio2 = 'Superior';
+                } elseif ( $item['nota_periodo_dos'] >= 4.0) {
+                    $desempenio2 = 'Alto';
+                } elseif ( $item['nota_periodo_dos'] >= 3.0) {
+                    $desempenio2 = 'Básico';
+                } else {
+                    $desempenio2 = 'Bajo';
+                }
+
+                $periodos = [
+                   2 => ['nota' => $item['nota_periodo_dos'], 'concepto' => $item['concepto_per2'],'desempenio' => $desempenio2,
+                   'horas_justificadas' =>$item['faltas_just_per2'], 'horas_no_justificadas' =>$item['faltas_no_just_per2'] ]
+                ];
+
+            }else{
+
+                if ( $item['nota_periodo_tres'] >= 4.6) {
+                    $desempenio3 = 'Superior';
+                } elseif ( $item['nota_periodo_tres'] >= 4.0) {
+                    $desempenio3 = 'Alto';
+                } elseif ( $item['nota_periodo_tres'] >= 3.0) {
+                    $desempenio3 = 'Básico';
+                } else {
+                    $desempenio3 = 'Bajo';
+                }
+
+                $periodos = [
+                    3 => ['nota' => $item['nota_periodo_tres'], 'concepto' => $item['concepto_per3'],'desempenio' => $desempenio3,
+                    'horas_justificadas' =>$item['faltas_just_per3'], 'horas_no_justificadas' =>$item['faltas_no_just_per3']]
+                ];
+            }
+            
+            foreach ($periodos as $periodo => $datos) {
+                // Solo agregamos si hay nota registrada
+                if ($datos['nota'] > 0) {
+                    $reporte[$idEstudiante]['data_materia'][] = [
+                        'id_materia'   => $item['id_materia'],
+                        'nom_materia'  => $item['desc_materia'],
+                        'periodo'      => $periodo,
+                        'nota'         => $datos['nota'],
+                        'concepto'     => $datos['concepto'],
+                        'desempenio'   => $datos['desempenio'],
+                        'id_docente'   => $item['id_docente'],
+                        'nom_docente'  => $item['nom_docente'],
+                        'intensidad_horas' => $intensidadHoras[0]['intensidad_horas'] ?? null,
+                        'horas_justificadas' => $datos['horas_justificadas'],
+                        'horas_no_justificadas' => $datos['horas_no_justificadas']
+                    ];
+                }
+            }
+        }
+
+        // Reindexar por si lo necesitas como array plano:
+        $reporte = array_values($reporte);
+
+        setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
+        Carbon::setLocale('es'); // Para métodos de Carbon
+
+        $fecha = Carbon::now();
+        // Mes (ej: junio)
+        $mes = $fecha->translatedFormat('F');
+        $diaNumero = $fecha->day;
+
+        $fechaReporte = strtoupper($mes).' '.$diaNumero;
+        //dd($reporte);
+        
+      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
+            'docente'        => $docente,
+            'reporte'        => $reporte,
+            'grado'          => $grado,
+            'periodoClases'  => $periodoClases,
+            'anio'           => $anio,
+            'fechaReporte'   => $fechaReporte,
+            'individual'     => 'N'
+      ]);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+
+        $filename = 'boletin_periodo_' . time() . '.pdf';
+        $path = public_path('pdf/' . $filename);
+
+        // 💾 Guardar el archivo
+        $pdf->save($path);
+
+        // 📤 Retornar la URL del archivo para abrirlo o descargarlo
+        return response()->json(['url' => asset('pdf/' . $filename)]);
+    }
+
+    public function pdf_infomre_certificado_notas_periodo_dos($idCurso=null,$idAnio=null,$idPeriodo=null){
+
+        ini_set('memory_limit', '712M');
+        $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
+        $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
+         foreach ($evaluacionComportamiento as $evaComp) {
+            $evaComp['desc_materia'] = 'COMPORTAMIENTO';
+            $evaluaciones->push($evaComp);
+        }
+        $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
+        $grado = Grados::find($idCurso);
+        $periodoClases = PeriodosClases::find($idPeriodo);
+        $anio = ConfAnios::find($idAnio);
+        $observacionesFinales = ObservacionEstudiante::all();
+        $dataEstudiantes = Estudiantes::all();
+        
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA','COMPORTAMIENTO'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
+        $reporte = [];
+        dd("Estoy en periodo 2");
+        foreach ($materiasOrdenadas as $item) {
+
+            if($item['desc_materia'] == 'CASTELLANO' ){
+                $item['desc_materia'] = 'LENGUA CASTELLANA';
+            }elseif($item['desc_materia'] == 'INGLES' ){
+                $item['desc_materia'] = 'LENGUA EXTRANJERA - INGLÉS';
+            }elseif($item['desc_materia'] == 'SOCIALES' ){
+                $item['desc_materia'] = 'CIENCIAS SOCIALES';
+            }elseif($item['desc_materia'] == 'INFORMATICA' ){
+                $item['desc_materia'] = 'TECNOLOGÍA E INFORMÁTICA';
+            }elseif($item['desc_materia'] == 'EDUCACION FISICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN FÍSICA';
+            }elseif($item['desc_materia'] == 'ARTISTICA' ){
+                $item['desc_materia'] = 'EDUCACIÓN ARTÍSTICA';
+            }
+
+            $idEstudiante = $item['id_estudiante'];
+            $idMateria = $item['id_materia'];
+
+            $infoEstudiante = array_values(array_filter($dataEstudiantes->toArray(), function($itemEstu) use ($idEstudiante) {
+                return $itemEstu['id'] == $idEstudiante;
+            }));
+
+            // ✅ Inicializar el estudiante si aún no está
+            if (!isset($reporte[$idEstudiante])) {
+                $reporte[$idEstudiante] = [
+                    'data_estudiante' => [
+                        'id_estudiante'  => $item['id_estudiante'],
+                        'nom_estudiante' => $item['nom_estudiante'],
+                        'identificacion' => $infoEstudiante[0]['identificacion'],
+                        'anio'           => $item['des_anio'],
+                        'observacion'    => $observacionFinal ?? "",
+                    ],
+                    'data_materia' => []
+                ];
+            }
+
+            $intensidadHoras = array_values(array_filter($lstMaterias->toArray(), function($item) use ($idMateria) {
+                return $item['id'] == $idMateria;
+            }));
+
+            // Determinar el periodo y sus datos
+            if($idPeriodo == 1){
+                if ( $item['nota_periodo_uno'] >= 4.6) {
+                    $desempenio1 = 'Superior';
+                } elseif ( $item['nota_periodo_uno'] >= 4.0) {
+                    $desempenio1 = 'Alto';
+                } elseif ( $item['nota_periodo_uno'] >= 3.0) {
+                    $desempenio1 = 'Básico';
+                } else {
+                    $desempenio1 = 'Bajo';
+                }
+
+                $periodos = [
+                    1 => ['nota' => $item['nota_periodo_uno'], 'concepto' => $item['concepto_per1'], 'desempenio' => $desempenio1,
+                          'horas_justificadas' =>$item['faltas_just_per1'], 'horas_no_justificadas' =>$item['faltas_no_just_per1']]
+                ];
+
+            }elseif($idPeriodo == 2){
+                if ( $item['nota_periodo_dos'] >= 4.6) {
+                    $desempenio2 = 'Superior';
+                } elseif ( $item['nota_periodo_dos'] >= 4.0) {
+                    $desempenio2 = 'Alto';
+                } elseif ( $item['nota_periodo_dos'] >= 3.0) {
+                    $desempenio2 = 'Básico';
+                } else {
+                    $desempenio2 = 'Bajo';
+                }
+
+                $periodos = [
+                   2 => ['nota' => $item['nota_periodo_dos'], 'concepto' => $item['concepto_per2'],'desempenio' => $desempenio2,
+                   'horas_justificadas' =>$item['faltas_just_per2'], 'horas_no_justificadas' =>$item['faltas_no_just_per2'] ]
+                ];
+
+            }else{
+
+                if ( $item['nota_periodo_tres'] >= 4.6) {
+                    $desempenio3 = 'Superior';
+                } elseif ( $item['nota_periodo_tres'] >= 4.0) {
+                    $desempenio3 = 'Alto';
+                } elseif ( $item['nota_periodo_tres'] >= 3.0) {
+                    $desempenio3 = 'Básico';
+                } else {
+                    $desempenio3 = 'Bajo';
+                }
+
+                $periodos = [
+                    3 => ['nota' => $item['nota_periodo_tres'], 'concepto' => $item['concepto_per3'],'desempenio' => $desempenio3,
+                    'horas_justificadas' =>$item['faltas_just_per3'], 'horas_no_justificadas' =>$item['faltas_no_just_per3']]
+                ];
+            }
+            
+            foreach ($periodos as $periodo => $datos) {
+                // Solo agregamos si hay nota registrada
+                if ($datos['nota'] > 0) {
+                    $reporte[$idEstudiante]['data_materia'][] = [
+                        'id_materia'   => $item['id_materia'],
+                        'nom_materia'  => $item['desc_materia'],
+                        'periodo'      => $periodo,
+                        'nota'         => $datos['nota'],
+                        'concepto'     => $datos['concepto'],
+                        'desempenio'   => $datos['desempenio'],
+                        'id_docente'   => $item['id_docente'],
+                        'nom_docente'  => $item['nom_docente'],
+                        'intensidad_horas' => $intensidadHoras[0]['intensidad_horas'] ?? null,
+                        'horas_justificadas' => $datos['horas_justificadas'],
+                        'horas_no_justificadas' => $datos['horas_no_justificadas']
+                    ];
+                }
+            }
+        }
+
+        // Reindexar por si lo necesitas como array plano:
+        $reporte = array_values($reporte);
+
+        setlocale(LC_TIME, 'es_ES.UTF-8'); // Asegura idioma español (Linux/Mac)
+        Carbon::setLocale('es'); // Para métodos de Carbon
+
+        $fecha = Carbon::now();
+        // Mes (ej: junio)
+        $mes = $fecha->translatedFormat('F');
+        $diaNumero = $fecha->day;
+
+        $fechaReporte = strtoupper($mes).' '.$diaNumero;
+        //dd($reporte);
+        
+      $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
+            'docente'        => $docente,
+            'reporte'        => $reporte,
+            'grado'          => $grado,
+            'periodoClases'  => $periodoClases,
+            'anio'           => $anio,
+            'fechaReporte'   => $fechaReporte,
+            'individual'     => 'N'
+      ]);
+        $pdf->getDomPDF()->set_option("isHtml5ParserEnabled", true);
+        $pdf->getDomPDF()->set_option("isRemoteEnabled", true);
+
+        $filename = 'boletin_periodo_' . time() . '.pdf';
+        $path = public_path('pdf/' . $filename);
+
+        // 💾 Guardar el archivo
+        $pdf->save($path);
+
+        // 📤 Retornar la URL del archivo para abrirlo o descargarlo
+        return response()->json(['url' => asset('pdf/' . $filename)]);
+    }
+
+    public function pdf_infomre_certificado_notas_periodo_tres($idCurso=null,$idAnio=null,$idPeriodo=null){
+
+        ini_set('memory_limit', '712M');
+        $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
+        $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
+         foreach ($evaluacionComportamiento as $evaComp) {
+            $evaComp['desc_materia'] = 'COMPORTAMIENTO';
+            $evaluaciones->push($evaComp);
+        }
+        $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
+        $grado = Grados::find($idCurso);
+        $periodoClases = PeriodosClases::find($idPeriodo);
+        $anio = ConfAnios::find($idAnio);
+        $observacionesFinales = ObservacionEstudiante::all();
+        $dataEstudiantes = Estudiantes::all();
+        
+        $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA','COMPORTAMIENTO'];
+        $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
+            return array_search($materia->desc_materia, $ordenDeseado);
+        });
+        $reporte = [];
+         dd("Estoy en periodo 3");
         foreach ($materiasOrdenadas as $item) {
 
             if($item['desc_materia'] == 'CASTELLANO' ){
