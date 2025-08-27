@@ -592,7 +592,7 @@ class InformesController extends Controller
             return array_search($materia->desc_materia, $ordenDeseado);
         });
         $reporte = [];
-         dd("informe perido tres");
+         //dd("informe perido tres");
         foreach ($materiasOrdenadas as $item) {
 
             if($item['desc_materia'] == 'CASTELLANO' ){
@@ -1712,7 +1712,7 @@ class InformesController extends Controller
         $diaNumero = $fecha->day;
         $anio = $fecha->year;
 
-        dd($diaNumero);
+        //dd($diaNumero);
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
