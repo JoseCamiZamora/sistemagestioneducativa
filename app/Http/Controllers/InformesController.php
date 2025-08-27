@@ -1190,6 +1190,7 @@ class InformesController extends Controller
         // Mes (ej: junio)
         $mes = $fecha->translatedFormat('F');
         $diaNumero = $fecha->day;
+        $anioNumero = $fecha->year;
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         //dd($reporte);
@@ -1199,7 +1200,9 @@ class InformesController extends Controller
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
-            'anio'           => $anio,
+            'mes'            => $mes,
+            'dia'            => $diaNumero,
+            'anio'           => $anioNumero,
             'fechaReporte'   => $fechaReporte,
             'individual'     => 'N'
       ]);
@@ -1238,7 +1241,7 @@ class InformesController extends Controller
             return array_search($materia->desc_materia, $ordenDeseado);
         });
         $reporte = [];
-        dd("Estoy en periodo 2");
+        //dd("Estoy en periodo 2");
         foreach ($materiasOrdenadas as $item) {
 
             if($item['desc_materia'] == 'CASTELLANO' ){
@@ -1361,6 +1364,7 @@ class InformesController extends Controller
         // Mes (ej: junio)
         $mes = $fecha->translatedFormat('F');
         $diaNumero = $fecha->day;
+        $anioNumero = $fecha->year;
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         //dd($reporte);
@@ -1370,7 +1374,9 @@ class InformesController extends Controller
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
-            'anio'           => $anio,
+            'mes'            => $mes,
+            'dia'            => $diaNumero,
+            'anio'           => $anioNumero,
             'fechaReporte'   => $fechaReporte,
             'individual'     => 'N'
       ]);
@@ -1409,7 +1415,7 @@ class InformesController extends Controller
             return array_search($materia->desc_materia, $ordenDeseado);
         });
         $reporte = [];
-         dd("Estoy en periodo 3");
+        //dd("Estoy en periodo 3");
         foreach ($materiasOrdenadas as $item) {
 
             if($item['desc_materia'] == 'CASTELLANO' ){
@@ -1532,6 +1538,7 @@ class InformesController extends Controller
         // Mes (ej: junio)
         $mes = $fecha->translatedFormat('F');
         $diaNumero = $fecha->day;
+        $anioNumero = $fecha->year;
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         //dd($reporte);
@@ -1541,7 +1548,9 @@ class InformesController extends Controller
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
-            'anio'           => $anio,
+            'mes'            => $mes,
+            'dia'            => $diaNumero,
+            'anio'           => $anioNumero,
             'fechaReporte'   => $fechaReporte,
             'individual'     => 'N'
       ]);
@@ -1703,7 +1712,7 @@ class InformesController extends Controller
         $diaNumero = $fecha->day;
         $anio = $fecha->year;
 
-        //dd($reporte);
+        dd($diaNumero);
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,

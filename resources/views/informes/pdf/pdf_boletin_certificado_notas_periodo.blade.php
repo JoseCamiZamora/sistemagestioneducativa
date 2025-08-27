@@ -78,7 +78,10 @@
     <h3 style="color: #649dd0;"><strong>SUS DERECHOS, NUESTROS DEBERES</strong></h3>
   </div>
   <div class="content" >
-    <h3 style="text-align: center;">CENTRO EDUCATIVO CORAZÓN DE MARÍA</h3>
+   
+  @foreach($reporte as $boletin)
+
+   <h3 style="text-align: center;">CENTRO EDUCATIVO CORAZÓN DE MARÍA</h3>
     <p style="text-align: center;"><strong>Aprobada por la Secretaría de Educación Municipal de Pasto<br>
     Mediante resolución No. 3446 de 06 de diciembre de 2022<br>
     Registro DANE 352001002027<br>
@@ -86,7 +89,6 @@
     </br>
     <h3 style="text-align: center;font-weight: normal;" >La Suscrita Directora del Centro Educativo </br>CORAZÓN DE MARÍA </br></br><strong>CERTIFICA: </strong></h3>
   </br>
-  @foreach($reporte as $boletin)
     
   <h3 style="font-weight: normal;text-align: justify;">Que el (la) estudiante <strong>{{$boletin['data_estudiante']['nom_estudiante'] ?? ''}}</strong>, 
     identificado (a) con Tarjeta de Identidad No. <strong>{{$boletin['data_estudiante']['identificacion'] ?? ''}}</strong>, cursó y aprobó el grado
