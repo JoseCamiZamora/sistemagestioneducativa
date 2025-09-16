@@ -112,7 +112,8 @@ function validarNotasComportamiento(val_nota){
     
 
     const resultado = arrayConceptos.filter(item =>
-      item.desempenio === desempenio
+      item.desempenio === desempenio && 
+      item.id_periodo === idPeriodo
     );
     let resultadoConcepto = "";
     if(resultado.length > 0){

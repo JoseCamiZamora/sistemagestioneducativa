@@ -127,6 +127,7 @@ class EvaluacionController extends Controller
     }
 
     public function listado_estudiantes_configurados($idCurso=null, $idClase=null){
+
         $clasesDocente =  ConfClasesDocente::find($idClase);
         $lstEstudiantes = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$clasesDocente->id_anio)->where("estado",'A')->get();
         foreach ($lstEstudiantes as $estudiante) {
@@ -138,7 +139,7 @@ class EvaluacionController extends Controller
 
         $curso = Grados::find($idCurso);
         $evaluacionesFinales = NotaFinalEstudiante::all();
-
+        
         foreach ($lstEstudiantes as $estudiante) {
             $estudianteFiltro = $estudiante->id_estudiante;
             $anioFiltro = $estudiante->id_anio;
@@ -151,6 +152,7 @@ class EvaluacionController extends Controller
                        $item['id_grado'] == $cursoFiltro &&
                        $item['id_materia'] == $materiaFiltro;
             });
+            
 
             if (empty($filtrados)) {
                 $estudiante->nota_primer_periodo = 0;
@@ -173,8 +175,10 @@ class EvaluacionController extends Controller
                     } else {
                         $estudiante->desempenio = 'Bajo';
                     }
+                    break;
                 }
             }
+            //dd($filtrados);
         }
 
         return view('evaluacion.listado_estudiantes_evaluar')->with('clasesDocente',$clasesDocente)
@@ -269,6 +273,7 @@ class EvaluacionController extends Controller
         $claseDocente =  ConfClasesDocente::find($idClase);
     
         $conceptosComportamiento = ConceptosComportamiento::where('id_anio', $anios->id)->where('id_curso',$estudiante->id_curso)->get();
+        
         $periodos = PeriodosClases::all();
 
         return view('evaluacion.form_evaluacion_comportamiento')->with('estudiante',$estudiante)
@@ -403,6 +408,7 @@ class EvaluacionController extends Controller
                                                     ->where("id_grado",$estudiante->id_curso)
                                                     ->where("id_materia",$claseDocente->id_materia)
                                                     ->where("id_docente",$claseDocente->id_docente)->first();
+        
        
         if($notaFinalEstudiante == null){
             $notaFinalEstudiante = new NotaFinalEstudiante();
