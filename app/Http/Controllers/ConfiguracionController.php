@@ -75,7 +75,6 @@ class ConfiguracionController extends Controller
         if($docenteCurso->nom_curso == 'SIN CURSO'){
             $docenteCurso->id_curso = 0;
         }
-        dd($docenteCurso);
         return view('configuracion.index_conceptos')->with('usuario_actual', $usuarioactual)->with('docenteCurso', $docenteCurso);
 
     }
