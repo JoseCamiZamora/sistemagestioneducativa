@@ -78,23 +78,25 @@
       </div>
     </div>
     @endif
-    <div class="col-12 col-md-6 col-lg-3 mb-4">
-      <div class="stats-small card card-small">
-        <div class="card-body px-0 pb-0" >
-          <div class="d-flex px-3 text-center">
-          
-              <a href="{{ url('/configuracion/listado_concepto_comportamiento') }}" style='width: 100%'>
-          
-                <img src="{{ asset('/assets/img/decision.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+    @if($docenteCurso->id_curso != 0)
+      <div class="col-12 col-md-6 col-lg-3 mb-4">
+        <div class="stats-small card card-small">
+          <div class="card-body px-0 pb-0" >
+            <div class="d-flex px-3 text-center">
             
-              <h4 style='margin-bottom: 1px;'>Comportamiento</h4>
-              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
-              </a>
+                <a href="{{ url('/configuracion/listado_concepto_comportamiento') }}" style='width: 100%'>
             
+                  <img src="{{ asset('/assets/img/decision.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+              
+                <h4 style='margin-bottom: 1px;'>Comportamientos</h4>
+                <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
+                </a>
+              
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    @endif
     @endif
     @if($usuario_actual->rol == 2)
     @if($docenteCurso->id_curso != 1)
@@ -151,6 +153,7 @@
       </div>
     </div>
     @endif
+    @if($docenteCurso->id_curso != 0)
     <div class="col-12 col-md-6 col-lg-3 mb-4">
       <div class="stats-small card card-small">
         <div class="card-body px-0 pb-0" >
@@ -160,7 +163,7 @@
           
                 <img src="{{ asset('/assets/img/decision.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
             
-              <h4 style='margin-bottom: 1px;'>Comportamiento</h4>
+              <h4 style='margin-bottom: 1px;'>Comportamientos</h4>
               <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de conceptos</span>
               </a>
             
@@ -168,6 +171,7 @@
         </div>
       </div>
     </div>
+    @endif
     @endif
     
 
