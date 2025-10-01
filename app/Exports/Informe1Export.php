@@ -100,6 +100,7 @@ class informe1Export implements FromView
                 $fila['PROMEDIO'] = $count > 0 ? round($suma / $count, 2) : 0;
                 return $fila;
             })->values()->toArray();
+             dd("Agrupadooooo 22222",$agrupado);
 
         }elseif($periodo == 2){
 
