@@ -86,10 +86,8 @@ class informe1Export implements FromView
    
     if($notaFinalEstudiante != null){
         $notas = collect($materiasOrdenadas);
-        dd("notas  jejejejej",json_decode($notas));
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
-                //dd("notas  aaaaa",$items);
                 $fila = ['ESTUDIANTE' => $estudiante];
                 $suma = 0;
                 $count = 0;
@@ -101,7 +99,6 @@ class informe1Export implements FromView
                 $fila['PROMEDIO'] = $count > 0 ? round($suma / $count, 2) : 0;
                 return $fila;
             })->values()->toArray();
-             dd("Agrupadooooo 22222",$agrupado);
 
         }elseif($periodo == 2){
 
@@ -137,7 +134,6 @@ class informe1Export implements FromView
         });
         $total = 0;
         $contador = 0;
-        dd("Agrupadooooo",$agrupado);
 
         foreach ($agrupado as $estudiante) {
             if (isset($estudiante['PROMEDIO']) && is_numeric($estudiante['PROMEDIO'])) {
@@ -146,7 +142,6 @@ class informe1Export implements FromView
             }
         }
         $promedioCurso = $contador > 0 ? round($total / $contador, 2) : 0;
-        //dd($agrupado);
 
     }
     
