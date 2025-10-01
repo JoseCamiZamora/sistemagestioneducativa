@@ -57,7 +57,7 @@ class informe1Export implements FromView
     $cursoFinal = Grados::find($curso);
     $periodoFinal = PeriodosClases::find($periodo);
 
-    $estudiantesInactivos = EstudiantesCurso::where("id_anio",$anio)->where("id_curso",$curso)->where("activo",'I')->get();
+    $estudiantesInactivos = EstudiantesCurso::where("id_anio",$anio)->where("id_curso",$curso)->where("estado",'I')->get();
     dd($estudiantesInactivos);
 
     $notaFinalEstudiante = NotaFinalEstudiante::where("id_anio",$anio)->where("id_grado",$curso)->get();
