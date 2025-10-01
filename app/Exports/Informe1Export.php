@@ -67,9 +67,9 @@ class informe1Export implements FromView
         return in_array($nota->id_estudiante, $idsInactivos);
     });
 
-    dd("datos",json_decode($notaFinalEstudianteActivos));
+    //dd("datos",json_decode($notaFinalEstudianteActivos));
 
-    foreach ($notaFinalEstudiante as $item) {
+    foreach ($notaFinalEstudianteActivos as $item) {
         array_push($newArray, $item); // Siempre agregamos la materia normal
 
         // Buscar si ya existe el comportamiento para ese estudiante
@@ -95,7 +95,7 @@ class informe1Export implements FromView
         return array_search($materia->desc_materia, $ordenDeseado);
     })->values();
    
-    if($notaFinalEstudiante != null){
+    if($notaFinalEstudianteActivos != null){
         $notas = collect($materiasOrdenadas);
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
