@@ -86,7 +86,7 @@ class informe1Export implements FromView
 
     if($notaFinalEstudiante != null){
         $notas = collect($materiasOrdenadas);
-        //dd($notas);
+        dd("notas  aaaaa",$notas);
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
                 $fila = ['ESTUDIANTE' => $estudiante];
