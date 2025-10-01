@@ -86,6 +86,7 @@ class informe1Export implements FromView
 
     if($notaFinalEstudiante != null){
         $notas = collect($materiasOrdenadas);
+        dd($notas);
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
                 $fila = ['ESTUDIANTE' => $estudiante];
@@ -134,6 +135,7 @@ class informe1Export implements FromView
         });
         $total = 0;
         $contador = 0;
+        dd($agrupado);
 
         foreach ($agrupado as $estudiante) {
             if (isset($estudiante['PROMEDIO']) && is_numeric($estudiante['PROMEDIO'])) {
