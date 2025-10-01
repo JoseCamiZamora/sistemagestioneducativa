@@ -86,9 +86,10 @@ class informe1Export implements FromView
     //dd("notas  jejejejej",json_decode($materiasOrdenadas));
     if($notaFinalEstudiante != null){
         $notas = collect($materiasOrdenadas);
-        dd("notas  aaaaa",json_decode($notas));
+       
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
+                dd("notas  aaaaa",$estudiante);
                 $fila = ['ESTUDIANTE' => $estudiante];
                 $suma = 0;
                 $count = 0;
