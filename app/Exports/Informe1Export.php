@@ -83,10 +83,10 @@ class informe1Export implements FromView
     $materiasOrdenadas = collect($newArray)->sortBy(function ($materia) use ($ordenDeseado) {
         return array_search($materia->desc_materia, $ordenDeseado);
     })->values();
-    //dd("notas  jejejejej",json_decode($materiasOrdenadas));
+   
     if($notaFinalEstudiante != null){
         $notas = collect($materiasOrdenadas);
-       
+        dd("notas  jejejejej",json_decode($notas));
         if($periodo == 1){
             $agrupado = $notas->groupBy('nom_estudiante')->map(function ($items, $estudiante) {
                 //dd("notas  aaaaa",$items);
