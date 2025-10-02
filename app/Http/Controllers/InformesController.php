@@ -444,12 +444,11 @@ class InformesController extends Controller
             $anioFiltro = $anio->id;
             $cursoFiltro = $grado->id;
             $periodoFiltro = $periodoClases->id;
-            dd("estudainte",$idEstudiante, "anio",$anioFiltro, "Curso",$cursoFiltro, "periodo",$periodoFiltro);
-            $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro, $periodoFiltro) {
+
+            $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro) {
                 return $item['id_estudiante'] == $idEstudiante &&
                        $item['id_anio'] == $anioFiltro &&
-                       $item['id_curso'] == $cursoFiltro &&
-                       $item['id_periodo'] == $periodoFiltro;
+                       $item['id_curso'] == $cursoFiltro;
             }));
 
             //dd("Observaciones",$filtradosObs);
