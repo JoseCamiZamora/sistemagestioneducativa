@@ -67,8 +67,6 @@ class informe1Export implements FromView
         return in_array($nota->id_estudiante, $idsInactivos);
     });
 
-    //dd("datos",json_decode($notaFinalEstudianteActivos));
-
     foreach ($notaFinalEstudianteActivos as $item) {
         array_push($newArray, $item); // Siempre agregamos la materia normal
 
