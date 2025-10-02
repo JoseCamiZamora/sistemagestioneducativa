@@ -374,6 +374,7 @@ class InformesController extends Controller
         $periodoClases = PeriodosClases::find($idPeriodo);
         $anio = ConfAnios::find($idAnio);
         $observacionesFinales = ObservacionEstudiante::all();
+        dd("obs",$observacionesFinales);
         
         $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
         $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
