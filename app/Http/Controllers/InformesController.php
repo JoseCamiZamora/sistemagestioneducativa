@@ -374,7 +374,6 @@ class InformesController extends Controller
         $periodoClases = PeriodosClases::find($idPeriodo);
         $anio = ConfAnios::find($idAnio);
         $observacionesFinales = ObservacionEstudiante::all();
-        dd("obs",$observacionesFinales);
         
         $ordenDeseado = ['MATEMATICAS', 'CASTELLANO', 'INGLES', 'CIENCIAS NATURALES', 'RELIGION - ETICA Y VALORES','SOCIALES','INFORMATICA','EDUCACION FISICA','ARTISTICA'];
         $materiasOrdenadas = $evaluaciones->sortBy(function ($materia) use ($ordenDeseado) {
@@ -445,7 +444,7 @@ class InformesController extends Controller
             $anioFiltro = $anio->id;
             $cursoFiltro = $grado->id;
             $periodoFiltro = $periodoClases->id;
-
+            dd("estudainte",$idEstudiante, "anio",$anioFiltro, "Curso",$cursoFiltro, "periodo",$periodoFiltro);
             $filtradosObs = array_values(array_filter($observacionesFinales->toArray(), function($item) use ($idEstudiante, $anioFiltro, $cursoFiltro, $periodoFiltro) {
                 return $item['id_estudiante'] == $idEstudiante &&
                        $item['id_anio'] == $anioFiltro &&
