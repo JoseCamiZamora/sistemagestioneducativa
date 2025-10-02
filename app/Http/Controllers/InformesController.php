@@ -452,7 +452,7 @@ class InformesController extends Controller
                        $item['id_periodo'] == $periodoFiltro;
             }));
 
-            dd("Observaciones",$filtradosObs);
+            //dd("Observaciones",$filtradosObs);
 
            
             $observacionFinal = "";
