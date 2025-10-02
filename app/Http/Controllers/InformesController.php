@@ -380,7 +380,7 @@ class InformesController extends Controller
             return array_search($materia->desc_materia, $ordenDeseado);
         });
         $reporte = [];
-        dd("informe perido dos",$materiasOrdenadas);
+        //dd("informe perido dos",$materiasOrdenadas);
         foreach ($materiasOrdenadas as $item) {
 
             if($item['desc_materia'] == 'CASTELLANO' ){
@@ -451,6 +451,8 @@ class InformesController extends Controller
                        $item['id_curso'] == $cursoFiltro &&
                        $item['id_periodo'] == $periodoFiltro;
             }));
+
+            dd("Observaciones",$filtradosObs);
 
            
             $observacionFinal = "";
