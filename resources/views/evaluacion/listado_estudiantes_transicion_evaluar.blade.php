@@ -92,9 +92,8 @@
                         <img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 35px;" onerror="this.onerror=null; this.src='image.png'">
                       @endif
                   </td>
-                    
                   <td>
-                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="evaluarEstudianteTransicion({{$estudiante->id}})" id="subirfile" >
+                    <a class="nav-link nav-link-icon text-center"  href="{{ url('/evaluacion/index_periodos_transicion/'.$anio.'/'.$estudiante->id) }}" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-list" title="Evaluar estudiante" style=""></i><br>
                       </div>

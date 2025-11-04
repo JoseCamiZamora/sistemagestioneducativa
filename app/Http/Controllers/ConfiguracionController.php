@@ -757,9 +757,11 @@ class ConfiguracionController extends Controller
         $usuario_actual=Auth::user();
         $materias = Materias::where("tipo_curso", "=", 1)->paginate(50);
         $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+         $periodos = PeriodosClases::all();
 
         return view("configuracion.form_nueva_dimension")
             ->with("docente",$docente)
+            ->with("periodos",$periodos)
             ->with("materias",$materias);
     }
 
@@ -938,10 +940,13 @@ class ConfiguracionController extends Controller
         //crea una cuenta en el sistema
         $idMateria = $request->input('materia');
         $materia = Materias::find($idMateria);
+        $periodos = PeriodosClases::find($request->input('periodo'));
 
         $dimension = new ItemEvaluarTransicion();
         $dimension->id_materia = $materia->id;
         $dimension->nom_materia = $materia->nombre;
+        $dimension->id_periodo = $periodos->id;
+        $dimension->nom_periodo = $periodos->nombre;
         $dimension->descripcion = $request->input('dimension')?$request->input('dimension'):"";
         $dimension->estado = 'A';
 
@@ -1040,9 +1045,11 @@ class ConfiguracionController extends Controller
         $usuarioactual = Auth::user();
         $docente = Docentes::find($usuarioactual->id_persona);
         $materias = Materias::where("tipo_curso", "=", 1)->get();
+        $periodos = PeriodosClases::all();
 
         return view('configuracion.form_editar_dimension')->with('docente',$docente)
                                                         ->with("dimension",$dimension)
+                                                        ->with("periodos",$periodos)
                                                         ->with("materias",$materias);
     }
 
@@ -1164,10 +1171,13 @@ class ConfiguracionController extends Controller
          //crea una cuenta en el sistema
         $idMateria = $request->input('materia');
         $materia = Materias::find($idMateria);
+        $periodos = PeriodosClases::find($request->input('periodo'));
 
         $dimension = ItemEvaluarTransicion::find($request->input('id_dimension'));
         $dimension->id_materia = $materia->id;
         $dimension->nom_materia = $materia->nombre;
+        $dimension->id_periodo = $periodos->id;
+        $dimension->nom_periodo = $periodos->nombre;
         $dimension->descripcion = $request->input('dimension')?$request->input('dimension'):"";
         $dimension->estado = 'A';
 

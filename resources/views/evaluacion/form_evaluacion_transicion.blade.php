@@ -65,20 +65,19 @@
     </table>
     <div class="form-row col-md-12 mt-2">
       <div class="col-md-4">
-        <label for="feLastName">Nombre Del Estudiante:</label> 
-        <input  class="form-control "   name="nom_estudiante" value="{{$estudiante->nombre_estudiante}}" required style="margin-top: -6px;" disabled>
+        <label for="feLastName">Nombre Del Estudiante:</label>
+        <input  class="form-control "  name="nom_estudiante" value="{{$estudiante->nombre_estudiante}}" required style="margin-top: -6px;" disabled>
       </div>
       <div class="col-md-4">
           <label for="feLastName">Perido a Evaluar</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" onchange="validarNotasInscritasTransicion(this.value)" required>
-          <option value="">Seleccione el periodo a evaluar</option>
+          <select class="form-control" id="periodo" name="periodo" style="margin-top: -6px; height: 33px;padding-top: 4px;" readonly>
               @foreach($periodos as $periodo)
-                <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
+                <option value="{{$periodo->id}}" selected>{{$periodo->nombre}}</option>
               @endforeach
           </select>
       </div>
       <div class="col-md-4">
-      <label for="feLastName">Fecha Evaluacion</label>  
+      <label for="feLastName">Fecha Evaluacion</label>
       <input  class="form-control "   name="fecha_expedicion_fac" value="{{ date('Y-m-d') }}" required style="margin-top: -6px;" disabled>
       </div>
     </div>

@@ -37,6 +37,7 @@
                 <th scope="col" class="th-gris text-center" style="width: 50px;">No.</th>
                 <th scope="col" class="th-gris text-left " >Materia</th>
                 <th scope="col" class="th-gris text-left " >Descripción</th>
+                <th scope="col" class="th-gris text-left " >Periodo</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
                 <th scope="col" class="th-gris text-center " >Borrar</th>
               </tr>
@@ -51,6 +52,7 @@
                   {{ \Illuminate\Support\Str::limit($concepto->descripcion, 80) }}
                  <a href="javascript:void(0);" onclick="mostrarTextoCompleto({{ json_encode($concepto->descripcion) }})">Ver más</a>
                 </td>
+                <td class='td-titulo text-left'>{{ $concepto->nom_periodo }}</td>
                 <td>
                   <a class="nav-link nav-link-icon text-center" href="javascript:void(0);" onclick="editarDimencion({{ $concepto->id }})">
                     <div class="nav-link-icon__wrapper">

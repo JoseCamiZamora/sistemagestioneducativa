@@ -45,18 +45,47 @@ function evaluarEstudianteComportamiento(id_estudiante){
 }
 
 
-function evaluarEstudianteTransicion(id_estudiante){
-  
-  $('#modal_evaluacion').modal();
+function evaluarEstudianteTransicion(id_estudiante,periodo){
+  $('#modal_evaluacion_dimenciones').modal();
   $('.preloader').fadeIn();
+   var idCurso = $('#id_estudiante_curso').val();
   var urlraiz=$("#url_raiz_proyecto").val();
   var miurl='';
-  miurl=urlraiz+"/evaluacion/form_evaluacion_transicion/"+id_estudiante+"";
+  miurl=urlraiz+"/evaluacion/form_evaluacion_transicion/"+id_estudiante+"/"+periodo+"";
   $.ajax({
     url: miurl
     }).done( function(resul){
       $('.preloader').fadeOut();
-      $("#contenido_modal_evaluacion").html(resul);
+      $("#contenido_modal_evaluacion_dimenciones").html(resul);
+      //this.validarNotasInscritasTransicion(periodo);
+      var urlraiz=$("#url_raiz_proyecto").val();
+      var miurl='';
+      miurl=urlraiz+"/evaluacion/consultar_evaluacion_transicion/"+periodo+"/"+id_estudiante+"";
+      $.ajax({
+        url: miurl
+        }).done( function(resul){
+          // Asumiendo que resul es un solo objeto, no un array de filas
+        if(resul.notas.length > 0){
+          resul.notas.forEach(item => {
+            const select = document.querySelector(`.evaluacion-select[data-id='${item.id}']`);
+            if (select) {
+              select.value = item.nota;
+            }
+          });
+        }else{
+          document.querySelectorAll('.evaluacion-select').forEach(select => {
+            select.value = ""; // Selecciona "Evaluar al estudiante"
+            select.classList.remove('bg-success', 'bg-warning', 'bg-danger'); // Limpia colores
+          });
+        }
+        
+        $('.preloader').fadeOut();
+      
+        }).fail( function() 
+      {
+        $('.preloader').fadeOut();
+        SU_revise_conexion();
+      }) ;
    
     }).fail( function() 
    {
@@ -448,7 +477,6 @@ var idClase = $('#id_clase').val();
 
 
 function validarNotasInscritasTransicion(idPeriodo){
-
   var idCurso = $('#id_estudiante_curso').val();
   var idClase = $('#id_clase').val();
   $('.preloader').fadeIn();
@@ -539,7 +567,7 @@ $(document).on("submit", "#f_adicionar_evaluacion_transicion", function(e) {
   })
   .done(function(resul) {
     $('.preloader').fadeOut();
-    $("#contenido_modal_evaluacion").html(resul);
+    $("#contenido_modal_evaluacion_dimenciones").html(resul);
   })
   .fail(function(err) {
     $('.preloader').fadeOut();

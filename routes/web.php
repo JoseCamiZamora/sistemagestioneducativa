@@ -155,6 +155,8 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/configuracion/frm_editar_dimension/{idDimencion?}', 'ConfiguracionController@frm_editar_dimension');
    Route::post('/configuracion/editar_dimension', 'ConfiguracionController@editar_dimension');
    Route::get('/configuracion/borrar_dimension/{idDimension?}', 'ConfiguracionController@borrar_dimension');
+
+ 
    
    
    
@@ -174,7 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/listado_cursos_configurados/{id_curso?}', 'EvaluacionController@listado_cursos_configurados');
    Route::get('/evaluacion/listado_estudiantes_configurados/{id_curso?}/{id_clase}', 'EvaluacionController@listado_estudiantes_configurados');
    Route::get('/evaluacion/form_evaluacion/{id_estudiante?}/{id_clase?}', 'EvaluacionController@form_evaluacion');
-   Route::get('/evaluacion/form_evaluacion_transicion/{id_estudiante?}', 'EvaluacionController@form_evaluacion_transicion');
+   Route::get('/evaluacion/form_evaluacion_transicion/{id_estudiante?}/{periodo?}', 'EvaluacionController@form_evaluacion_transicion');
    Route::post('/evaluacion/crear_evaluacion_estudiante', 'EvaluacionController@crear_evaluacion_estudiante');
    Route::get('/evaluacion/consultar_evaluacion/{id_periodo?}/{id_estudiante?}/{id_clase?}', 'EvaluacionController@consultar_evaluacion');
    Route::get('/evaluacion/listado_estudiantes_configurados_t/{id_curso?}/{id_anio?}', 'EvaluacionController@listado_estudiantes_configurados_t');
@@ -196,6 +198,8 @@ Route::group(['middleware' => 'auth'], function () {
    Route::post('/evaluacion/crear_observacion_final', 'EvaluacionController@crear_observacion_final');
    Route::get('/evaluacion/consultar_observacion_periodo/{idEstudiante?}/{idAnio?}/{idDirectorGrupo?}/{idPeriodo?}', 'EvaluacionController@consultar_observacion_periodo');
    Route::get('/evaluacion/form_materias_evaluadas/{idEstudiante?}/{idPeriodo?}/{idAnio?}', 'EvaluacionController@form_materias_evaluadas');
+   Route::get('/evaluacion/index_periodos_transicion/{anio?}/{idEstudiante?}', 'EvaluacionController@index_periodos_transicion');
+     
    
    
 

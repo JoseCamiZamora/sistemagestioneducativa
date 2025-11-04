@@ -61,6 +61,15 @@
           </select>
       </div>
       <div class="col-md-4">
+          <label for="feLastName">Peridos</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="periodo" name="periodo" required>
+             <option value="" selected >Seleccione...</option>
+              @foreach($periodos as $periodo)
+                <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
+              @endforeach
+          </select>
+      </div>
+      <div class="col-md-4">
           <label for="feLastName">Curso</label><spam style="color: red;"> * </spam>
           <select class="form-control" id="curso" name="curso"  required disabled>
             <option value="1" selected>TRANSICION</option>

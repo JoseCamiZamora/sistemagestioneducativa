@@ -105,6 +105,16 @@ class EvaluacionController extends Controller
         ->with("usuarioactual", $usuarioactual);
     }
 
+    public function index_periodos_transicion($idAnio= null,$idEstudiante=null){
+
+        $usuarioactual = Auth::user();
+        $docente = Docentes::find($usuarioactual->id_persona);
+
+        return view('evaluacion.listado_periodos_transicion')->with('anio',$idAnio)
+        ->with('docente',$docente)
+        ->with("estudiante",$idEstudiante);
+    }
+
     public function listado_materias_configuradas($idPersona=null, $idAnio=null){
 
         $clasesDocente =  ConfClasesDocente::where("id_docente",$idPersona)->where("id_anio", $idAnio)->get();
@@ -238,6 +248,7 @@ class EvaluacionController extends Controller
 
         return view('evaluacion.listado_estudiantes_transicion_evaluar')->with("lstEstudiantes",$lstEstudiantes)
         ->with("usuarioactual",$usuarioactual)
+        ->with("anio",$idAnio)
         ->with("curso",$curso);
 
     }
@@ -301,36 +312,37 @@ class EvaluacionController extends Controller
 
     }
 
-    public function form_evaluacion_transicion($idEstudiante=null){
+    public function form_evaluacion_transicion($idEstudiante=null,$periodo=null){
         
         $estudiante = EstudiantesCurso::find($idEstudiante);
         $anios = ConfAnios::find($estudiante->id_anio);
         $lstMaterias = Materias::where("tipo_curso", 1)->get();
         $itemEvaluar = ItemEvaluarTransicion::all();
+        $id_periodo = (int)$periodo;
        
-        $filtradosCognitiva = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 11;
+        $filtradosCognitiva = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 11 && $item->id_periodo == $id_periodo;
         });
-        $filtradosComunicativa = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 12;
+        $filtradosComunicativa = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 12 && $item->id_periodo == $id_periodo;
         });
-        $filtradosEtica = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 13;
+        $filtradosEtica = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 13 && $item->id_periodo == $id_periodo;
         });
-        $filtradosEsteica = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 14;
+        $filtradosEsteica = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 14 && $item->id_periodo == $id_periodo;
         });
-        $filtradosSocioafectiva = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 17;
+        $filtradosSocioafectiva = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 17 && $item->id_periodo == $id_periodo;
         });
-        $filtradosCorporal = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 15;
+        $filtradosCorporal = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 15 && $item->id_periodo == $id_periodo;
         });
-        $filtradosEspiritual = $itemEvaluar->filter(function ($item) {
-            return $item->id_materia == 16;
+        $filtradosEspiritual = $itemEvaluar->filter(function ($item) use ($id_periodo) {
+            return $item->id_materia == 16 && $item->id_periodo == $id_periodo;
         });
 
-        $periodos = PeriodosClases::all();
+        $periodos = PeriodosClases::where("id", $periodo)->get();
 
         return view('evaluacion.form_evaluacion_transicion')->with('estudiante',$estudiante)
         ->with("anios",$anios)

@@ -53,7 +53,7 @@
                 <img src="{{ asset('/assets/img/cognitivo.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
             
               <h4 style='margin-bottom: 1px;'>Dimensiones</h4>
-              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de dimen</span>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de Dimensiones</span>
               </a>
             
           </div>
@@ -128,7 +128,7 @@
                 <img src="{{ asset('/assets/img/cognitivo.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
             
               <h4 style='margin-bottom: 1px;'>Dimensiones</h4>
-              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de dimen</span>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Configuración de Dimensiones</span>
               </a>
             
           </div>

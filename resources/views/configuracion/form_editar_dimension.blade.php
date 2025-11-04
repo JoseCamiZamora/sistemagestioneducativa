@@ -57,7 +57,20 @@
           <select class="form-control" id="materia" name="materia" required>
              <option value="{{$dimension->id_materia}}">{{$dimension->nom_materia}}</option>
               @foreach($materias as $materia)
-                <option value="{{$materia->id}}">{{$materia->nombre}}</option>
+                @if($materia->id != $dimension->id_materia)
+                  <option value="{{$materia->id}}">{{$materia->nombre}}</option>
+                @endif
+              @endforeach
+          </select>
+      </div>
+       <div class="col-md-4">
+          <label for="feLastName">Peridos</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="periodo" name="periodo" required>
+             <option value="{{$dimension->id_periodo}}" selected >{{$dimension->nom_periodo}}</option>
+              @foreach($periodos as $periodo)
+                @if($periodo->id != $dimension->id_periodo)
+                  <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
+                @endif
               @endforeach
           </select>
       </div>
