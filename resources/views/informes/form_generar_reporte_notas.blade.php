@@ -51,7 +51,7 @@
   </div>
   <!-- End Default Light Table -->
   <div class="reporte-box">
-    <h3>Generar Reporte por Período</h3>
+    <h3>Generar reporte por período</h3>
     <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
           <label for="feLastName">Año Curso</label><spam style="color: red;"> * </spam>
@@ -82,6 +82,37 @@
       </div>
       <div class="col-md-2" style="margin-top: 28px;" >
        <button onclick="generarReportePorPeriodo()"><i class="fa fa-download" style=""></i> Generar</button>
+      </div>
+    </div>
+    <br>
+    <h3>Generar reporte final por curso </h3>
+    <div class="form-row col-md-12 mt-2">
+      <div class="col-md-3">
+          <label for="feLastName">Año Curso</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="anio" name="anio"  required>
+            <option value="" selected >Seleccione...</option>
+              @foreach($anios as $anio)
+                <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
+              @endforeach
+          </select>
+      </div>
+      <div class="col-md-3">
+          <label for="feLastName">Curso</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="curso" name="curso"  required>
+            <option value="" selected >Seleccione...</option>
+              @foreach($grados as $grado)
+                <option value="{{$grado->id}}">{{$grado->nombre}}</option>
+              @endforeach
+          </select>
+      </div>
+      <div class="col-md-3">
+          <label for="feLastName">Periodo</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="periodo" name="periodo"  required>
+             <option value="Final" selected>Final</option>
+          </select>
+      </div>
+      <div class="col-md-2" style="margin-top: 28px;" >
+       <button onclick="generarReporteFinal()"><i class="fa fa-download" style=""></i> Generar</button>
       </div>
     </div>
   </div>

@@ -22,6 +22,30 @@ function evaluarEstudiante(id_estudiante){
 
 }
 
+function conceptoFinal(id_estudiante,id_curso){
+  
+  
+  var idClase = $('#id_clase').val();
+
+  $('#modal_concepto_final').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_concepto_final/"+id_estudiante+"/"+idClase+"/"+id_curso+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_concepto_final").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+
+}
+
 function evaluarEstudianteComportamiento(id_estudiante){
   
   var idClase = $('#id_clase').val();
@@ -154,6 +178,31 @@ function validarNotasComportamiento(val_nota){
 }
 
 
+
+$(document).on("submit", "#f_adicionar_concepto_final", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu = $(this);
+  var urlraiz = $("#url_raiz_proyecto").val();
+  var varurl = urlraiz + "/evaluacion/crear_concepto_final";
+
+  // Enviar AJAX
+  $.ajax({
+    url: varurl,
+    data: formu.serialize(),
+    method: 'POST',
+    dataType: 'html'
+  })
+  .done(function(resul) {
+    $('.preloader').fadeOut();
+    $("#contenido_modal_concepto_final").html(resul);
+  })
+  .fail(function(err) {
+    $('.preloader').fadeOut();
+    SU_revise_conexion();
+  });
+});
 
 $(document).on("submit", "#f_adicionar_evaluacion_estudiante", function(e) {
   e.preventDefault();
@@ -658,6 +707,8 @@ function evaluarEstudianteComportamientoTransicion(id_estudiante){
    }) ;
 
 }
+
+
 
 function GenerarObservacion(idEstudiante, idAnio, idCurso){
   

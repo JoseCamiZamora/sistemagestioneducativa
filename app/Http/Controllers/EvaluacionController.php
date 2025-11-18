@@ -28,6 +28,7 @@ use App\ConfDirectorGrupo;
 use App\ConceptoFinalTransicion;
 use App\NotaFinalTransicion;
 use App\ObservacionEstudiante;
+use App\ConceptoFinalEvaluacion;
 
 
 
@@ -176,11 +177,12 @@ class EvaluacionController extends Controller
                     $estudiante->nota_segundo_periodo = $filtro['nota_periodo_dos'];
                     $estudiante->nota_tercer_periodo = $filtro['nota_periodo_tres'];
                     $estudiante->nota_final = $filtro['nota_final'];
-                    if ( $estudiante->nota_final >= 5) {
+
+                    if ( $estudiante->nota_final >= 4.6) {
                         $estudiante->desempenio = 'Superior';
-                    } elseif ( $estudiante->nota_final >= 4.5) {
+                    } elseif ( $estudiante->nota_final >= 4.0) {
                         $estudiante->desempenio = 'Alto';
-                    } elseif ( $estudiante->nota_final >= 3.9) {
+                    } elseif ( $estudiante->nota_final >= 3.0) {
                         $estudiante->desempenio = 'Básico';
                     } else {
                         $estudiante->desempenio = 'Bajo';
@@ -188,8 +190,8 @@ class EvaluacionController extends Controller
                     break;
                 }
             }
-            //dd($filtrados);
         }
+        //dd($lstEstudiantes);
 
         return view('evaluacion.listado_estudiantes_evaluar')->with('clasesDocente',$clasesDocente)
         ->with("lstEstudiantes",$lstEstudiantes)
@@ -277,6 +279,26 @@ class EvaluacionController extends Controller
 
     }
 
+    public function form_concepto_final($idEstudiante=null, $idClase=null,$idCurso=null){
+        
+        $estudiante = EstudiantesCurso::find($idEstudiante);
+        $anios = ConfAnios::find($estudiante->id_anio);
+        $claseDocente =  ConfClasesDocente::find($idClase);
+        $curso = Grados::find($idCurso);
+
+        $concepto = ConceptoFinalEvaluacion::where("id_estudiante",$estudiante->id_estudiante)
+                                            ->where("id_anio",$anios->id)
+                                            ->where("id_materia",$claseDocente->id_materia)
+                                            ->where("id_curso",$curso->id)->first();
+        //dd($claseDocente);
+        return view('evaluacion.form_concepto_final')->with('estudiante',$estudiante)
+        ->with("anios",$anios)
+        ->with("claseDocente",$claseDocente)
+        ->with("curso",$curso)
+        ->with("concepto",$concepto);
+
+    }
+
     public function form_evaluacion_comportamiento($idEstudiante=null, $idClase=null){
         
         $estudiante = EstudiantesCurso::find($idEstudiante);
@@ -353,6 +375,43 @@ class EvaluacionController extends Controller
         ->with("lstMaterias",$lstMaterias)
         ->with("periodos",$periodos);
 
+    }
+
+    public function crear_concepto_final(Request $request){
+        
+        $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
+        $anios = ConfAnios::find($estudiante->id_anio);
+        $claseDocente =  ConfClasesDocente::find($request->input('id_clase'));
+        $curso = Grados::find($request->input('id_curso'));
+
+        
+        
+        $concepto = ConceptoFinalEvaluacion::where("id_estudiante",$estudiante->id_estudiante)
+                                                            ->where("id_anio",$anios->id)
+                                                            ->where("id_materia",$claseDocente->id_materia)
+                                                     ->where("id_curso",$curso->id)->first();
+        if($concepto == null){
+            $concepto = new ConceptoFinalEvaluacion();
+            $concepto->id_anio = $estudiante->id_anio;
+            $concepto->desc_anio = $estudiante->desc_anio;
+            $concepto->id_estudiante = $estudiante->id_estudiante;
+            $concepto->nom_estudiante = $estudiante->nombre_estudiante;
+            $concepto->id_curso = $curso->id;
+            $concepto->desc_curso = $curso->nombre;
+            $concepto->id_materia =  $claseDocente->id_materia;
+            $concepto->desc_materia =  $claseDocente->nom_materia;
+            $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+
+        }else{
+            $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+        }
+
+        if($concepto->save()){
+            return view("evaluacion.mensajes.msj_confirmacion")->with("msj","El concepto fue alamcenado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+       
     }
 
     public function crear_evaluacion_estudiante(Request $request){
@@ -875,6 +934,7 @@ class EvaluacionController extends Controller
 
 
         }
+        dd($lstEstudiantes);
 
         return view('evaluacion.listado_estudiantes_evaluar_comportamiento')->with("lstEstudiantes",$lstEstudiantes)->with("curso",$curso);
         

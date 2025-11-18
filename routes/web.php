@@ -199,11 +199,9 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/consultar_observacion_periodo/{idEstudiante?}/{idAnio?}/{idDirectorGrupo?}/{idPeriodo?}', 'EvaluacionController@consultar_observacion_periodo');
    Route::get('/evaluacion/form_materias_evaluadas/{idEstudiante?}/{idPeriodo?}/{idAnio?}', 'EvaluacionController@form_materias_evaluadas');
    Route::get('/evaluacion/index_periodos_transicion/{anio?}/{idEstudiante?}', 'EvaluacionController@index_periodos_transicion');
-     
+   Route::get('/evaluacion/form_concepto_final/{id_estudiante?}/{id_clase?}/{id_curso?}', 'EvaluacionController@form_concepto_final');
+   Route::post('/evaluacion/crear_concepto_final', 'EvaluacionController@crear_concepto_final');
    
-   
-
-
    // Rutas Inforermes
 
    Route::get('/informes/index_reportes', 'InformesController@index_reportes');

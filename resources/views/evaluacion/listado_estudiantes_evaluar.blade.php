@@ -37,6 +37,7 @@
                 <th scope="col" class="th-gris text-center" >Nota Final</th>
                 <th scope="col" class="th-gris text-center" >Desenpeño</th>
                 <th scope="col" class="th-gris text-center " >Evaluar</th>
+                <th scope="col" class="th-gris text-center " >Concepto Final</th>
               </tr>
             </thead>
             <tbody>
@@ -68,6 +69,15 @@
                         <i class="fa fa-list" title="Evaluar estudiante" style=""></i><br>
                       </div>
                     </a>
+                  </td>
+                  <td>
+                  @if($estudiante->nota_tercer_periodo > 0)
+                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="conceptoFinal({{$estudiante->id}},{{$curso->id}})" id="subirfile" >
+                      <div class="nav-link-icon__wrapper">
+                        <i class="fa fa-book" title="Evaluar estudiante" style=""></i><br>
+                      </div>
+                    </a>
+                  @endif
                   </td>
                 </tr>
               @endforeach
@@ -107,6 +117,20 @@
         </button>
       </div>
       <div class="modal-body" id="contenido_modal_editar_anio" style='min-height: 260px;'>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_concepto_final">
+  <div class="modal-dialog modal-lg" style="max-width: 70%;">
+    <div class="modal-content">
+      <div class="modal-header" id="datohtml">
+        <h4 class="modal-title" id="titul_modal_usuarios">Concepto Final Evaluación</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body" id="contenido_modal_concepto_final" style='min-height: 260px;'>
       </div>
     </div>
   </div>
