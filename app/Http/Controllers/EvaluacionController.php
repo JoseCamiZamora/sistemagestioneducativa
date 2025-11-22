@@ -934,7 +934,6 @@ class EvaluacionController extends Controller
 
 
         }
-        dd($lstEstudiantes);
 
         return view('evaluacion.listado_estudiantes_evaluar_comportamiento')->with("lstEstudiantes",$lstEstudiantes)->with("curso",$curso);
         
