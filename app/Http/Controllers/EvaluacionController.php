@@ -29,6 +29,7 @@ use App\ConceptoFinalTransicion;
 use App\NotaFinalTransicion;
 use App\ObservacionEstudiante;
 use App\ConceptoFinalEvaluacion;
+use App\ConceptoFinalComportamiento;
 
 
 
@@ -299,6 +300,23 @@ class EvaluacionController extends Controller
 
     }
 
+    public function form_concepto_final_comportamiento($idEstudiante=null,$idCurso=null){
+        
+        $estudiante = EstudiantesCurso::find($idEstudiante);
+        $anios = ConfAnios::find($estudiante->id_anio);
+        $curso = Grados::find($idCurso);
+
+        $concepto = ConceptoFinalComportamiento::where("id_estudiante",$estudiante->id_estudiante)
+                                            ->where("id_anio",$anios->id)
+                                            ->where("id_curso",$curso->id)->first();
+        //dd($claseDocente);
+        return view('evaluacion.form_concepto_final_comportamiento')->with('estudiante',$estudiante)
+        ->with("anios",$anios)
+        ->with("curso",$curso)
+        ->with("concepto",$concepto);
+
+    }
+
     public function form_evaluacion_comportamiento($idEstudiante=null, $idClase=null){
         
         $estudiante = EstudiantesCurso::find($idEstudiante);
@@ -400,6 +418,39 @@ class EvaluacionController extends Controller
             $concepto->desc_curso = $curso->nombre;
             $concepto->id_materia =  $claseDocente->id_materia;
             $concepto->desc_materia =  $claseDocente->nom_materia;
+            $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+
+        }else{
+            $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
+        }
+
+        if($concepto->save()){
+            return view("evaluacion.mensajes.msj_confirmacion")->with("msj","El concepto fue alamcenado exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+       
+    }
+
+    public function crear_concepto_final_comp(Request $request){
+        
+        $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
+        $anios = ConfAnios::find($estudiante->id_anio);
+        $curso = Grados::find($request->input('id_curso'));
+
+        
+        
+        $concepto = ConceptoFinalComportamiento::where("id_estudiante",$estudiante->id_estudiante)
+                                                            ->where("id_anio",$anios->id)
+                                                            ->where("id_curso",$curso->id)->first();
+        if($concepto == null){
+            $concepto = new ConceptoFinalComportamiento();
+            $concepto->id_anio = $estudiante->id_anio;
+            $concepto->desc_anio = $estudiante->desc_anio;
+            $concepto->id_estudiante = $estudiante->id_estudiante;
+            $concepto->nom_estudiante = $estudiante->nombre_estudiante;
+            $concepto->id_curso = $curso->id;
+            $concepto->desc_curso = $curso->nombre;
             $concepto->descripcion = $request->input('conceptos')?$request->input('conceptos'):"";
 
         }else{
@@ -1151,6 +1202,22 @@ class EvaluacionController extends Controller
                                                         ->with("periodos",$periodos);
     }
 
+    public function form_obs_final($idEstudiante=null,$idAnio=null,$idCurso=null){
+
+        $estudiante = EstudiantesCurso::find($idEstudiante);
+        $anios = ConfAnios::find($idAnio);
+        $directorGrupo =  ConfDirectorGrupo::find($idCurso);
+
+        $observacionFinal = ObservacionEstudiante::where("id_anio",$anios->id)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_curso",$estudiante->id_curso)
+                                                    ->where("id_docente",$directorGrupo->id_docente)->first();
+
+        return view('evaluacion.form_observacion_director_final')->with("anios",$anios)
+                                                        ->with("directorGrupo",$directorGrupo)
+                                                        ->with("estudiante",$estudiante)
+                                                        ->with("observacionFinal",$observacionFinal);
+    }
+
     public function crear_observacion_final(Request $request){
         
         $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
@@ -1187,6 +1254,25 @@ class EvaluacionController extends Controller
             }
         }
 
+        if($observacionFinal->save()){
+            return view("evaluacion.mensajes.msj_confirmacion")->with("msj","La observación fue alamcenada exitosamente");
+        }else{
+            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+        }
+    }
+
+    public function crear_observacion_final_rep(Request $request){
+        
+        $estudiante = EstudiantesCurso::find($request->input('id_estudiante_curso'));
+        $anios = ConfAnios::find($request->input('id_anio'));
+        $periodo = PeriodosClases::find($request->input('periodo'));
+        $observacion = $request->input('observacion')?$request->input('observacion'):"";
+        $directorGrupo =  ConfDirectorGrupo::find($request->input('id_director_grupo'));
+
+        $observacionFinal = ObservacionEstudiante::where("id_anio",$anios->id)->where("id_estudiante",$estudiante->id_estudiante)
+                                                    ->where("id_curso",$estudiante->id_curso)
+                                                    ->where("id_docente",$directorGrupo->id_docente)->first();
+        $observacionFinal->obs_final = $observacion;
         if($observacionFinal->save()){
             return view("evaluacion.mensajes.msj_confirmacion")->with("msj","La observación fue alamcenada exitosamente");
         }else{

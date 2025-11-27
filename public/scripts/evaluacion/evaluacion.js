@@ -46,6 +46,48 @@ function conceptoFinal(id_estudiante,id_curso){
 
 }
 
+function conceptoFinalComportamiento(id_estudiante,id_curso){
+
+  $('#modal_concepto_final_comp').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_concepto_final_comportamiento/"+id_estudiante+"/"+id_curso+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_concepto_final_comp").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+
+}
+
+function conceptoFinalObservacion(id_estudiante,id_anio,id_director){
+
+  $('#modal_obs_final').modal();
+  $('.preloader').fadeIn();
+  var urlraiz=$("#url_raiz_proyecto").val();
+  var miurl='';
+  miurl=urlraiz+"/evaluacion/form_obs_final/"+id_estudiante+"/"+id_anio+"/"+id_director+"";
+  $.ajax({
+    url: miurl
+    }).done( function(resul){
+      $('.preloader').fadeOut();
+      $("#contenido_modal_obs_final").html(resul);
+   
+    }).fail( function() 
+   {
+    $('.preloader').fadeOut();
+     SU_revise_conexion();
+   }) ;
+
+}
+
 function evaluarEstudianteComportamiento(id_estudiante){
   
   var idClase = $('#id_clase').val();
@@ -197,6 +239,31 @@ $(document).on("submit", "#f_adicionar_concepto_final", function(e) {
   .done(function(resul) {
     $('.preloader').fadeOut();
     $("#contenido_modal_concepto_final").html(resul);
+  })
+  .fail(function(err) {
+    $('.preloader').fadeOut();
+    SU_revise_conexion();
+  });
+});
+
+$(document).on("submit", "#f_adicionar_concepto_final_comp", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+
+  var formu = $(this);
+  var urlraiz = $("#url_raiz_proyecto").val();
+  var varurl = urlraiz + "/evaluacion/crear_concepto_final_comp";
+
+  // Enviar AJAX
+  $.ajax({
+    url: varurl,
+    data: formu.serialize(),
+    method: 'POST',
+    dataType: 'html'
+  })
+  .done(function(resul) {
+    $('.preloader').fadeOut();
+    $("#contenido_modal_concepto_final_comp").html(resul);
   })
   .fail(function(err) {
     $('.preloader').fadeOut();
@@ -655,6 +722,38 @@ $(document).on("submit", "#f_adicionar_observacion_final", function(e) {
     $('.preloader').fadeOut();
   }
 });
+
+$(document).on("submit", "#f_adicionar_observacion_final_reporte", function(e) {
+  e.preventDefault();
+  $('.preloader').fadeIn();
+  var concepto = document.getElementById("observacion").value;
+  if(concepto != ''){
+    var formu = $(this);
+    var urlraiz = $("#url_raiz_proyecto").val();
+    var varurl = urlraiz + "/evaluacion/crear_observacion_final_rep";
+
+    // Enviar AJAX
+    $.ajax({
+      url: varurl,
+      data: formu.serialize(),
+      method: 'POST',
+      dataType: 'html'
+    })
+    .done(function(resul) {
+      $('.preloader').fadeOut();
+      $("#contenido_modal_obs_final").html(resul);
+    }).fail(function(err) {
+      $('.preloader').fadeOut();
+      SU_revise_conexion();
+    });
+  }else{
+     toastr.warning('Antes de almacenar el registro de debe adicionar una observación sobre la evaluación del estudiante', '¡Advertencia!');
+     e.preventDefault();
+    $('.preloader').fadeOut();
+  }
+});
+
+
 
 $(document).on("submit", "#f_adicionar_concepto_transicion", function(e) {
   e.preventDefault();

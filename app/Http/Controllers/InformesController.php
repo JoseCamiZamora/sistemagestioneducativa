@@ -696,6 +696,7 @@ class InformesController extends Controller
                         'nota3'              => $periodosComp['nota3'],
                         'concepto'          => $periodosComp['concepto'],
                         'desempenio'        => $periodosComp['desempenio'],
+                        'promedio'          => $periodosComp['promedio'],
                         'id_docente'        => null,
                         'nom_docente'       => null,
                         'intensidad_horas'  => null
@@ -733,10 +734,10 @@ class InformesController extends Controller
             ];
 
             // Determinar el periodo y sus datos
-            
+           // dd($periodos);
             foreach ($periodos as $periodo => $datos) {
                 // Solo agregamos si hay nota registrada
-                if ($datos['nota'] > 0) {
+                if ($datos['nota1'] > 0) {
                     $reporte[$idEstudiante]['data_materia'][] = [
                         'id_materia'   => $item['id_materia'],
                         'nom_materia'  => $item['desc_materia'],
@@ -748,6 +749,7 @@ class InformesController extends Controller
                         'desempenio'   => $datos['desempenio'],
                         'id_docente'   => $item['id_docente'],
                         'nom_docente'  => $item['nom_docente'],
+                        'promedio'     => round($datos['promedio'],2),
                         'intensidad_horas' => $intensidadHoras[0]['intensidad_horas'] ?? null,
                         'horas_justificadas' => $datos['horas_justificadas'],
                         'horas_no_justificadas' => $datos['horas_no_justificadas']

@@ -200,7 +200,12 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/evaluacion/form_materias_evaluadas/{idEstudiante?}/{idPeriodo?}/{idAnio?}', 'EvaluacionController@form_materias_evaluadas');
    Route::get('/evaluacion/index_periodos_transicion/{anio?}/{idEstudiante?}', 'EvaluacionController@index_periodos_transicion');
    Route::get('/evaluacion/form_concepto_final/{id_estudiante?}/{id_clase?}/{id_curso?}', 'EvaluacionController@form_concepto_final');
+   Route::get('/evaluacion/form_concepto_final_comportamiento/{id_estudiante?}/{id_curso?}', 'EvaluacionController@form_concepto_final_comportamiento');
    Route::post('/evaluacion/crear_concepto_final', 'EvaluacionController@crear_concepto_final');
+   Route::post('/evaluacion/crear_concepto_final_comp', 'EvaluacionController@crear_concepto_final_comp');
+   Route::get('/evaluacion/form_obs_final/{id_estudiante?}/{id_anio?}/{id_director?}', 'EvaluacionController@form_obs_final');
+   Route::post('/evaluacion/crear_observacion_final_rep', 'EvaluacionController@crear_observacion_final_rep');
+   
    
    // Rutas Inforermes
 
