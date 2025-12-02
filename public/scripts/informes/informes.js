@@ -145,8 +145,8 @@ function generarReportePorPeriodo() {
 
 function generarReporteFinal() {
 
-  var idCurso = $('#curso').val();
-  var idAnio = $('#anio').val();
+  var idCurso = $('#curso1').val();
+  var idAnio = $('#anio1').val();
   var idPeriodo = 3;
   var todoCompleto = true;
   if(idAnio == ""){
@@ -164,19 +164,7 @@ function generarReporteFinal() {
     toastr.warning('Antes de generar el reporte debes seleccionar el periodo', 'Atención');
     return;
   }
-  var rutaUrl = '';
-  if(idCurso == 1){
-    rutaUrl = "pdf_infomre_periodo_transicion"
-  }else{
-    if(idPeriodo == 1){
-        rutaUrl = "pdf_infomre_periodo";
-    }if(idPeriodo == 2){
-        rutaUrl = "pdf_infomre_periodo_dos";
-    }if(idPeriodo == 3){
-        rutaUrl = "pdf_infomre_periodo_tres";
-    }
-  }
-
+  var rutaUrl = "pdf_infomre_periodo_final";
   if(todoCompleto){
   $('.preloader').fadeIn();
     var urlraiz = $("#url_raiz_proyecto").val();

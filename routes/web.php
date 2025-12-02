@@ -224,6 +224,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/informes/pdf_infomre_periodo_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_periodo_estudiante');
    Route::get('/informes/pdf_infomre_cetirficado_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_cetirficado_estudiante');
    Route::get('/informes/pdf_infomre_constancia_estudiante/{idCurso?}/{idAnio?}/{idEstudiante?}', 'InformesController@pdf_infomre_constancia_estudiante');
+   Route::get('/informes/pdf_infomre_periodo_final/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_periodo_final');
    
    
    

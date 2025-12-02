@@ -37,6 +37,7 @@ use setasign\Fpdi\Fpdi;
 use Exception;
 
 use App\Exports\Informe1Export;
+use App\Exports\Informe2Export;
 use Maatwebsite\Excel\Facades\Excel;
 
 /**
@@ -88,7 +89,12 @@ class EstadisticasController extends Controller
     $filePath = storage_path('app/public/' . $fileName);
 
     // Guardar archivo temporalmente
-    Excel::store(new Informe1Export($anio, $curso, $periodo), 'public/' . $fileName);
+    if($periodo == 'F'){
+        Excel::store(new Informe2Export($anio, $curso, $periodo), 'public/' . $fileName);
+    }else{
+        Excel::store(new Informe1Export($anio, $curso, $periodo), 'public/' . $fileName);
+    }
+   
 
     // Leer y codificar en base64
     $fileContent = file_get_contents($filePath);

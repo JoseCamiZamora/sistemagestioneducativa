@@ -78,6 +78,7 @@
               @foreach($periodos as $periodo)
                 <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
               @endforeach
+                <option value="F">REPORTE FINAL</option>
           </select>
       </div>
       <div class="col-md-2" style="margin-top: 28px;" >
