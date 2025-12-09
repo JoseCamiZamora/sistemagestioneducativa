@@ -115,7 +115,6 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo($idCurso=null,$idAnio=null,$idPeriodo=null){
 
-        ini_set('memory_limit', '712M');
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
@@ -343,6 +342,10 @@ class InformesController extends Controller
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         
+        ini_set('memory_limit', '712M');
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
+
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
             'reporte'        => $reporte,
@@ -367,7 +370,6 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo_dos($idCurso=null,$idAnio=null,$idPeriodo=null){
 
-        ini_set('memory_limit', '712M');
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
@@ -553,6 +555,10 @@ class InformesController extends Controller
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         
+        ini_set('memory_limit', '712M');
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
+
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_dos', [
             'docente'        => $docente,
             'reporte'        => $reporte,
@@ -577,7 +583,6 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo_tres($idCurso=null,$idAnio=null,$idPeriodo=null){
 
-        ini_set('memory_limit', '712M');
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
@@ -773,6 +778,10 @@ class InformesController extends Controller
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         
+        ini_set('memory_limit', '712M');
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
+
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_tres', [
             'docente'        => $docente,
             'reporte'        => $reporte,
@@ -797,8 +806,6 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo_final($idCurso=null,$idAnio=null,$idPeriodo=null){
 
-        ini_set('max_execution_time', 300); // 5 minutos
-        set_time_limit(300);
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
@@ -1021,6 +1028,10 @@ class InformesController extends Controller
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
         $periodoClases->nombre = 'FINAL';
         
+        ini_set('memory_limit', '712M');
+        ini_set('max_execution_time', 300);
+        set_time_limit(300);
+
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_tres', [
             'docente'        => $docente,
             'reporte'        => $reporte,
