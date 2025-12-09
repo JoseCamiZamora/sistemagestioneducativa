@@ -797,7 +797,8 @@ class InformesController extends Controller
 
     public function pdf_infomre_periodo_final($idCurso=null,$idAnio=null,$idPeriodo=null){
 
-        ini_set('memory_limit', '1200M');
+        ini_set('max_execution_time', 300); // 5 minutos
+        set_time_limit(300);
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
