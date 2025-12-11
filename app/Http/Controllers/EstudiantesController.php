@@ -480,8 +480,8 @@ class EstudiantesController extends Controller
             array_push($responsablesArray, $newarrayact3);
         }
         $estudiante->responsable_json= json_encode($responsablesArray);
-
         if($estudiante->save()){
+           
             $estudiantesCurso = EstudiantesCurso::all();
 
             foreach ($estudiantesCurso as $estu) {
@@ -499,7 +499,7 @@ class EstudiantesController extends Controller
             foreach ($evaluacionEstudiante as $estuEva) {
                 if ($estuEva->id_estudiante == $estudiante->id) {
                     $evaluacionActualizar = EvaluacionEstudiante::find($estuEva->id_estudiante);
-                    $evaluacionActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
+                    $evaluacionActualizar->nom_estudiante = $estudiante->primer_nombre . " " .
                                                     $estudiante->segundo_nombre . " " .
                                                     $estudiante->primer_apellido . " " .
                                                     $estudiante->segundo_apellido;
@@ -511,7 +511,7 @@ class EstudiantesController extends Controller
             foreach ($notaFinal as $estuEvaFinal) {
                 if ($estuEvaFinal->id_estudiante == $estudiante->id) {
                     $evaluacionFinalActualizar = NotaFinalEstudiante::find($estuEvaFinal->id_estudiante);
-                    $evaluacionFinalActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
+                    $evaluacionFinalActualizar->nom_estudiante = $estudiante->primer_nombre . " " .
                                                     $estudiante->segundo_nombre . " " .
                                                     $estudiante->primer_apellido . " " .
                                                     $estudiante->segundo_apellido;

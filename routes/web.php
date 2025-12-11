@@ -220,6 +220,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/informes/pdf_infomre_certificado_notas_periodo/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo');
    Route::get('/informes/pdf_infomre_certificado_notas_periodo_dos/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo_dos');
    Route::get('/informes/pdf_infomre_certificado_notas_periodo_tres/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo_tres');
+   Route::get('/informes/pdf_infomre_certificado_notas_periodo_final/{idCurso?}/{idAnio?}/{idPeriodo?}', 'InformesController@pdf_infomre_certificado_notas_periodo_final');
    Route::get('/informes/info_estudiantes_cursos/{idAnio?}/{idCurso?}', 'InformesController@info_estudiantes_cursos');
    Route::get('/informes/pdf_infomre_periodo_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_periodo_estudiante');
    Route::get('/informes/pdf_infomre_cetirficado_estudiante/{idCurso?}/{idAnio?}/{idPeriodo?}/{idEstudiante?}', 'InformesController@pdf_infomre_cetirficado_estudiante');

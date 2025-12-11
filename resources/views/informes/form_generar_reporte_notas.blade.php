@@ -122,7 +122,7 @@
     <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
           <label for="feLastName">Año Curso</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="anio1" name="anio1"  required>
+          <select class="form-control" id="anio2" name="anio2"  required>
             <option value="" selected >Seleccione...</option>
               @foreach($anios as $anio)
                 <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
@@ -131,7 +131,7 @@
       </div>
       <div class="col-md-3">
           <label for="feLastName">Curso</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="curso1" name="curso1"  required>
+          <select class="form-control" id="curso2" name="curso2"  required>
             <option value="" selected >Seleccione...</option>
               @foreach($grados as $grado)
                 <option value="{{$grado->id}}">{{$grado->nombre}}</option>
@@ -140,11 +140,12 @@
       </div>
       <div class="col-md-3">
           <label for="feLastName">Periodo</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="periodo1" name="periodo1"  required>
+          <select class="form-control" id="periodo2" name="periodo2"  required>
             <option value="" selected >Seleccione...</option>
               @foreach($periodos as $periodo)
                 <option value="{{$periodo->id}}">{{$periodo->nombre}}</option>
               @endforeach
+              <option value="F">REPORTE FINAL</option>
           </select>
       </div>
       <div class="col-md-2" style="margin-top: 28px;" >

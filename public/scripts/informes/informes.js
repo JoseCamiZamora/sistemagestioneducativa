@@ -194,9 +194,9 @@ function generarReporteFinal() {
 
 function generarReporteCertificadoEstudiosPorPeriodo() {
 
-  var idCurso = $('#curso1').val();
-  var idAnio = $('#anio1').val();
-  var idPeriodo = $('#periodo1').val();
+  var idCurso = $('#curso2').val();
+  var idAnio = $('#anio2').val();
+  var idPeriodo = $('#periodo2').val();
   var todoCompleto = true;
   if(idAnio == ""){
     todoCompleto = false;
@@ -223,6 +223,8 @@ function generarReporteCertificadoEstudiosPorPeriodo() {
         rutaUrl = "pdf_infomre_certificado_notas_periodo_dos";
     }if(idPeriodo == 3){
         rutaUrl = "pdf_infomre_certificado_notas_periodo_tres";
+    }else{
+      rutaUrl = "pdf_infomre_certificado_notas_periodo_final";
     }
     
   }
