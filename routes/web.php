@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
    // Rutas para modulo de estudiantes
    Route::get('/estudiantes/listado_estudiantes', 'EstudiantesController@listado_estudiantes');
    Route::get('/estudiantes/listado_estudiantes_i', 'EstudiantesController@listado_estudiantes_i');
+   Route::get('/estudiantes/listado_estudiantes_e', 'EstudiantesController@listado_estudiantes_e');
    Route::get('/estudiantes/form_nuevo_estudiante', 'EstudiantesController@form_nuevo_estudiante');
    Route::post('/estudiantes/crear_estudiante', 'EstudiantesController@crear_estudiante');
    Route::get('/estudiantes/frm_info_estudiante/{id_estudiante}', 'EstudiantesController@frm_info_estudiante');
@@ -155,6 +156,13 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/configuracion/frm_editar_dimension/{idDimencion?}', 'ConfiguracionController@frm_editar_dimension');
    Route::post('/configuracion/editar_dimension', 'ConfiguracionController@editar_dimension');
    Route::get('/configuracion/borrar_dimension/{idDimension?}', 'ConfiguracionController@borrar_dimension');
+
+    Route::get('/configuracion/listado_anios_finalizar', 'ConfiguracionController@listado_anios_finalizar');
+    Route::get('/configuracion/finalizar_anio_escolar/{idAnio?}', 'ConfiguracionController@finalizar_anio_escolar');
+
+    
+
+   
 
  
    

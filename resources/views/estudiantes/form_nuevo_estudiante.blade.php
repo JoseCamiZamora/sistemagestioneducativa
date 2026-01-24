@@ -393,6 +393,40 @@
       </div>
     </div>
     <br>
+    <div class="form-row" style="background-color: #66d1ea">
+      <label for="feLastName" style="color: black; margin-top: 8px;margin-left: 8px">DATOS MATRICULA</label>
+    </div>
+    <br>
+    <div class="form-row col-md-12 mt-3">
+      <div class="col-md-4">
+            <label for="feLastName">Año Escolar</label><spam style="color: red;"> * </spam>
+            <select class="form-control" id="anio_escolar" name="anio_escolar"  style="margin-top: -6px; height: 33px;padding-top: 4px;" required>
+            <option value="">Seleccione...</option>
+                @foreach($lstAnios as $anio)
+                  <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="feLastName">Tipo Grado</label><spam style="color: red;"> * </spam>
+            <select class="form-control" id="tipo_grado" name="tipo_grado" onchange="infoGradosNuevoEstudiante(this.value)" style="margin-top: -6px; height: 33px;padding-top: 4px;" required>
+                <option value="">Seleccione...</option>
+                @foreach($lstClasificaciones as $clas)
+                  <option value="{{$clas->id}}">{{$clas->nombre}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="feLastName">Curso Escolar</label><spam style="color: red;"> * </spam>
+            <select class="form-control" id="curso" name="curso" style="margin-top: -6px; height: 33px;padding-top: 4px;" required disabled>
+            <option value="">Seleccione...</option>
+                @foreach($grados as $curso)
+                  <option value="{{$curso->id}}">{{$curso->nombre}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <br>
     <div class="form-row col-md-12 mt-3  text-center">
       <button type="submit" class="btn btn-accent text-center" >Guardar Información Matricula</button>
     </div>
@@ -413,6 +447,9 @@
         });
 
     }
+</script>
+<script>
+  var CURSOS = @json($grados);
 </script>
 
 

@@ -175,6 +175,23 @@
         </div>
       </div>
     </div> 
+    <div class="col-12 col-md-6 col-lg-3 mb-4">
+      <div class="stats-small card card-small">
+        <div class="card-body px-0 pb-0" >
+          <div class="d-flex px-3 text-center">
+          
+              <a href="{{ url('/configuracion/listado_anios_finalizar') }}" style='width: 100%'>
+          
+              <img src="{{ asset('/assets/img/finclase.png') }}" style='max-height: 40px;' onerror="this.onerror=null; this.src='image.png'">
+            
+              <h4 style='margin-bottom: 1px;' >Finalización de clases</h4>
+              <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Finalizar año escolar</span>
+              </a>
+            
+          </div>
+        </div>
+      </div>
+    </div> 
       
     @endif
 

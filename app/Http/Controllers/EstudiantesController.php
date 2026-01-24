@@ -12,6 +12,7 @@ use App\EstudiantesCurso;
 use App\ConfAnios;
 use App\NotaFinalEstudiante;
 use App\EvaluacionEstudiante;
+use App\TipoCursos;
 
 
 use PDF;
@@ -79,6 +80,19 @@ class EstudiantesController extends Controller
         ->with("usuarioactual", $usuarioactual);
     }
 
+    public function listado_estudiantes_e() {
+        $usuarioactual = Auth::user();
+        $grados = Grados::all();
+        $estado = 'E';
+        $filtro = 'I';
+        $lstEstudiantes = Estudiantes::where("estado", "=", $estado)->paginate(50);
+        return view("estudiantes.listado_estudiantes")->with("lstEstudiantes", $lstEstudiantes)
+        ->with("estado", $estado)
+        ->with("grados",$grados)
+         ->with("filtro",$filtro)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
     public function listado_estudiantes_filtro($idAnio=null, $idGrado=null) {
         
         //dd('idanio',$idAnio , 'idGrado',$idGrado );
@@ -117,6 +131,9 @@ class EstudiantesController extends Controller
     public function form_nuevo_estudiante(){
         $usuario_actual=Auth::user();
         $tiposDocumentos = TiposDocumentos::all();
+        $lstAnios = ConfAnios::where("estado", "=", 'A')->get();
+        $grados = Grados::all();
+        $lstClasificaciones = TipoCursos::all();
 
         if( $usuario_actual->rol!=1 ){  
             return view("mensajes.msj_no_autorizado")->with("msj","no tiene autorizacion para acceder a esta seccion"); 
@@ -124,7 +141,10 @@ class EstudiantesController extends Controller
 
         return view("estudiantes.form_nuevo_estudiante")
                ->with("tiposDocumentos",$tiposDocumentos)
-               ->with("usuario_actual",$usuario_actual);
+               ->with("usuario_actual",$usuario_actual)
+               ->with("lstAnios",$lstAnios)
+               ->with("grados",$grados)
+               ->with("lstClasificaciones",$lstClasificaciones);
     }
 
     public function crear_estudiante(Request $request){
@@ -237,8 +257,28 @@ class EstudiantesController extends Controller
         }
         $estudiante->responsable_json= json_encode($responsablesArray);
 
-        if($estudiante->save())
-        {
+        if($estudiante->save()){
+            $estudianteCurso = new EstudiantesCurso();
+
+            $idAnio = $request->input('anio_escolar');
+            $idCurso = $request->input('curso');
+            $idClasificacion = $request->input('tipo_grado');
+            
+            $anio = ConfAnios::find($idAnio);
+            $curso = Grados::find($idCurso);
+            $clasificacion = TipoCursos::find($idClasificacion);
+
+            $estudianteCurso->id_anio = $anio->id;
+            $estudianteCurso->desc_anio = $anio->anio_inicio.' - '.$anio->anio_fin;
+            $estudianteCurso->id_estudiante = $estudiante->id;
+            $estudianteCurso->nombre_estudiante = $estudiante->primer_nombre.' '.$estudiante->segundo_nombre.' '.$estudiante->primer_apellido.' '.$estudiante->segundo_apellido;
+            $estudianteCurso->id_curso = $curso->id;
+            $estudianteCurso->nom_curso = $curso->nombre;
+            $estudianteCurso->id_clasificacion = $clasificacion->id;
+            $estudianteCurso->tipo_grado = $clasificacion->nombre;
+            $estudianteCurso->estado = 'A';
+            $estudianteCurso->save();
+            
             return view("estudiantes.mensajes.msj_creado")->with("msj","Estudiante creado exitosamente")
             										   ->with("estado",$estudiante->estado);
         }else{

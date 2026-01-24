@@ -227,6 +227,24 @@ function activarEstudiante(idEstudiante){
 
 }
 
+function infoGradosNuevoEstudiante(idTipo){
+ //debugger;
+    const tipoGradoSelectParam = Number(idTipo);
+    var arrayCursos=CURSOS?CURSOS:[];
+    const lstCursosConfiguradas = arrayCursos.filter(
+      item => item.tipo_grado === tipoGradoSelectParam
+    );
+
+    var mateHtmlteams = '';
+    mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
+    lstCursosConfiguradas.forEach(function(citi){
+      mateHtmlteams += '<option value="'+citi.id+'" class="">'+citi.nombre+'</option>';
+    })
+    $('#curso').html(mateHtmlteams);
+    document.getElementById("curso").disabled = false;
+
+}
+
 
 
 

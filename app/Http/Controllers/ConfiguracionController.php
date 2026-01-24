@@ -107,6 +107,13 @@ class ConfiguracionController extends Controller
         ->with("usuarioactual", $usuarioactual);
     }
 
+    public function listado_anios_finalizar() {
+        $usuarioactual = Auth::user();
+        $lstAnios = ConfAnios::where("estado", "=", 'A')->paginate(50);
+        return view("configuracion.listado_anios_finalizar")->with("lstAnios", $lstAnios)
+        ->with("usuarioactual", $usuarioactual);
+    }
+
     public function  listado_conceptos() {
         $usuarioactual = Auth::user();
         $lstConceptos = ConceptosEvaluacion::where("estado", "=", 'A')->paginate(50);
@@ -1187,6 +1194,106 @@ class ConfiguracionController extends Controller
             return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
         }
     }
+
+    public function  finalizar_anio_escolar($idAnio=null) {
+
+        $anioAnterior = ConfAnios::find($idAnio);
+        $anioNuevo = new ConfAnios();
+
+        $anioInicio = $anioAnterior->anio_fin + 1;
+
+        $anioNuevo->json_grados= $anioAnterior->json_grados;
+        $anioNuevo->json_evaluaciones = $anioAnterior->json_evaluaciones;
+        $anioNuevo->json_periodos = $anioAnterior->json_periodos;
+        $anioNuevo->cant_periodos = $anioAnterior->cant_periodos;
+        $anioNuevo->finalizado = 'NO';
+        $anioNuevo->estado = 'A';
+        $anioNuevo->anio_inicio = $anioInicio;
+        $anioNuevo->anio_fin = $anioInicio;
+
+        if($anioNuevo->save()){
+            dd("anio nuevo", $anioNuevo);
+            $estudianteCurso = new EstudiantesCurso();
+            $estudianteCurso->id_anio = $anioNuevo->id;
+            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+
+            $lstGrados = Grados::where("estado", "=", 'A')->get();
+            foreach ($lstGrados as $grado) {
+
+                // Obtener notas según el grado
+                if ($grado->id == 1) {
+                    // Transición
+                    $notas = NotaFinalTransicion::where("id_anio", $anioAnterior->id_anio)
+                                                ->where("id_grado", $grado->id)
+                                                ->get();
+                    dd($notas);
+                } else {
+                    // Primaria 1º a 5º
+                    $notas = NotaFinalEstudiante::where("id_anio", $anioAnterior->id_anio)
+                                                ->where("id_grado", $grado->id)
+                                                ->get();
+                }
+
+                foreach ($notas as $nota) {
+
+                    // ---------- CASO ESPECIAL: GRADO 5 (son exalumnos) ----------
+                    if ($grado->id == 6) {
+
+                        // Actualiza al estudiante como EXALUMNO
+                        $est = Estudiante::find($nota->id_estudiante);
+
+                        if ($est) {
+                            $est->estado = 'I';       // Inactivo
+                            $est->tipo   = 'EX';      // Marcado como exalumno (si manejas ese campo)
+                            $est->save();
+                        }
+
+                        // No se crea nuevo curso para ellos
+                        continue;
+                    }
+
+                    // ---------- TRANSICIÓN → PRIMERO ----------
+                    if ($grado->id == 1) {
+                        $idCursoPromovido = 2; // Siempre pasan a primero
+                    }
+                    // ---------- PRIMARIA 1º → 4º ----------
+                    else {
+                        $idCursoPromovido = $grado->id + 1;
+                    }
+
+                    // Obtener grado promovido
+                    $cursoPromovido = Grados::find($idCursoPromovido);
+
+                    if (!$cursoPromovido) {
+                        continue; // seguridad por si no existe siguiente grado
+                    }
+
+                    // Crear registro del nuevo curso
+                    $estudianteCurso = new EstudianteCurso();
+
+                    $estudianteCurso->id_estudiante     = $nota->id_estudiante;
+                    $estudianteCurso->nombre_estudiante = $nota->nom_estudiante;
+
+                    $estudianteCurso->id_curso          = $cursoPromovido->id;
+                    $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                    $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                    $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+
+                    $estudianteCurso->estado            = 'A'; // Activo
+                    $estudianteCurso->save();
+                }
+            }
+
+
+
+
+
+        }
+            
+
+    }
+
+    
 
 
 

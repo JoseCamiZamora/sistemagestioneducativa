@@ -1581,6 +1581,40 @@ $(document).on("submit","#f_editar_concepto_trans",function(e){
   });
 });
 
+function finalizarAnioEscolar(idAnio){
+  swal({
+    title: "Advertencia!!",
+    text:"Esta seguro que desea finalizar el año escolar..",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonClass: "btn-danger",
+    cancelButtonText:"Cancelar",
+    confirmButtonText: "Aceptar",
+    closeOnConfirm: true
+  },
+  function(){
+    var urlraiz=$("#url_raiz_proyecto").val();
+    var miurl='';
+    miurl=urlraiz+"/configuracion/finalizar_anio_escolar/"+idAnio+"";
+    $.ajax({
+    // la URL para la petición
+      url : miurl,
+    })
+    .done(function(resul) {
+        $('.preloader').fadeOut();
+        if(resul.estado=="borrada"){  location.reload();  }
+        if(resul.estado!="borrada"){  location.reload();  }
+         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+    }).fail(function(err){
+        $('.preloader').fadeOut();
+        SU_revise_conexion();    
+    });
+  });
+
+}
+
+
+
 
 
 

@@ -25,11 +25,19 @@
         @if($estado == 'A')
           <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
           <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
-	      @else
+          <a  href="{{ url('/estudiantes/listado_estudiantes_e') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Egresados</a>
+	      @endif
+        @if($estado == 'I')
           <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
           <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
+          <a  href="{{ url('/estudiantes/listado_estudiantes_e') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Egresados</a>
         @endif
-        <a href="javascript:void(0);" onclick="IN_form_crear_new_estudiante();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Estudiante</a>
+        @if($estado == 'E')
+          <a  href="{{ url('/estudiantes/listado_estudiantes') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Activos</a>
+          <a  href="{{ url('/estudiantes/listado_estudiantes_i') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Estudiantes Inactivos</a>
+          <a  href="{{ url('/estudiantes/listado_estudiantes_e') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Egresados</a>
+        @endif
+        <a href="javascript:void(0);" onclick="IN_form_crear_new_estudiante();" class="mb-2 btn btn-sm btn btn-success mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Estudiante</a>
 	                       
 	    </div>
 	    

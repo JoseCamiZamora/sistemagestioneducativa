@@ -12,7 +12,7 @@ function infoEstudiantes(idCurso){
     var mateHtmlteams = '';
     mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
     dataC.forEach(function(curso){
-      mateHtmlteams += '<option value="'+curso.id+'" class="">'+curso.nombre_estudiante+'</option>';
+      mateHtmlteams += '<option value="'+curso.id_estudiante+'" class="">'+curso.nombre_estudiante+'</option>';
     })
     $('#estudiante1').html(mateHtmlteams);
     document.getElementById("estudiante1").disabled = false;
@@ -40,7 +40,7 @@ function infoEstudiantes2(idCurso){
     var mateHtmlteams = '';
     mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
     dataC.forEach(function(curso){
-      mateHtmlteams += '<option value="'+curso.id+'" class="">'+curso.nombre_estudiante+'</option>';
+      mateHtmlteams += '<option value="'+curso.id_estudiante+'" class="">'+curso.nombre_estudiante+'</option>';
     })
     $('#estudiante2').html(mateHtmlteams);
     document.getElementById("estudiante2").disabled = false;
@@ -68,7 +68,7 @@ function infoEstudiantes3(idCurso){
     var mateHtmlteams = '';
     mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
     dataC.forEach(function(curso){
-      mateHtmlteams += '<option value="'+curso.id+'" class="">'+curso.nombre_estudiante+'</option>';
+      mateHtmlteams += '<option value="'+curso.id_estudiante+'" class="">'+curso.nombre_estudiante+'</option>';
     })
     $('#estudiante3').html(mateHtmlteams);
     document.getElementById("estudiante3").disabled = false;
@@ -292,8 +292,6 @@ function generarReporteDirectorGruopo(idAnio, idCurso){
       }
     });
   }
-
-
 }
 
 function generarReporteEstudianteEvaluaciones() {
