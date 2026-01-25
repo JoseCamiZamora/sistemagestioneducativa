@@ -48,12 +48,15 @@
                   <td class='td-titulo text-left'>{{ $anio->finalizado}}</td>
                   <td class='td-titulo text-left'>{{ $anio->cant_periodos}}</td>
                   <td>
-                    <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
-                    onclick="finalizarAnioEscolar({{$anio->id}})" role="button" id="subirfile" >
-                      <div class="nav-link-icon__wrapper">
-                        <i class="fa fa-edit" title="Finalizar Año Escolar" style=""></i><br>
-                      </div>
-                    </a>
+                    @if($anio->finalizado == 'NO')
+                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
+                        onclick="finalizarAnioEscolar({{$anio->id}})" role="button" id="subirfile" >
+                        <div class="nav-link-icon__wrapper">
+                          <i class="fa fa-flag-checkered" title="Finalizar Año Escolar" style=""></i><br>
+                        </div>
+                      </a>
+                    @endif
+                    
                   </td>
                 </tr>
               @endforeach

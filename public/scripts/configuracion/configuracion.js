@@ -1604,7 +1604,7 @@ function finalizarAnioEscolar(idAnio){
         $('.preloader').fadeOut();
         if(resul.estado=="borrada"){  location.reload();  }
         if(resul.estado!="borrada"){  location.reload();  }
-         toastr.success('El concepto fue eliminado exitosamente', '¡Éxito!');
+         toastr.success('El proceso se finalizó con éxitosamente', '¡Éxito!');
     }).fail(function(err){
         $('.preloader').fadeOut();
         SU_revise_conexion();    

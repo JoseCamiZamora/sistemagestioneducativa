@@ -21,6 +21,8 @@ use App\ConceptosEvaluacion;
 use App\ConceptosComportamiento;
 use App\ConceptosEvaluacionTransicion;
 use App\ItemEvaluarTransicion;
+use App\NotaFinalEstudiante;
+use App\NotaFinalTransicion;
 
 
 
@@ -964,10 +966,6 @@ class ConfiguracionController extends Controller
         }
     }
 
-    
-
-    
-
     public function frm_editar_concepto($idConcepto= null){
 
         $concepto = ConceptosEvaluacion::find($idConcepto);
@@ -1199,7 +1197,6 @@ class ConfiguracionController extends Controller
 
         $anioAnterior = ConfAnios::find($idAnio);
         $anioNuevo = new ConfAnios();
-
         $anioInicio = $anioAnterior->anio_fin + 1;
 
         $anioNuevo->json_grados= $anioAnterior->json_grados;
@@ -1212,103 +1209,275 @@ class ConfiguracionController extends Controller
         $anioNuevo->anio_fin = $anioInicio;
 
         if($anioNuevo->save()){
-            dd("anio nuevo", $anioNuevo);
-            $estudianteCurso = new EstudiantesCurso();
-            $estudianteCurso->id_anio = $anioNuevo->id;
-            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
-
-            $lstGrados = Grados::where("estado", "=", 'A')->get();
-            foreach ($lstGrados as $grado) {
-
-                // Obtener notas según el grado
-                if ($grado->id == 1) {
-                    // Transición
-                    $notas = NotaFinalTransicion::where("id_anio", $anioAnterior->id_anio)
-                                                ->where("id_grado", $grado->id)
-                                                ->get();
-                    dd($notas);
-                } else {
-                    // Primaria 1º a 5º
-                    $notas = NotaFinalEstudiante::where("id_anio", $anioAnterior->id_anio)
-                                                ->where("id_grado", $grado->id)
-                                                ->get();
-                }
-
-                foreach ($notas as $nota) {
-
-                    // ---------- CASO ESPECIAL: GRADO 5 (son exalumnos) ----------
-                    if ($grado->id == 6) {
-
-                        // Actualiza al estudiante como EXALUMNO
-                        $est = Estudiante::find($nota->id_estudiante);
-
-                        if ($est) {
-                            $est->estado = 'I';       // Inactivo
-                            $est->tipo   = 'EX';      // Marcado como exalumno (si manejas ese campo)
-                            $est->save();
-                        }
-
-                        // No se crea nuevo curso para ellos
-                        continue;
-                    }
-
-                    // ---------- TRANSICIÓN → PRIMERO ----------
-                    if ($grado->id == 1) {
-                        $idCursoPromovido = 2; // Siempre pasan a primero
-                    }
-                    // ---------- PRIMARIA 1º → 4º ----------
-                    else {
-                        $idCursoPromovido = $grado->id + 1;
-                    }
-
-                    // Obtener grado promovido
-                    $cursoPromovido = Grados::find($idCursoPromovido);
-
-                    if (!$cursoPromovido) {
-                        continue; // seguridad por si no existe siguiente grado
-                    }
-
-                    // Crear registro del nuevo curso
-                    $estudianteCurso = new EstudianteCurso();
-
-                    $estudianteCurso->id_estudiante     = $nota->id_estudiante;
-                    $estudianteCurso->nombre_estudiante = $nota->nom_estudiante;
-
-                    $estudianteCurso->id_curso          = $cursoPromovido->id;
-                    $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
-                    $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
-                    $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
-
-                    $estudianteCurso->estado            = 'A'; // Activo
-                    $estudianteCurso->save();
-                }
-            }
-
-
-
-
-
-        }
+            $anioAnterior->finalizado ='SI';
+            $anioAnterior->save();
             
+            $cursos = [1, 2, 3, 4, 5, 6];
+            $index = 0;
+            $totalCursos = count($cursos);
 
+            while ($index < $totalCursos) {
+
+                $curso = $cursos[$index];
+                switch ($curso) {
+                    case 1:
+                        // Transición
+                        $notasT = NotaFinalTransicion::where("id_anio", $idAnio)
+                                                ->where("id_grado", 1)->get();
+
+                        foreach ($notasT as $notat) {
+                            $idCursoPromovido = 2;
+
+                            $estudianteCurso = new EstudiantesCurso();
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+
+                            $estudianteCurso->id_estudiante     = $notat->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $notat->nom_estudiante;
+                            $cursoPromovido = Grados::find($idCursoPromovido);
+                            $estudianteCurso->id_curso          = $idCursoPromovido;
+                            $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                            $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                            $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+                            $estudianteCurso->estado            = 'A'; // Activo
+                            $estudianteCurso->save();
+                        }
+                         Log::info('CASE 1 ejecutado');
+                        break;
+
+                    case 2:
+                        // Primero
+                        $notas1 = NotaFinalEstudiante::where("id_anio", $idAnio)
+                                                ->where("id_grado", 2)->get()
+                                                ->groupBy('id_estudiante');
+                        foreach ($notas1 as $idEstudiante => $materias) {
+                            $estudianteCurso = new EstudiantesCurso();
+                            $promueve = true; // asumimos que sí
+
+                            foreach ($materias as $nota) {
+                                if ($nota->nota_final < 3) {
+                                    $promueve = false;
+                                    break; // ya no necesita revisar más materias
+                                }
+                            }
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+                            $estudianteCurso->id_estudiante     = $materias->first()->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $materias->first()->nom_estudiante;
+
+                            if ($promueve) {
+                                // PROMOVIDO
+                                $idCursoPromovido = 3;
+                                $cursoPromovido = Grados::find($idCursoPromovido);
+                                $estudianteCurso->id_curso          = $idCursoPromovido;
+                                $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+                            } else {
+                                // NO PROMOVIDO
+                                $idCursoSinPromover = 2;
+                                $cursoNoPromovido = Grados::find($idCursoSinPromover);
+                                $estudianteCurso->id_curso          = $idCursoSinPromover;
+                                $estudianteCurso->nom_curso         = $cursoNoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoNoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoNoPromovido->nombre;
+                            }
+                             $estudianteCurso->estado= 'A';
+                            $estudianteCurso->save();
+
+                        }
+                        Log::info('CASE 2 ejecutado');
+                        break;
+                    case 3:
+                        // Segundo
+                        $notas2 = NotaFinalEstudiante::where("id_anio", $idAnio)
+                                                ->where("id_grado", 3)->get()
+                                                ->groupBy('id_estudiante');
+                        
+                        foreach ($notas2 as $idEstudiante => $materias2) {
+                            $estudianteCurso = new EstudiantesCurso();
+
+                            $promueve2 = true; // asumimos que sí
+
+                            foreach ($materias2 as $nota2) {
+                                if ($nota2->nota_final < 3) {
+                                    $promueve2 = false;
+                                    break; // ya no necesita revisar más materias
+                                }
+                            }
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+                            $estudianteCurso->id_estudiante     = $materias2->first()->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $materias2->first()->nom_estudiante;
+
+                            if ($promueve2) {
+                                // PROMOVIDO
+                                $idCursoPromovido = 4;
+                                $cursoPromovido = Grados::find($idCursoPromovido);
+                                $estudianteCurso->id_curso          = $idCursoPromovido;
+                                $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+                            } else {
+                                // NO PROMOVIDO
+                                $idCursoSinPromover = 3;
+                                $cursoNoPromovido = Grados::find($idCursoSinPromover);
+                                $estudianteCurso->id_curso          = $idCursoSinPromover;
+                                $estudianteCurso->nom_curso         = $cursoNoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoNoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoNoPromovido->nombre;
+                            }
+                             $estudianteCurso->estado= 'A';
+                            $estudianteCurso->save();
+
+                        }
+                        Log::info('CASE 3 ejecutado');
+                        break;
+                    case 4:
+                        // Tercero
+                        $notas3 = NotaFinalEstudiante::where("id_anio", $idAnio)
+                                                ->where("id_grado", 4)->get()
+                                                ->groupBy('id_estudiante');
+                        
+                        foreach ($notas3 as $idEstudiante => $materias3) {
+                            $estudianteCurso = new EstudiantesCurso();
+
+                            $promueve3 = true; // asumimos que sí
+
+                            foreach ($materias3 as $nota3) {
+                                if ($nota3->nota_final < 3) {
+                                    $promueve3 = false;
+                                    break; // ya no necesita revisar más materias
+                                }
+                            }
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+                            $estudianteCurso->id_estudiante     = $materias3->first()->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $materias3->first()->nom_estudiante;
+
+                            if ($promueve3) {
+                                // PROMOVIDO
+                                $idCursoPromovido = 5;
+                                $cursoPromovido = Grados::find($idCursoPromovido);
+                                $estudianteCurso->id_curso          = $idCursoPromovido;
+                                $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+                            } else {
+                                // NO PROMOVIDO
+                                $idCursoSinPromover = 4;
+                                $cursoNoPromovido = Grados::find($idCursoSinPromover);
+                                $estudianteCurso->id_curso          = $idCursoSinPromover;
+                                $estudianteCurso->nom_curso         = $cursoNoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoNoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoNoPromovido->nombre;
+                            }
+                             $estudianteCurso->estado= 'A';
+                            $estudianteCurso->save();
+
+                        }
+                         Log::info('CASE 4 ejecutado');
+                        break;
+                    case 5:
+                        // Cuarto
+                        $notas4 = NotaFinalEstudiante::where("id_anio", $idAnio)
+                                                ->where("id_grado", 5)->get()
+                                                ->groupBy('id_estudiante');
+                        
+                        foreach ($notas4 as $idEstudiante => $materias4) {
+                            $estudianteCurso = new EstudiantesCurso();
+
+                            $promueve4 = true; // asumimos que sí
+
+                            foreach ($materias4 as $nota4) {
+                                if ($nota4->nota_final < 3) {
+                                    $promueve4 = false;
+                                    break; // ya no necesita revisar más materias
+                                }
+                            }
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+                            $estudianteCurso->id_estudiante     = $materias4->first()->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $materias4->first()->nom_estudiante;
+
+                            if ($promueve4) {
+                                // PROMOVIDO
+                                $idCursoPromovido = 6;
+                                $cursoPromovido = Grados::find($idCursoPromovido);
+                                $estudianteCurso->id_curso          = $idCursoPromovido;
+                                $estudianteCurso->nom_curso         = $cursoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoPromovido->nombre;
+                            } else {
+                                // NO PROMOVIDO
+                                $idCursoSinPromover = 5;
+                                $cursoNoPromovido = Grados::find($idCursoSinPromover);
+                                $estudianteCurso->id_curso          = $idCursoSinPromover;
+                                $estudianteCurso->nom_curso         = $cursoNoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoNoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoNoPromovido->nombre;
+                            }
+                             $estudianteCurso->estado= 'A';
+                            $estudianteCurso->save();
+
+                        }
+                        Log::info('CASE 5 ejecutado');
+                        break;
+
+                    case 6:
+                        // Quinto
+                        $notas5 = NotaFinalEstudiante::where("id_anio", $idAnio)
+                                                ->where("id_grado", 6)->get()
+                                                ->groupBy('id_estudiante');
+                        
+                        foreach ($notas5 as $idEstudiante => $materias5) {
+                            $estudianteCurso = new EstudiantesCurso();
+
+                            $promueve5 = true; // asumimos que sí
+
+                            foreach ($materias5 as $nota5) {
+                                if ($nota5->nota_final < 3) {
+                                    $promueve5 = false;
+                                    break; // ya no necesita revisar más materias
+                                }
+                            }
+
+                            $estudianteCurso->id_anio = $anioNuevo->id;
+                            $estudianteCurso->desc_anio = $anioNuevo->anio_inicio.' - '.$anioNuevo->anio_fin;
+                            $estudianteCurso->id_estudiante     = $materias5->first()->id_estudiante;
+                            $estudianteCurso->nombre_estudiante = $materias5->first()->nom_estudiante;
+
+                            if ($promueve5) {
+                                // PROMOVIDO
+                                $estudiante=Estudiantes::find($nota5->id_estudiante);
+                                $estudiante->estado="E";
+                                $estudiante->save();
+                            } else {
+                                // NO PROMOVIDO
+                                $idCursoSinPromover = 6;
+                                $cursoNoPromovido = Grados::find($idCursoSinPromover);
+                                $estudianteCurso->id_curso          = $idCursoSinPromover;
+                                $estudianteCurso->nom_curso         = $cursoNoPromovido->nombre;
+                                $estudianteCurso->id_clasificacion  = $cursoNoPromovido->id;
+                                $estudianteCurso->tipo_grado        = $cursoNoPromovido->nombre;
+                                $estudianteCurso->estado= 'A';
+                                $estudianteCurso->save();
+                            }
+                        }
+                         Log::info('CASE 6 ejecutado');
+                        break;
+                    default:
+                        // Curso no válido
+                        break;
+                }
+
+                $index++;
+            }
+        }
     }
-
-    
-
-
-
-    
-
-    
-
-
-   
-
-    
-
-    
-
-
-
-    
 }
