@@ -21,9 +21,6 @@
   <!-- Default Light Table -->
 
 	  <div class="row">
-	    <div class="col">
-       <a href="javascript:void(0);" onclick="IN_form_crear_new_estudiante();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Estudiante</a>
-	    </div>
 	    
 	  </div>
 	  <form  method="post"  action="{{ url('estudiantes/buscar_estudiantes') }}" id="f_buscar_estudiante"   >
