@@ -75,7 +75,7 @@
         </div>
         <div class="col-md-2">
           <select class="form-control" id="select_filtro_val_grado" onchange="FC_cambiar_filtro_grado(this.value);" >
-            @if($filtro == 'I')  
+            @if($filtro == 'I')
               <option value="0" selected >Seleccione Curso...</option>
             @else
               <option value="{{$cursoFind->id}}" >{{$cursoFind->nombre}}</option>
@@ -179,12 +179,14 @@
                         </div>
                       </a>
                     @else
-                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
-                      onclick="activarEstudiante({{$estudiante->id}})" role="button" id="subirfile" >
-                        <div class="nav-link-icon__wrapper">
-                          <i class="fa fa-list" title="Activar Estudiante" style=""></i><br>
-                        </div>
-                      </a>
+                      @if($estado != 'E')
+                        <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
+                        onclick="activarEstudiante({{$estudiante->id}})" role="button" id="subirfile" >
+                          <div class="nav-link-icon__wrapper">
+                            <i class="fa fa-list" title="Activar Estudiante" style=""></i><br>
+                          </div>
+                        </a>
+                        @endif
                     @endif
                   </td>
                   
