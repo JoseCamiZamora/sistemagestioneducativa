@@ -1095,7 +1095,7 @@ function infoGrados(idTipo){
     const tipoGradoSelectParam = Number(idTipo);
     var arrayCursos=CURSOS?CURSOS:[];
     const lstCursosConfiguradas = arrayCursos.filter(
-      item => item.tipo_grado === tipoGradoSelectParam
+      item => Number(item.tipo_grado) === tipoGradoSelectParam
     );
 
     var mateHtmlteams = '';
