@@ -1091,7 +1091,6 @@ function matricularEstudiante(idEstudiante){
 }
 
 function infoGrados(idTipo){
- debugger;
     const tipoGradoSelectParam = Number(idTipo);
     var arrayCursos=CURSOS?CURSOS:[];
     const lstCursosConfiguradas = arrayCursos.filter(
