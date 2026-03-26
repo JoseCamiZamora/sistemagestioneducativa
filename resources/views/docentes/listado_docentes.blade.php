@@ -19,11 +19,33 @@
 	  </div>
   <!-- End Page Header -->
   <!-- Default Light Table -->
+   <script>
+        @if(session('success'))
+        
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Listo!',
+                        text: '{{ session("success") }}',
+                        timer: 2500,
+                        showConfirmButton: false
+                    });
+                });
+            
+        @endif
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Ups... algo salió mal',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#e74a3b',
+            });
+        @endif
+    </script>
 
 	  <div class="row">
 	    <div class="col">
         <a  href="{{ url('/docentes/listado_docentes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Docentes Activos</a>
-	      <a  href="{{ url('/docentes/listado_docentes_i') }}" class="mb-2 btn btn-sm btn-sacundary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Docentes Inactivos</a>
 	      <a href="javascript:void(0);" onclick="IN_form_crear_new_docente();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Docente</a>
 	                       
 	    </div>
@@ -59,6 +81,7 @@
                 <th scope="col" class="th-gris text-left" >Telefono</th>
                 <th scope="col" class="th-gris text-left" >Correo</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
+                <th scope="col" class="th-gris text-center " >Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -99,6 +122,26 @@
                       </div>
                     </a>
                   </td>
+                  <td>
+                    <form action="{{ route('docentes.toggle-status', $docente->id) }}" method="POST" class="form-toggle-status" style="display:inline;">
+                        @csrf
+                        @if($docente->estado == 'I')
+                          {{-- Botón para ACTIVAR --}}
+                              <button type="button"  class="btn btn-white btn-sm text-warning btn-status"
+                                      title="Activar Docente" data-status="activar">
+                                  <i class="fa fa-ban"></i>
+                              </button>
+                            
+                        @else
+                          {{-- Botón para INACTIVAR --}}
+                            <button type="button" class="btn btn-white btn-sm text-success btn-status" 
+                                    title="Inactivar Docente" data-status="inactivar">
+                                <i class="fa fa-check-circle"></i>
+                            </button>
+                            
+                        @endif
+                    </form>
+                  <td>
                 </tr>
               @endforeach
             </tbody>
@@ -108,7 +151,6 @@
               </tr>
               </tfoot>
           </table>
-          {{ $lstDocentes->links() }}
 	    </div> 
 	  </div>
 </div>
@@ -156,4 +198,37 @@
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // 1. Lógica para Inactivar
+    $(document).on('click', '.btn-status', function(e) {
+        e.preventDefault();
+        
+        var formulario = $(this).closest('.form-toggle-status');
+        var accion = $(this).data('status'); // 'activar' o 'inactivar'
+        
+        let titulo = accion === 'activar' ? '¿Deseas activar este docente?' : '¿Deseas inactivar este docente?';
+        let texto = accion === 'activar' 
+            ? "El docente volverá a aparecer en las listas de asignación activa." 
+            : "El registro no se borrará para proteger el historial, pero no aparecerá en listas activas.";
+        let icon = accion === 'activar' ? 'question' : 'warning';
+        let confirmColor = accion === 'activar' ? '#28a745' : '#f6ad55';
+
+        Swal.fire({
+            title: titulo,
+            text: texto,
+            icon: icon,
+            showCancelButton: true,
+            confirmButtonColor: confirmColor,
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                formulario.submit();
+            }
+        });
+    });
+</script>
 @endsection

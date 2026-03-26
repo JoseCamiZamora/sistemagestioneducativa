@@ -117,27 +117,24 @@ class AccesoController extends Controller
         }
         if($user ){
          
-            if (Auth::attempt(array('email' => $email, 'password' => $password))){
-                $userreal=User::where("email","=",$email)->first();
-                Auth::login($userreal); 
-                return redirect('home');
+            if($user->estado == 1){
+                if (Auth::attempt(array('email' => $email, 'password' => $password))){
+                    $userreal=User::where("email","=",$email)->first();
+                    Auth::login($userreal); 
+                    return redirect('home');
 
+                }else{
+
+                    return redirect('login')->withErrors([ 'email' => 'credenciales incorrectas'])->withInput();
+                
+                }
+                die;
             }else{
+                return redirect('login')->withErrors([ 'email' => 'Usuario inactivo'])->withInput();
 
-                return redirect('login')->withErrors([ 'email' => 'credenciales incorrectas'])->withInput();
-            
             }
-            die;
-            
-
         }
-
-
-       
    }
-
-
-
     public function politicas(){
          return view('acceso.politicas');
     }

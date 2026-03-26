@@ -72,6 +72,7 @@ Route::group(['middleware' => 'auth'], function () {
    Route::get('/docentes/frm_director_grupo/{id_docente}', 'DocentesController@frm_director_grupo');
    Route::post('/docentes/adicionar_director_grupo', 'DocentesController@adicionar_director_grupo');
    Route::get('/docentes/borrar_director_grupo/{id_docente}', 'DocentesController@borrar_director_grupo');
+   Route::post('docentes/{id}/toggle-status', [App\Http\Controllers\DocentesController::class, 'toggleStatus'])->name('docentes.toggle-status');
    
    // Rutas Configuracion
 

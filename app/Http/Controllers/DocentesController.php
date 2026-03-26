@@ -57,7 +57,7 @@ class DocentesController extends Controller
 
     public function listado_docentes() {
         $usuarioactual = Auth::user();
-        $lstDocentes = Docentes::where("estado", "=", 'A')->paginate(50);
+        $lstDocentes = Docentes::all();
         return view("docentes.listado_docentes")->with("lstDocentes", $lstDocentes)
         ->with("usuarioactual", $usuarioactual);
     }
@@ -385,6 +385,33 @@ class DocentesController extends Controller
         $dirGrupo =  ConfDirectorGrupo::find($idClase);
         $dirGrupo->delete();
         return response()->json([ 'estado' => 'borrada' ],200);
+    }
+
+    public function toggleStatus($id)
+    {
+        $docente = Docentes::findOrFail($id);
+        //dd($docente);
+        $estado = '';
+        // Como el Accesor lo convierte a booleano, esto sigue funcionando:
+        if($docente->estado == 'A'){
+            $estado = 'I';
+        }else{
+             $estado = 'A';
+        }
+        $docente->estado = $estado;
+        $docente->save(); // El Mutador lo guardará como 'A' o 'I'
+        $usuario= User::where("id_persona",$docente->id)->first();
+        $estadou = '';
+        if($docente->estado == 1){
+            $estadou = O;
+        }else{
+             $estadou = 1;
+        }
+        $usuario->estado = $estadou;
+        $usuario->save();
+        $mensaje = $docente->estado == 'A' ? 'docente activado (A).' : 'docente inactivado (I).';
+        
+        return redirect()->back()->with('success', $mensaje);
     }
 
 
