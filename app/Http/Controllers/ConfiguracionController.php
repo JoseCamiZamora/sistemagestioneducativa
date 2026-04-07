@@ -1480,4 +1480,28 @@ class ConfiguracionController extends Controller
             }
         }
     }
+
+    public function guardar_firma(Request $request) {
+        $request->validate([
+            'docente_id' => 'required',
+            'archivo_firma' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+        ]);
+
+        $docente = Docentes::find($request->docente_id);
+        
+        if ($request->hasFile('archivo_firma')) {
+            $file = $request->file('archivo_firma');
+            $nombreFirma = 'firma_' . $docente->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            // Guardar en storage/app/public/firmas
+            $path = $file->storeAs('public/firmas', $nombreFirma);
+            
+            // Actualizar base de datos con la ruta
+            $docente->firma = $nombreFirma;
+            $docente->save();
+            
+            return response()->json(['success' => true]);
+        }
+    }
+
+    
 }

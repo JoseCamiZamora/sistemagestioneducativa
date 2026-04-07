@@ -51,6 +51,7 @@
                 <th scope="col" class="th-gris text-left" >Correo</th>
                 <th scope="col" class="th-gris text-center " >Conf. Clases</th>
                 <th scope="col" class="th-gris text-center " >Conf. Curso</th>
+                <th scope="col" class="th-gris text-center " >Firma</th>
               </tr>
             </thead>
             <tbody>
@@ -98,6 +99,14 @@
                       </div>
                     </a>
                   </td>
+                   <td class="text-center">
+                    <a class="nav-link nav-link-icon" href="javascript:void(0);" 
+                      onclick="subirFirma({{ $docente->id }})" role="button">
+                        <div class="nav-link-icon__wrapper">
+                            <i class="fa fa-pen" title="Cargar Firma" style="color: #28a745;"></i>
+                        </div>
+                    </a>
+                  </td>
                 </tr>
               @endforeach
             </tbody>
@@ -112,6 +121,29 @@
 	  </div>
 </div>
   <!-- End Default Light Table -->
+</div>
+<div class="modal fade" id="modal_firma_docente" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="form_subir_firma" data-url="{{ url('configuracion/guardar_firma') }}" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="docente_id" id="firma_docente_id">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cargar Firma del Docente</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Seleccione la imagen de la firma (PNG recomendado)</label>
+                        <input type="file" name="archivo_firma" class="form-control" accept="image/*" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Firma</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_docente">
   <div class="modal-dialog modal-lg" style="max-width: 70%;">

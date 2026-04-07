@@ -196,19 +196,24 @@
     <table style="width: 100%; margin-top: 40px; text-align: center;border: none;">
         <tr>
             <!-- Firma 1 -->
-            <td style="width: 50%;border: none;">
-                <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;">
+            <td style="width: 40%;border: none;">
+                <img src="{{ asset('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>LIGIA MURIEL ARTEAGA</strong><br>
-                Directora C.E. Corazón de María
+                <strong>{{ $docenteDir->nombres }} {{ $docenteDir->apellidos }}</strong><br>
+                Director(a) C.E. Corazón de María
             </td>
 
             <!-- Firma 2 -->
-            <td style="width: 50%;border: none;">
-                <img src="{{ asset('/assets/img/firmas/FirmaSuhani.png') }}" style="max-height: 60px;">
-                <hr style="width: 200px; border: 1px solid black;">
-                <strong>{{$docente->nom_docente}}</strong><br>
-                Directora de Grupo
+            <td style="width: 40%; border: none;">
+              @if($docente->firma)
+                  <img src="{{ asset('storage/firmas/' . $docente->firma) }}" style="max-height: 60px;">
+              @else
+                  <div style="height: 60px;"></div> <small style="color: red;">Firma no configurada</small>
+              @endif
+              <br>
+              <hr style="width: 200px; border: 1px solid black;">
+              <strong>{{ $docente->nombres }} {{ $docente->apellidos }}</strong><br>
+              Director(a) de Grupo.
             </td>
         </tr>
     </table>

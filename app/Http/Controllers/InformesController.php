@@ -118,6 +118,11 @@ class InformesController extends Controller
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
+
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -345,9 +350,11 @@ class InformesController extends Controller
         ini_set('memory_limit', '712M');
         ini_set('max_execution_time', 300);
         set_time_limit(300);
+        //dd($docente);
 
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -373,6 +380,9 @@ class InformesController extends Controller
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -561,6 +571,7 @@ class InformesController extends Controller
 
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_dos', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -586,6 +597,9 @@ class InformesController extends Controller
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -784,6 +798,7 @@ class InformesController extends Controller
 
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_tres', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -809,6 +824,9 @@ class InformesController extends Controller
         $evaluaciones = NotaFinalEstudiante::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1034,6 +1052,7 @@ class InformesController extends Controller
 
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_tres', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1060,6 +1079,9 @@ class InformesController extends Controller
         $evaluaciones = NotaFinalEstudiante::where("id_estudiante",$idEstudiante)->where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1286,6 +1308,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1316,6 +1339,10 @@ class InformesController extends Controller
             $evaluaciones->push($evaComp);
         }
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1457,6 +1484,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1489,6 +1517,10 @@ class InformesController extends Controller
             $evaluaciones->push($evaComp);
         }
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1631,6 +1663,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1663,6 +1696,10 @@ class InformesController extends Controller
             $evaluaciones->push($evaComp);
         }
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1805,6 +1842,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1837,6 +1875,10 @@ class InformesController extends Controller
             $evaluaciones->push($evaComp);
         }
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -1955,6 +1997,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -1989,6 +2032,10 @@ class InformesController extends Controller
             $evaluaciones->push($evaComp);
         }
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
@@ -2128,6 +2175,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_certificado_notas_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -2157,6 +2205,10 @@ class InformesController extends Controller
         $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$idAnio)->where("id_grado",$idCurso)->get();
         $evaluacionComportamiento = EvaluacionComportamiento::where('id_anio', $idAnio)->where('id_grado',$idCurso)->get();
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $grado = Grados::find($idCurso);
         $periodoClases = PeriodosClases::find($idPeriodo);
         $anio = ConfAnios::find($idAnio);
@@ -2320,6 +2372,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_transicion', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -2349,6 +2402,10 @@ class InformesController extends Controller
         $periodoClases = PeriodosClases::find($idPeriodo);
         $anio = ConfAnios::find($idAnio);
         $docente =  ConfDirectorGrupo::where("id_anio",$idAnio)->where("id_curso",$idCurso)->first();
+        $docenteFirma = Docentes::find($docente->id_docente);
+        $docente->firma = $docenteFirma->firma;
+
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $lstMaterias = Materias::where("tipo_curso", "=", '3')->get();
         $observacionesFinales = ObservacionEstudiante::all();
 
@@ -2573,6 +2630,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
+            'docenteDir'     => $docenteDirector,
             'reporte'        => $reporte,
             'grado'          => $grado,
             'periodoClases'  => $periodoClases,
@@ -2598,6 +2656,7 @@ class InformesController extends Controller
         $estudianteCurso = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$idAnio)->where("estado",'A')->first();
         $anio = ConfAnios::find($idAnio);
         $estudiante = Estudiantes::find($idEstudiante);
+        $docenteDirector =  Docentes::where("director_escuela",'S')->first();
         $reporte = [];
         if (!isset($reporte[$idEstudiante])) {
             $reporte[$idEstudiante] = [
@@ -2624,6 +2683,7 @@ class InformesController extends Controller
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_constancia_estudios', [
             'reporte'        => $reporte,
+            'docenteDir'     => $docenteDirector,
             'mes'            => $mes,
             'dia'            => $diaNumero,
             'anio'           => $anio,

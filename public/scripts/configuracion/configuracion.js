@@ -1612,6 +1612,35 @@ function finalizarAnioEscolar(idAnio){
 
 }
 
+function subirFirma(id) {
+    $('#firma_docente_id').val(id);
+    $('#modal_firma_docente').modal('show');
+}
+
+$('#form_subir_firma').on('submit', function(e) {
+    e.preventDefault();
+    
+    let formData = new FormData(this);
+    // Capturamos la URL que pusimos en el atributo data-url del form
+    let actionUrl = $(this).attr('data-url'); 
+    
+    $.ajax({
+        url: actionUrl,  // Usamos la variable en lugar de Blade
+        method: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(res) {
+            alert("Firma actualizada con éxito");
+            location.reload();
+        },
+        error: function(err) {
+            console.log(err);
+            alert("Error al cargar la firma");
+        }
+    });
+});
+
 
 
 

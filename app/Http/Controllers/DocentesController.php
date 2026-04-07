@@ -85,7 +85,7 @@ class DocentesController extends Controller
         $docente = new Docentes();
         
         $tipoDoc = $request->input('tipoDocumento');
-        $tipoDocumento = TiposDocumentos::find($tipoDoc);   
+        $tipoDocumento = TiposDocumentos::find($tipoDoc);
         $docente->id_tipo_documento=$tipoDocumento->id;
         $docente->tipo_documento= $tipoDocumento->descripcion;
         $docente->nro_documento=$request->input('identificacion')?$request->input('identificacion'):'';
@@ -95,6 +95,7 @@ class DocentesController extends Controller
         $docente->direccion=$request->input('direccion')?$request->input('direccion'):'';
         $docente->telefono=$request->input('telefono')?$request->input('telefono'):'';
         $docente->correo=$request->input('email')?$request->input('email'):'';
+        $docente->director_escuela=$request->input('directorEscuela')?$request->input('directorEscuela'):'N';
         $docente->estado="A";
 
         if($docente->save()){

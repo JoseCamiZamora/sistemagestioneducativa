@@ -120,9 +120,9 @@
         <tr>
             <!-- Firma 1 -->
             <td style="width: 40%;border: none;">
-                <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;"><br>
+                <img src="{{ asset('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>LIGIA MURIEL ARTEAGA</strong><br>
+                <strong>{{ $docenteDir->nombres }} {{ $docenteDir->apellidos }}</strong><br>
                 Director(a) C.E. Corazón de María
             </td>
 

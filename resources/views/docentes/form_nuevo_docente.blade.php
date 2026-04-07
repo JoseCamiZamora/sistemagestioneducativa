@@ -82,6 +82,13 @@
         <label for="feLastName">Correo electrónico</label><spam style="color: red;"> * </spam>
         <input type="text" maxlength="125" class="form-control" id="email" name="email" value="" required>
       </div>
+      <div class="col-md-4">
+          <label for="feLastName">Director Escuela</label><spam style="color: red;"> * </spam>
+          <select class="form-control" id="directorEscuela" name="directorEscuela" style="margin-top: -6px; height: 33px;padding-top: 4px;" required>
+                <option value="S">SI</option>
+                <option value="N" selected>NO</option>
+          </select>
+      </div>
     </div>
     </div>
     <br>

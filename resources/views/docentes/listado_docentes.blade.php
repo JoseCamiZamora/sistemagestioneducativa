@@ -44,10 +44,8 @@
     </script>
 
 	  <div class="row">
-	    <div class="col">
-        <a  href="{{ url('/docentes/listado_docentes') }}" class="mb-2 btn btn-sm btn-primary mr-1 " ><i class="fa fa-users margin-icon" aria-hidden="true" ></i>Docentes Activos</a>
-	      <a href="javascript:void(0);" onclick="IN_form_crear_new_docente();" class="mb-2 btn btn-sm btn-outline-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Docente</a>
-	                       
+	    <div class="col" style="text-align: end;">
+	      <a href="javascript:void(0);" onclick="IN_form_crear_new_docente();" class="mb-2 btn btn-sm btn-primary mr-1" ><i class="fa fa-user-plus margin-icon" aria-hidden="true" ></i>Registro Nuevo Docente</a>
 	    </div>
 	    
 	  </div>
@@ -82,6 +80,7 @@
                 <th scope="col" class="th-gris text-left" >Correo</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
                 <th scope="col" class="th-gris text-center " >Acción</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -142,6 +141,7 @@
                         @endif
                     </form>
                   <td>
+                 
                 </tr>
               @endforeach
             </tbody>
@@ -156,6 +156,7 @@
 </div>
   <!-- End Default Light Table -->
 </div>
+
 <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" id="modal_docente">
   <div class="modal-dialog modal-lg" style="max-width: 70%;">
     <div class="modal-content">

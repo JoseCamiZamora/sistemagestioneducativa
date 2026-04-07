@@ -191,33 +191,23 @@
         <tr>
             <!-- Firma 1 -->
             <td style="width: 40%;border: none;">
-                <img src="{{ asset('/assets/img/firmas/FirmaLigiaMuriel.jpg') }}" style="max-height: 60px;"><br>
+                <img src="{{ asset('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>LIGIA MURIEL ARTEAGA</strong><br>
+                <strong>{{ $docenteDir->nombres }} {{ $docenteDir->apellidos }}</strong><br>
                 Director(a) C.E. Corazón de María
             </td>
 
             <!-- Firma 2 -->
-            <td style="width: 40%;border: none;">
-                @if($grado->nombre == "GRADO 1")
-                  <img src="{{ asset('/assets/img/firmas/FirmaCristina.png') }}" style="max-height: 60px;">
-                @endif
-                @if($grado->nombre == "GRADO 2")
-                  <img src="{{ asset('/assets/img/firmas/FirmaAstrid2.png') }}" style="max-height: 60px;">
-                @endif
-                @if($grado->nombre == "GRADO 3")
-                  <img src="{{ asset('/assets/img/firmas/FirmaJaime2.png') }}" style="max-height: 60px;">
-                @endif
-                @if($grado->nombre == "GRADO 4")
-                  <img src="{{ asset('/assets/img/firmas/FirmaCarlos.png') }}" style="max-height: 60px;">
-                @endif
-                @if($grado->nombre == "GRADO 5")
-                  <img src="{{ asset('/assets/img/firmas/FirmaJairo.png') }}" style="max-height: 60px;">
-                @endif
-                <br>
-                <hr style="width: 200px; border: 1px solid black;">
-                <strong>{{$docente->nom_docente}}</strong><br>
-                Director(a) de Grupo.
+            <td style="width: 40%; border: none;">
+              @if($docente->firma)
+                  <img src="{{ asset('storage/firmas/' . $docente->firma) }}" style="max-height: 60px;">
+              @else
+                  <div style="height: 60px;"></div> <small style="color: red;">Firma no configurada</small>
+              @endif
+              <br>
+              <hr style="width: 200px; border: 1px solid black;">
+              <strong>{{ $docente->nombres }} {{ $docente->apellidos }}</strong><br>
+              Director(a) de Grupo.
             </td>
         </tr>
     </table>
