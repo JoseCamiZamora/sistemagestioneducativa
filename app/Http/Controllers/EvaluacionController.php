@@ -481,7 +481,7 @@ class EvaluacionController extends Controller
 
         $notasArray = array();
         $evaluacion = EvaluacionEstudiante::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$periodo->id)
-                                            ->where("id_materia",$claseDocente->id_materia)->first();
+                                            ->where("id_materia",$claseDocente->id_materia)->where("id_anio",$estudiante->id_anio)->first();
         if($evaluacion == null){
             $evaluacion = new EvaluacionEstudiante();
 
@@ -620,7 +620,8 @@ class EvaluacionController extends Controller
         $notaComportamiento = $request->input('nota_comportamiento')?$request->input('nota_comportamiento'):"";
         $conceptoComportamiento = $request->input('conceptos_comportamiento')?$request->input('conceptos_comportamiento'):"";
 
-        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)->first();
+        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)
+                                                ->where("id_anio",$estudiante->id_anio)->first();
         if($evaluacion == null){
             $evaluacion = new EvaluacionComportamiento();
 
@@ -692,7 +693,8 @@ class EvaluacionController extends Controller
         $notaComportamiento = $request->input('desempenio_compo')?$request->input('desempenio_compo'):"";
         $conceptoComportamiento = $request->input('conceptos_comportamiento')?$request->input('conceptos_comportamiento'):"";
 
-        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)->first();
+        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)
+                                                ->where("id_anio",$estudiante->id_anio)->first();
         if($evaluacion == null){
             $evaluacion = new EvaluacionComportamiento();
 
@@ -760,7 +762,7 @@ class EvaluacionController extends Controller
         $estudiante = EstudiantesCurso::find($id_estudiante);
         $claseDocente =  ConfClasesDocente::find($idClase);
         $evaluacion = EvaluacionEstudiante::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$idPeriodo)
-                                                ->where("id_materia",$claseDocente->id_materia,"id_anio",$estudiante->id_anio)->first();
+                                                ->where("id_materia",$claseDocente->id_materia)->where("id_anio",$estudiante->id_anio)->first();
         
         if($evaluacion != null){
             $notas = json_decode($evaluacion->json_evaluaciones);
@@ -786,7 +788,8 @@ class EvaluacionController extends Controller
         
         $estudiante = EstudiantesCurso::find($id_estudiante);
         $claseDocente =  ConfClasesDocente::find($idClase);
-        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)->first();
+        $evaluacion = EvaluacionComportamiento::where("id_estudiante",$estudiante->id_estudiante)->where("id_grado",$estudiante->id_curso)
+                                                ->where("id_anio",$estudiante->id_anio)->first();
         
         if($evaluacion != null){
             if($idPeriodo == 1){
@@ -811,7 +814,8 @@ class EvaluacionController extends Controller
     public function consultar_evaluacion_transicion($idPeriodo=null, $id_estudiante=null){
         
         $estudiante = EstudiantesCurso::find($id_estudiante);
-        $evaluacion = EvaluacionTransicion::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$idPeriodo)->first();
+        $evaluacion = EvaluacionTransicion::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$idPeriodo)
+                                            ->where("id_anio",$estudiante->id_anio)->first();
         
         if($evaluacion != null){
             $notas = json_decode($evaluacion->json_evaluaciones);
@@ -839,7 +843,8 @@ class EvaluacionController extends Controller
         $notaFinal = round($notaFinalResultado,2);
 
         $notasArray = array();
-        $evaluacion = EvaluacionTransicion::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$periodo->id)->first();
+        $evaluacion = EvaluacionTransicion::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$periodo->id)
+                                            ->where("id_anio",$estudiante->id_anio)->first();
         if($evaluacion == null){
             $evaluacion = new EvaluacionTransicion();
             
