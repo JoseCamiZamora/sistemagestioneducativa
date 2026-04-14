@@ -760,7 +760,7 @@ class EvaluacionController extends Controller
         $estudiante = EstudiantesCurso::find($id_estudiante);
         $claseDocente =  ConfClasesDocente::find($idClase);
         $evaluacion = EvaluacionEstudiante::where("id_estudiante",$estudiante->id_estudiante)->where("id_periodo",$idPeriodo)
-                                                ->where("id_materia",$claseDocente->id_materia)->first();
+                                                ->where("id_materia",$claseDocente->id_materia,"id_anio",$estudiante->id_anio)->first();
         
         if($evaluacion != null){
             $notas = json_decode($evaluacion->json_evaluaciones);
