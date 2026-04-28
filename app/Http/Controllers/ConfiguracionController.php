@@ -747,15 +747,16 @@ class ConfiguracionController extends Controller
     public function form_nuevo_concepto_comp(){
        
         $usuario_actual=Auth::user();
-        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
-        $idCurso = $docente->id_curso;
+        $docente = Docentes::find($usuario_actual->id_persona);
+        $docentes =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->get();
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::all();
-        $cursos = Grados::where("id",$idCurso )->get();
+        $cursos = Grados::all();
         
 
         return view("configuracion.form_nuevo_concepto_comp")
             ->with("docente",$docente)
+            ->with("docentes",$docentes)
             ->with("periodos",$periodos)
             ->with("anios",$anios)
             ->with("cursos",$cursos);

@@ -47,12 +47,12 @@
   <input type="hidden" id="id_docente" name="id_docente" value="{{$docente->id_docente}}">
   <div class="col-md-4">
         <label for="feLastName">Nombre Del Docente:</label>
-        <input  class="form-control "   name="nom_estudiante" value="{{$docente->nom_docente}}" required style="margin-top: -6px;" disabled>
+        <input  class="form-control "   name="nom_estudiante" value="{{$docente->nom_completo}}" required style="margin-top: -6px;" disabled>
       </div>
    <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
           <label for="feLastName">Año Curso</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="anio" name="anio"  required>
+          <select class="form-control" id="anio" name="anio"  required onchange="infoGradoDirectorGrupo(this.value)">
             <option value="" selected >Seleccione...</option>
               @foreach($anios as $anio)
                 <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
@@ -97,7 +97,8 @@
     </div>
 </form>
 <script>
-    
+  var CURSOS = @json($cursos);
+  var DOCENTES = @json($docentes);
 </script>
 
 

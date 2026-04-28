@@ -1617,6 +1617,33 @@ function subirFirma(id) {
     $('#modal_firma_docente').modal('show');
 }
 
+function infoGradoDirectorGrupo(idAnio){
+ debugger;
+    const anioSeleccionado = Number(idAnio);
+
+    var arrayDocentes=DOCENTES?DOCENTES:[];
+    var arrayCursos=CURSOS?CURSOS:[];
+
+    const lstDocentesGrupo = arrayDocentes.filter(
+      item => Number(item.id_anio) === Number(anioSeleccionado)
+    );
+
+    const cursoDirector = lstDocentesGrupo[0].id_curso;
+    
+    const lstCursosConfiguradas = arrayCursos.filter(
+      item => Number(item.id) === Number(cursoDirector)
+    );
+
+    var mateHtmlteams = '';
+    mateHtmlteams = '<option value="" class="" selected>Seleccione...</option>';
+    lstCursosConfiguradas.forEach(function(citi){
+      mateHtmlteams += '<option value="'+citi.id+'" class="">'+citi.nombre+'</option>';
+    })
+    $('#curso').html(mateHtmlteams);
+    document.getElementById("curso").disabled = false;
+
+}
+
 $('#form_subir_firma').on('submit', function(e) {
     e.preventDefault();
     
