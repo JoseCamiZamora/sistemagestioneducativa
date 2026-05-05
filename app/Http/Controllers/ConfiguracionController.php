@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\DB;
+
 use Carbon\Carbon;
 
 use setasign\Fpdi\Fpdi;
@@ -65,8 +67,13 @@ class ConfiguracionController extends Controller
     public function index_configuracion() {
         
         $usuarioactual=Auth::user();
-     
-        return view('configuracion.index_configuracion')->with('usuario_actual', $usuarioactual);
+        $grados = Grados::all();
+        $anios = ConfAnios::all();
+
+        return view('configuracion.index_configuracion')
+            ->with('usuario_actual', $usuarioactual)
+            ->with('grados', $grados)
+            ->with('anios', $anios);
 
     }
 
@@ -1501,6 +1508,108 @@ class ConfiguracionController extends Controller
             $docente->save();
             
             return response()->json(['success' => true]);
+        }
+    }
+
+    public function getGrados($anio_id)
+    {
+        // Asumiendo que tu tabla se llama 'grados' (o 'cursos') y tiene 'id' y 'nombres'
+        
+        $grados = DB::table('grados')
+            ->select('id', 'nombre as nombre') // Alias 'nombre' para que coincida con el JS
+            ->orderBy('nombre', 'asc')
+            ->get();
+        return response()->json($grados);
+    }
+
+    public function getEstudiantes($anio_id, $grado_id)
+    {
+        // CORRECCIÓN: Consultamos la tabla directamente, sin JOIN.
+        // Asumo que la tabla de la imagen se llama 'estudiantes_curso'.
+        // Si no es ese el nombre, cámbialo aquí abajo.
+
+        $estudiantes = DB::table('estudiantes_curso') // Reemplaza por el nombre real de la tabla
+            ->where('id_anio', $anio_id)
+            ->where('id_curso', $grado_id)
+            ->select(
+                'id', // Este es el ID del registro en esta tabla (para inactivarlo)
+                'estado', // 'A' o 'I' de la imagen
+                'nombre_estudiante', // El campo de la imagen que te daba error
+                'desc_anio', // Opcional, por si lo necesitas
+                'nom_curso'  // Opcional, por si lo necesitas
+            )
+            ->orderBy('nombre_estudiante', 'asc') // Ordenar por nombre completo
+            ->get();
+
+            //dd($estudiantes);
+
+        // Mapeamos la respuesta para que la estructura JSON siga siendo la que espera tu JavaScript (e.estudiante.nombres)
+        // Como el campo es el nombre completo, lo pondremos en 'nombres' y dejaremos 'apellidos' vacío para que el JS no falle.
+        $dataFormateada = $estudiantes->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'estado' => $item->estado,
+                'estudiante' => [
+                    'nombres' => $item->nombre_estudiante, // Usamos el nombre completo aquí
+                    'apellidos' => '' // Lo dejamos vacío porque el campo es único
+                ]
+            ];
+        });
+
+        return response()->json($dataFormateada);
+    }
+
+    /**
+     * El método 'inactivar' no debería cambiar mucho, solo asegúrate de
+     * usar el nombre correcto de la tabla.
+     */
+    public function inactivar(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer' // ID de la tabla estudiantes_curso
+        ]);
+
+        // Iniciamos una transacción para asegurar que ambas tablas se actualicen
+        DB::beginTransaction();
+
+        try {
+            // 1. Buscamos el registro en estudiantes_curso para obtener el id_estudiante
+            $registro = DB::table('estudiantes_curso')->where('id', $request->id)->first();
+
+            if (!$registro) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontró el registro de curso especificado.'
+                ], 404);
+            }
+
+            // 2. Actualizamos el estado en la tabla estudiantes_curso (el registro específico del año/grado)
+            DB::table('estudiantes_curso')
+                ->where('id', $request->id)
+                ->update(['estado' => 'I', 'updated_at' => now()]);
+
+            // 3. Actualizamos el estado en la tabla principal 'estudiantes'
+            // Usamos el campo 'id_estudiante' que obtuvimos del primer registro
+            DB::table('estudiantes')
+                ->where('id', $registro->id_estudiante)
+                ->update(['estado' => 'I', 'updated_at' => now()]);
+
+            // Si todo salió bien, confirmamos los cambios en la base de datos
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estudiante inactivado correctamente en el curso y en el sistema general.'
+            ]);
+
+        } catch (\Exception $e) {
+            // Si algo falla, deshacemos cualquier cambio realizado para evitar errores de datos
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Hubo un error en el servidor: ' . $e->getMessage()
+            ], 500);
         }
     }
 

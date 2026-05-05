@@ -411,159 +411,176 @@ class EstudiantesController extends Controller
 
     }
 
-    public function editar_estudiante(Request $request){
+    public function editar_estudiante(Request $request)
+    {
+        // Obtiene el usuario actual
+        $usuario_actual = Auth::user();
         
-        //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
+        // Busca el estudiante y el tipo de documento
         $id_estudiante = $request->input('id_estudiante');
-        $estudiante = Estudiantes::find($id_estudiante);
+        $estudiante = Estudiantes::find($id_estudiante); // Asegúrate de importar el modelo arriba o usar la ruta completa
+        
         $tipoDoc = $request->input('tipoDocumento');
         $tipoDocumento = TiposDocumentos::find($tipoDoc);
 
-        $estudiante->id_tipo_documento=$tipoDocumento->id;
-        $estudiante->tipo_documento= $tipoDocumento->descripcion;
-        $estudiante->identificacion=$request->input('identificacion')?$request->input('identificacion'):'';
-        $estudiante->lugar_expedicion=$request->input('lugar_expedicion')?$request->input('lugar_expedicion'):'';
-        $estudiante->fecha_nacimiento=$request->input("fecha_nacimiento", "0000-00-00");
-        $estudiante->lugar_nacimiento=$request->input('lugar_nacimeinto')?$request->input('lugar_nacimeinto'):'';
-        $estudiante->primer_nombre=$request->input('primer_nombre')?$request->input('primer_nombre'):'';
-        $estudiante->segundo_nombre=$request->input('segundo_nombre')?$request->input('segundo_nombre'):'';
-        $estudiante->primer_apellido=$request->input('primer_apellido')?$request->input('primer_apellido'):'';
-        $estudiante->segundo_apellido=$request->input('segundo_apellido')?$request->input('segundo_apellido'):'';
-        $estudiante->genero=$request->input('genero')?$request->input('genero'):'';
-        $estudiante->tipo_rh=$request->input('rh')?$request->input('rh'):'';
-
-        $edadEstudiante = Carbon::parse($estudiante->fecha_nacimiento)->age;
-
-        $estudiante->edad=$edadEstudiante;
-        $estudiante->nacionalidad=$request->input('nacionalidad')?$request->input('nacionalidad'):'';
-        $estudiante->direccion=$request->input('direccion')?$request->input('direccion'):'';
-        $estudiante->barrio=$request->input('barrio')?$request->input('barrio'):'';
-        $estudiante->comuna=$request->input('comuna')?$request->input('comuna'):'';
-        $estudiante->corregimiento=$request->input('corregimiento')?$request->input('corregimiento'):'';
-        $estudiante->vereda=$request->input('vereda')?$request->input('vereda'):'';
-        $estudiante->telefono=$request->input('telefono')?$request->input('telefono'):'';
-        $estudiante->correo_electronico=$request->input('email')?$request->input('email'):'';
+        // Asignación de datos básicos
+        $estudiante->id_tipo_documento = $tipoDocumento->id;
+        $estudiante->tipo_documento = $tipoDocumento->descripcion;
+        $estudiante->identificacion = $request->input('identificacion') ? $request->input('identificacion') : '';
+        $estudiante->lugar_expedicion = $request->input('lugar_expedicion') ? $request->input('lugar_expedicion') : '';
+        $estudiante->fecha_nacimiento = $request->input("fecha_nacimiento", "0000-00-00");
+        $estudiante->lugar_nacimiento = $request->input('lugar_nacimeinto') ? $request->input('lugar_nacimeinto') : '';
         
-        $estudiante->tipos_seguridad_social=$request->input('seguridad_social')?$request->input('seguridad_social'):'';
-        $estudiante->eps=$request->input('eps')?$request->input('eps'):'';
-        $estudiante->sisben=$request->input('sisben')?$request->input('sisben'):'';
-        $estudiante->estrato=$request->input('estrato')?$request->input('estrato'):'';
-        $estudiante->tiene_discapacidad=$request->input('discapaciadad')?$request->input('discapaciadad'):'';
-        $estudiante->desc_discapacidad =$request->input('desc_discapacidad')?$request->input('desc_discapacidad'):'';
-        $vacunas = $request->input('vacunas')?$request->input('vacunas'):[];
+        // Nombres y apellidos
+        $estudiante->primer_nombre = $request->input('primer_nombre') ? $request->input('primer_nombre') : '';
+        $estudiante->segundo_nombre = $request->input('segundo_nombre') ? $request->input('segundo_nombre') : '';
+        $estudiante->primer_apellido = $request->input('primer_apellido') ? $request->input('primer_apellido') : '';
+        $estudiante->segundo_apellido = $request->input('segundo_apellido') ? $request->input('segundo_apellido') : '';
+        
+        $estudiante->genero = $request->input('genero') ? $request->input('genero') : '';
+        $estudiante->tipo_rh = $request->input('rh') ? $request->input('rh') : '';
+
+        // Cálculo de la edad con Carbon
+        $edadEstudiante = \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->age;
+        $estudiante->edad = $edadEstudiante;
+        
+        // Datos de ubicación y contacto
+        $estudiante->nacionalidad = $request->input('nacionalidad') ? $request->input('nacionalidad') : '';
+        $estudiante->direccion = $request->input('direccion') ? $request->input('direccion') : '';
+        $estudiante->barrio = $request->input('barrio') ? $request->input('barrio') : '';
+        $estudiante->comuna = $request->input('comuna') ? $request->input('comuna') : '';
+        $estudiante->corregimiento = $request->input('corregimiento') ? $request->input('corregimiento') : '';
+        $estudiante->vereda = $request->input('vereda') ? $request->input('vereda') : '';
+        $estudiante->telefono = $request->input('telefono') ? $request->input('telefono') : '';
+        $estudiante->correo_electronico = $request->input('email') ? $request->input('email') : '';
+        
+        // Datos de salud y socioeconómicos
+        $estudiante->tipos_seguridad_social = $request->input('seguridad_social') ? $request->input('seguridad_social') : '';
+        $estudiante->eps = $request->input('eps') ? $request->input('eps') : '';
+        $estudiante->sisben = $request->input('sisben') ? $request->input('sisben') : '';
+        $estudiante->estrato = $request->input('estrato') ? $request->input('estrato') : '';
+        $estudiante->tiene_discapacidad = $request->input('discapaciadad') ? $request->input('discapaciadad') : '';
+        $estudiante->desc_discapacidad = $request->input('desc_discapacidad') ? $request->input('desc_discapacidad') : '';
+        
+        // Procesamiento de vacunas
+        $vacunas = $request->input('vacunas') ? $request->input('vacunas') : [];
         $vacunasArray = array();
         if (count($vacunas) > 0) {
             foreach ($vacunas as $vac) {
-                $newarrayact = array(
-                    "nombre_vacuna" =>$vac
-                );
-                array_push( $vacunasArray, $newarrayact);
+                $newarrayact = array("nombre_vacuna" => $vac);
+                array_push($vacunasArray, $newarrayact);
             }
-        }else{
+        } else {
             $vacunasArray = null;
         }
-        $estudiante->json_vacunas=json_encode($vacunasArray);
-        $estudiante->pob_victima_conflicto =$request->input('victima_conflicto')?$request->input('victima_conflicto'):'';
-        $estudiante->pob_desplazada_conflicto=$request->input('pob_des_conflicto')?$request->input('pob_des_conflicto'):'';
-        $estudiante->estado="A";
-        $estudiante->observaciones_adicionales=$request->input('observaciones')?$request->input('observaciones'):'';
+        $estudiante->json_vacunas = json_encode($vacunasArray);
         
-        $parentesco1 = $request->input('parentesco1')?$request->input('parentesco1'):'';
-        $parentesco2 = $request->input('parentesco2')?$request->input('parentesco2'):'';
-        $parentesco3 = $request->input('parentesco3')?$request->input('parentesco3'):'';
-        $estudiante->responsable_json = null;
+        // Otros datos
+        $estudiante->pob_victima_conflicto = $request->input('victima_conflicto') ? $request->input('victima_conflicto') : '';
+        $estudiante->pob_desplazada_conflicto = $request->input('pob_des_conflicto') ? $request->input('pob_des_conflicto') : '';
+        $estudiante->estado = "A";
+        $estudiante->observaciones_adicionales = $request->input('observaciones') ? $request->input('observaciones') : '';
+        
+        // Procesamiento de responsables (Padres/Acudientes)
+        $parentesco1 = $request->input('parentesco1') ? $request->input('parentesco1') : '';
+        $parentesco2 = $request->input('parentesco2') ? $request->input('parentesco2') : '';
+        $parentesco3 = $request->input('parentesco3') ? $request->input('parentesco3') : '';
+        
         $responsablesArray = array();
-        if($parentesco1 != ""){
+        
+        if ($parentesco1 != "") {
             $tipoDoc1 = $request->input('tipoDocumento1');
             $tipoDocumento1 = TiposDocumentos::find($tipoDoc1);
             $newarrayact1 = array(
-                "id" =>1,
-                "tipo" => $request->input('parentesco1')?$request->input('parentesco1'):'',
-                "id_documento" => $tipoDocumento1->id,
-                "nombreDocumento" => $tipoDocumento1->descripcion,
-                "identificacion" => $request->input('nro_identificacion1')?$request->input('nro_identificacion1'):'',
-                "nombres" => $request->input('nombres1')?$request->input('nombres1'):'',
-                "ocupacion" => $request->input('ocupacion1')?$request->input('ocupacion1'):'',
-                "telefono" => $request->input('telefono1')?$request->input('telefono1'):''
+                "id" => 1,
+                "tipo" => $parentesco1,
+                "id_documento" => $tipoDocumento1->id ?? '',
+                "nombreDocumento" => $tipoDocumento1->descripcion ?? '',
+                "identificacion" => $request->input('nro_identificacion1') ? $request->input('nro_identificacion1') : '',
+                "nombres" => $request->input('nombres1') ? $request->input('nombres1') : '',
+                "ocupacion" => $request->input('ocupacion1') ? $request->input('ocupacion1') : '',
+                "telefono" => $request->input('telefono1') ? $request->input('telefono1') : ''
             );
             array_push($responsablesArray, $newarrayact1);
         }
-        if($parentesco2 != ""){
+        if ($parentesco2 != "") {
             $tipoDoc2 = $request->input('tipoDocumento2');
             $tipoDocumento2 = TiposDocumentos::find($tipoDoc2);
             $newarrayact2 = array(
-                "id" =>2,
-                "tipo" => $request->input('parentesco2')?$request->input('parentesco2'):'',
-                "id_documento" => $tipoDocumento2->id,
-                "nombreDocumento" => $tipoDocumento2->descripcion,
-                "identificacion" => $request->input('nro_identificacion2')?$request->input('nro_identificacion2'):'',
-                "nombres" => $request->input('nombres1')?$request->input('nombres2'):'',
-                "ocupacion" => $request->input('ocupacion2')?$request->input('ocupacion2'):'',
-                "telefono" => $request->input('telefono2')?$request->input('telefono2'):''
+                "id" => 2,
+                "tipo" => $parentesco2,
+                "id_documento" => $tipoDocumento2->id ?? '',
+                "nombreDocumento" => $tipoDocumento2->descripcion ?? '',
+                "identificacion" => $request->input('nro_identificacion2') ? $request->input('nro_identificacion2') : '',
+                "nombres" => $request->input('nombres2') ? $request->input('nombres2') : '', // Corregido: antes decía nombres1
+                "ocupacion" => $request->input('ocupacion2') ? $request->input('ocupacion2') : '',
+                "telefono" => $request->input('telefono2') ? $request->input('telefono2') : ''
             );
             array_push($responsablesArray, $newarrayact2);
         }
-        if($parentesco3 != ""){
+        if ($parentesco3 != "") {
             $tipoDoc3 = $request->input('tipoDocumento3');
             $tipoDocumento3 = TiposDocumentos::find($tipoDoc3);
             $newarrayact3 = array(
-                "id" =>3,
-                "tipo" => $request->input('parentesco3')?$request->input('parentesco3'):'',
-                "id_documento" => $tipoDocumento3->id,
-                "nombreDocumento" => $tipoDocumento3->descripcion,
-                "identificacion" => $request->input('nro_identificacion3')?$request->input('nro_identificacion3'):'',
-                "nombres" => $request->input('nombres3')?$request->input('nombres3'):'',
-                "ocupacion" => $request->input('ocupacion3')?$request->input('ocupacion3'):'',
-                "telefono" => $request->input('telefono3')?$request->input('telefono3'):''
+                "id" => 3,
+                "tipo" => $parentesco3,
+                "id_documento" => $tipoDocumento3->id ?? '',
+                "nombreDocumento" => $tipoDocumento3->descripcion ?? '',
+                "identificacion" => $request->input('nro_identificacion3') ? $request->input('nro_identificacion3') : '',
+                "nombres" => $request->input('nombres3') ? $request->input('nombres3') : '',
+                "ocupacion" => $request->input('ocupacion3') ? $request->input('ocupacion3') : '',
+                "telefono" => $request->input('telefono3') ? $request->input('telefono3') : ''
             );
             array_push($responsablesArray, $newarrayact3);
         }
-        $estudiante->responsable_json= json_encode($responsablesArray);
-        if($estudiante->save()){
-           
-            $estudiantesCurso = EstudiantesCurso::all();
+        
+        $estudiante->responsable_json = json_encode($responsablesArray);
+        
+        // =====================================================================
+        // GUARDADO Y ACTUALIZACIÓN OPTIMIZADA DE TABLAS RELACIONADAS
+        // =====================================================================
+        if ($estudiante->save()) {
+            
+            // Verificamos si alguno de los campos de nombre/apellido REALMENTE cambió durante el save()
+            $nombresCambiaron = $estudiante->wasChanged([
+                'primer_nombre', 
+                'segundo_nombre', 
+                'primer_apellido', 
+                'segundo_apellido'
+            ]);
 
-            foreach ($estudiantesCurso as $estu) {
-                if ($estu->id_estudiante == $estudiante->id) {
-                    $estudiantesCursoActualizar = EstudiantesCurso::find($estu->id_estudiante);
-                    $estudiantesCursoActualizar->nombre_estudiante = $estudiante->primer_nombre . " " .
-                                                    $estudiante->segundo_nombre . " " .
-                                                    $estudiante->primer_apellido . " " .
-                                                    $estudiante->segundo_apellido;
-                    $estudiantesCursoActualizar->save(); // ✅ guardamos el modelo actual
-                }
+            // Solo si cambiaron los nombres, actualizamos las tablas desnormalizadas
+            if ($nombresCambiaron) {
+                
+                // Construimos el nuevo nombre completo limpiando espacios dobles (por si no tiene 2do nombre)
+                $nuevoNombreCompleto = trim(preg_replace('/\s+/', ' ', 
+                    $estudiante->primer_nombre . " " .
+                    $estudiante->segundo_nombre . " " .
+                    $estudiante->primer_apellido . " " .
+                    $estudiante->segundo_apellido
+                ));
+
+                // Actualizamos TODOS los registros en EstudiantesCurso en UNA sola consulta
+                EstudiantesCurso::where('id_estudiante', $estudiante->id)
+                    ->update(['nombre_estudiante' => $nuevoNombreCompleto]);
+
+                // Actualizamos EvaluacionEstudiante en UNA sola consulta
+                EvaluacionEstudiante::where('id_estudiante', $estudiante->id)
+                    ->update(['nom_estudiante' => $nuevoNombreCompleto]);
+
+                // Actualizamos NotaFinalEstudiante en UNA sola consulta
+                NotaFinalEstudiante::where('id_estudiante', $estudiante->id)
+                    ->update(['nom_estudiante' => $nuevoNombreCompleto]);
             }
 
-            $evaluacionEstudiante = EvaluacionEstudiante::all();
-            foreach ($evaluacionEstudiante as $estuEva) {
-                if ($estuEva->id_estudiante == $estudiante->id) {
-                    $evaluacionActualizar = EvaluacionEstudiante::find($estuEva->id_estudiante);
-                    $evaluacionActualizar->nom_estudiante = $estudiante->primer_nombre . " " .
-                                                    $estudiante->segundo_nombre . " " .
-                                                    $estudiante->primer_apellido . " " .
-                                                    $estudiante->segundo_apellido;
-                    $evaluacionActualizar->save(); // ✅ guardamos el modelo actual
-                }
-            }
-
-            $notaFinal = NotaFinalEstudiante::all();
-            foreach ($notaFinal as $estuEvaFinal) {
-                if ($estuEvaFinal->id_estudiante == $estudiante->id) {
-                    $evaluacionFinalActualizar = NotaFinalEstudiante::find($estuEvaFinal->id_estudiante);
-                    $evaluacionFinalActualizar->nom_estudiante = $estudiante->primer_nombre . " " .
-                                                    $estudiante->segundo_nombre . " " .
-                                                    $estudiante->primer_apellido . " " .
-                                                    $estudiante->segundo_apellido;
-                    $evaluacionFinalActualizar->save(); // ✅ guardamos el modelo actual
-                }
-            }
-            return view("estudiantes.mensajes.msj_actualziado")->with("msj","Estudiante fue actualizado exitosamente")
-            										   ->with("estado",$estudiante->estado);
-        }else{
-            return view("usuarios.mensajes.msj_error")->with("msj","...Hubo un error al agregar ;...") ;
+            return view("estudiantes.mensajes.msj_actualziado")
+                    ->with("msj", "Estudiante fue actualizado exitosamente")
+                    ->with("estado", $estudiante->estado);
+                    
+        } else {
+            return view("usuarios.mensajes.msj_error")
+                    ->with("msj", "...Hubo un error al actualizar ...");
         }
-
     }
 
     public function buscar_estudiantes(Request $request){

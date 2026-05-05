@@ -111,7 +111,6 @@
                 <th scope="col" class="th-gris text-center " >Info</th>
                 <th scope="col" class="th-gris text-center " >Editar</th>
                 @if($estado == 'A')
-                  <th scope="col" class="th-gris text-center " >Inactivar</th>
                 @else
                   <th scope="col" class="th-gris text-center " >Activar</th>
                 @endif
@@ -172,12 +171,6 @@
                   </td>
                   <td>
                     @if($estado == 'A')
-                      <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 
-                      onclick="inactivarEstudiante({{$estudiante->id}})" role="button" id="subirfile" >
-                        <div class="nav-link-icon__wrapper">
-                          <i class="fa fa-list" title="Inactivar Estudiante" style=""></i><br>
-                        </div>
-                      </a>
                     @else
                       @if($estado != 'E')
                         <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);" 

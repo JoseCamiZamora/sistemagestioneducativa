@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\ConfiguracionController;
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -162,7 +164,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/configuracion/listado_anios_finalizar', 'ConfiguracionController@listado_anios_finalizar');
     Route::get('/configuracion/finalizar_anio_escolar/{idAnio?}', 'ConfiguracionController@finalizar_anio_escolar');
 
-    
+   Route::get('/get-grados/{anio_id}', [ConfiguracionController::class, 'getGrados']);
+   Route::get('/get-estudiantes/{anio_id}/{grado_id}', [ConfiguracionController::class, 'getEstudiantes']);
+   Route::post('/inactivar-estudiante', [ConfiguracionController::class, 'inactivar']);
 
    
 
