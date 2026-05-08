@@ -79,8 +79,8 @@ class ConfiguracionController extends Controller
 
     public function index_conceptos() {
         
-        $usuarioactual=Auth::user();
-        $docenteCurso =  ConfDirectorGrupo::where("id_docente",$usuarioactual->id_persona)->first();
+        $usuario_actual=Auth::user();
+        $docenteCurso = Docentes::find($usuario_actual->id_persona);
         if($docenteCurso->nom_curso == 'SIN CURSO'){
             $docenteCurso->id_curso = 0;
         }
@@ -718,8 +718,7 @@ class ConfiguracionController extends Controller
     public function form_nuevo_concepto(){
        
         $usuario_actual=Auth::user();
-        
-        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+        $docente = Docentes::find($usuario_actual->id_persona);
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::all();
         $cursos = Grados::all();
@@ -737,7 +736,7 @@ class ConfiguracionController extends Controller
     public function form_nuevo_concepto_trans(){
        
         $usuario_actual=Auth::user();
-        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+        $docente = Docentes::find($usuario_actual->id_persona);
         $idCurso = $docente->id_curso;
         $periodos = PeriodosClases::all();
         $anios = ConfAnios::all();
@@ -771,9 +770,9 @@ class ConfiguracionController extends Controller
 
     public function form_nueva_dimension(){
        
-        $usuario_actual=Auth::user();
         $materias = Materias::where("tipo_curso", "=", 1)->paginate(50);
-        $docente =  ConfDirectorGrupo::where("id_docente",$usuario_actual->id_persona)->first();
+        $usuario_actual=Auth::user();
+        $docente = Docentes::find($usuario_actual->id_persona);
          $periodos = PeriodosClases::all();
 
         return view("configuracion.form_nueva_dimension")
