@@ -79,8 +79,8 @@ class ConfiguracionController extends Controller
 
     public function index_conceptos() {
         
-        $usuario_actual=Auth::user();
-        $docenteCurso = Docentes::find($usuario_actual->id_persona);
+        $usuarioactual=Auth::user();
+        $docenteCurso = Docentes::find($usuarioactual->id_persona);
         if($docenteCurso->nom_curso == 'SIN CURSO'){
             $docenteCurso->id_curso = 0;
         }
@@ -248,7 +248,6 @@ class ConfiguracionController extends Controller
         
         //crea una cuenta en el sistema
         $idAnio = $request->input('id_anio');
-        $usuario_actual=Auth::user();
         $anio = ConfAnios::find($idAnio);
 
         $anio->anio_inicio = $request->input('anio_inicio')?$request->input('anio_inicio'):'';
@@ -614,7 +613,6 @@ class ConfiguracionController extends Controller
     public function crear_clasificacion(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $clasificacion = new TipoCursos();
         
         $clasificacion->nombre= strtoupper($request->input('clasificacion')?$request->input('clasificacion'):'');
@@ -638,7 +636,6 @@ class ConfiguracionController extends Controller
 
     public function editar_clasificacion(Request $request){
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $clasificacion = TipoCursos::find($request->input('id_clasificacion'));
         
         $clasificacion->nombre= strtoupper($request->input('clasificacion')?$request->input('clasificacion'):'');
@@ -679,7 +676,6 @@ class ConfiguracionController extends Controller
     public function adicionar_curso_estudiante(Request $request){
         
         //crea una cuenta en el sistema
-        $usuario_actual=Auth::user();
         $estudianteCurso = new EstudiantesCurso();
 
         $idAnio = $request->input('anio_escolar');
