@@ -47,7 +47,7 @@
   <input type="hidden" id="id_docente" name="id_docente" value="{{$docente->id_docente}}">
   <div class="col-md-4">
         <label for="feLastName">Nombre Del Docente:</label>
-        <input  class="form-control "   name="nom_estudiante" value="{{$docente->nom_docente}}" required style="margin-top: -6px;" disabled>
+        <input  class="form-control "   name="nom_estudiante" value="{{$docente->nom_completo}}" required style="margin-top: -6px;" disabled>
       </div>
    <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
