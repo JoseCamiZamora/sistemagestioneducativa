@@ -44,7 +44,7 @@
 
 <form  method="post" action="nuevo_concepto_trans" id="f_nuevo_concepto_trans">
   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-  <input type="hidden" id="id_docente" name="id_docente" value="{{$docente->id_docente}}">
+  <input type="hidden" id="id_docente" name="id_docente" value="{{$docente->id}}">
   <div class="col-md-4">
         <label for="feLastName">Nombre Del Docente:</label>
         <input  class="form-control "   name="nom_estudiante" value="{{$docente->nom_completo}}" required style="margin-top: -6px;" disabled>
