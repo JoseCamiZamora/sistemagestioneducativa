@@ -52,7 +52,7 @@
    <div class="form-row col-md-12 mt-2">
       <div class="col-md-3">
           <label for="feLastName">Año Curso</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="anio" name="anio"  required onchange="infoMateriasConcepto(this.value,{{$docente->id_docente}})">
+          <select class="form-control" id="anio" name="anio"  required onchange="infoMateriasConcepto(this.value,{{$docente->id}})">
             <option value="" selected >Seleccione...</option>
               @foreach($anios as $anio)
                 <option value="{{$anio->id}}">{{$anio->anio_inicio}}-{{$anio->anio_fin}}</option>
@@ -61,7 +61,7 @@
       </div>
       <div class="col-md-2">
           <label for="feLastName">Materia</label><spam style="color: red;"> * </spam>
-          <select class="form-control" id="materia" name="materia" required disabled onchange="infoCursosConcepto(this.value,{{$docente->id_docente}})">
+          <select class="form-control" id="materia" name="materia" required disabled onchange="infoCursosConcepto(this.value,{{$docente->id}})">
             <option value="" selected >Seleccione...</option>
               @foreach($materias as $materia)
                 <option value="{{$materia->id}}">{{$materia->nombre}}</option>
