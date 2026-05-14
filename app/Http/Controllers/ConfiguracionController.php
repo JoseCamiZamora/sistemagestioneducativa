@@ -766,11 +766,13 @@ class ConfiguracionController extends Controller
         $materias = Materias::where("tipo_curso", "=", 1)->paginate(50);
         $usuario_actual=Auth::user();
         $docente = Docentes::find($usuario_actual->id_persona);
-         $periodos = PeriodosClases::all();
+        $periodos = PeriodosClases::all();
+        $anios = ConfAnios::all();
 
         return view("configuracion.form_nueva_dimension")
             ->with("docente",$docente)
             ->with("periodos",$periodos)
+             ->with("anios",$anios)
             ->with("materias",$materias);
     }
 
@@ -948,11 +950,14 @@ class ConfiguracionController extends Controller
         
         //crea una cuenta en el sistema
         $idMateria = $request->input('materia');
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
         $materia = Materias::find($idMateria);
         $periodos = PeriodosClases::find($request->input('periodo'));
 
         $dimension = new ItemEvaluarTransicion();
         $dimension->id_materia = $materia->id;
+        $dimension->id_anio = $anio->id;
         $dimension->nom_materia = $materia->nombre;
         $dimension->id_periodo = $periodos->id;
         $dimension->nom_periodo = $periodos->nombre;
@@ -1176,10 +1181,13 @@ class ConfiguracionController extends Controller
          //crea una cuenta en el sistema
         $idMateria = $request->input('materia');
         $materia = Materias::find($idMateria);
+        $idAnio = $request->input('anio');
+        $anio = ConfAnios::find($idAnio);
         $periodos = PeriodosClases::find($request->input('periodo'));
 
         $dimension = ItemEvaluarTransicion::find($request->input('id_dimension'));
         $dimension->id_materia = $materia->id;
+        $dimension->id_anio = $anio->id;
         $dimension->nom_materia = $materia->nombre;
         $dimension->id_periodo = $periodos->id;
         $dimension->nom_periodo = $periodos->nombre;
