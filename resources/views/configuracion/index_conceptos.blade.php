@@ -24,7 +24,7 @@
     
     
     
-    @if($docenteCurso->id_curso != 1)
+    @if($docenteCurso->id_tipo_clase != 1)
     <div class="col-12 col-md-6 col-lg-3 mb-4">
       <div class="stats-small card card-small">
         <div class="card-body px-0 pb-0" >
@@ -99,7 +99,7 @@
     @endif
     @endif
     @if($usuario_actual->rol == 2)
-    @if($docenteCurso->id_curso != 1)
+    @if($docenteCurso->id_tipo_clase != 1)
     <div class="col-12 col-md-6 col-lg-3 mb-4">
       <div class="stats-small card card-small">
         <div class="card-body px-0 pb-0" >
@@ -153,7 +153,7 @@
       </div>
     </div>
     @endif
-    @if($docenteCurso->id_curso != 0)
+    @if($docenteCurso->id_tipo_clase != 0)
     <div class="col-12 col-md-6 col-lg-3 mb-4">
       <div class="stats-small card card-small">
         <div class="card-body px-0 pb-0" >

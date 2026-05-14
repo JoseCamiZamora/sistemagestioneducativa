@@ -357,7 +357,7 @@ class EvaluacionController extends Controller
         $estudiante = EstudiantesCurso::find($idEstudiante);
         $anios = ConfAnios::find($estudiante->id_anio);
         $lstMaterias = Materias::where("tipo_curso", 1)->get();
-        $itemEvaluar = ItemEvaluarTransicion::all();
+        $itemEvaluar = ItemEvaluarTransicion::where("id_anio", $anios->id)->get();
         $id_periodo = (int)$periodo;
        
         $filtradosCognitiva = $itemEvaluar->filter(function ($item) use ($id_periodo) {
@@ -1059,7 +1059,7 @@ class EvaluacionController extends Controller
             }
         }
          
-        return view('evaluacion.listado_estudiantes_transicion')->with("lstEstudiantes",$lstEstudiantes);
+        return view('evaluacion.listado_estudiantes_transicion')->with("lstEstudiantes",$lstEstudiantes)->with("id_anio",$idAnio);
         
     }
 

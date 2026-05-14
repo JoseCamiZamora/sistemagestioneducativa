@@ -44,7 +44,7 @@
                   <td class='td-titulo text-center'>{{$estudiante->materias_evaluadas }}</td>
                   <td class='td-titulo text-center'>{{$estudiante->pendientes_evaluar}}</td>
                   <td>
-                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="generarConceptoTransicion({{$estudiante->id}})" id="subirfile" >
+                  <a class="nav-link nav-link-icon text-center"  href="javascript:void(0);"  onclick="generarConceptoTransicion({{$estudiante->id}},{{$id_anio}})" id="subirfile" >
                       <div class="nav-link-icon__wrapper">
                         <i class="fa fa-list" title="Evaluar estudiante" style=""></i><br>
                       </div>

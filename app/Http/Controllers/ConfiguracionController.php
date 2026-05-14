@@ -80,10 +80,7 @@ class ConfiguracionController extends Controller
     public function index_conceptos() {
         
         $usuarioactual=Auth::user();
-        $docenteCurso = Docentes::find($usuarioactual->id_persona);
-        if($docenteCurso->nom_curso == 'SIN CURSO'){
-            $docenteCurso->id_curso = 0;
-        }
+        $docenteCurso = ConfClasesDocente::where("id_docente",$usuarioactual->id_persona)->first();
         return view('configuracion.index_conceptos')->with('usuario_actual', $usuarioactual)->with('docenteCurso', $docenteCurso);
 
     }

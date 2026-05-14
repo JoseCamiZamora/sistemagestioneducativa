@@ -161,8 +161,9 @@ function evaluarEstudianteTransicion(id_estudiante,periodo){
 
 }
 
-function generarConceptoTransicion(id_estudiante){
+function generarConceptoTransicion(id_estudiante, idAnio){
   
+  console.log("jejejje", idAnio);
   var idClase = $('#id_clase').val();
   $('#modal_evaluacion').modal();
   $('.preloader').fadeIn();
