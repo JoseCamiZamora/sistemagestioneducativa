@@ -350,7 +350,7 @@ class InformesController extends Controller
         ini_set('memory_limit', '712M');
         ini_set('max_execution_time', 300);
         set_time_limit(300);
-        dd($docente);
+        dd($docenteDir);
 
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo', [
             'docente'        => $docente,
