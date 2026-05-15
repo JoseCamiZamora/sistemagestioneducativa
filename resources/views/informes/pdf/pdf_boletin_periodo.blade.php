@@ -199,7 +199,7 @@
 
             <td style="width: 40%; border: none;">
               @if($docente->firma)
-                  <img src="{{ public_path('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
+                  <img src="{{ public_path('storage/firmas/' . $docente->firma) }}" style="max-height: 60px;">
               @else
                   <div style="height: 60px;"></div> <small style="color: red;">Firma no configurada</small>
               @endif

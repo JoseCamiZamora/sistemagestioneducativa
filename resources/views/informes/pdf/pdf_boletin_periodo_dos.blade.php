@@ -191,7 +191,7 @@
         <tr>
             <!-- Firma 1 -->
             <td style="width: 40%;border: none;">
-                <img src="{{ asset('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
+                <img src="{{ public_path('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
                 <hr style="width: 200px; border: 1px solid black;">
                 <strong>{{ $docenteDir->nombres }} {{ $docenteDir->apellidos }}</strong><br>
                 Director(a) C.E. Corazón de María
@@ -200,7 +200,7 @@
             <!-- Firma 2 -->
             <td style="width: 40%; border: none;">
               @if($docente->firma)
-                  <img src="{{ asset('storage/firmas/' . $docente->firma) }}" style="max-height: 60px;">
+                 <img src="{{ public_path('storage/firmas/' . $docente->firma) }}" style="max-height: 60px;">
               @else
                   <div style="height: 60px;"></div> <small style="color: red;">Firma no configurada</small>
               @endif
