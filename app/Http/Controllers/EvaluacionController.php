@@ -1258,6 +1258,7 @@ class EvaluacionController extends Controller
                 $observacionFinal->obs_per3 = $observacion;
             }
         }
+        //dd($observacionFinal);
 
         if($observacionFinal->save()){
             return view("evaluacion.mensajes.msj_confirmacion")->with("msj","La observación fue alamcenada exitosamente");
