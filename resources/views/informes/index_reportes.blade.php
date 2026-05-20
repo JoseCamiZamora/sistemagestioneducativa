@@ -67,14 +67,11 @@
               <h4 style='margin-bottom: 1px;' >Reporte de Estudiantes</h4>
               <span  class="text-primary" style="font-size:0.9em;margin-top:1px;" >Generación de reporte de notas</span>
               </a>
-            
           </div>
         </div>
       </div>
     </div>
     @endif
-
-
       <div class="col-md-12 ">
                   <div class="card-header border-bottom">
                     <h6 class="m-0">Actividad Reciente <span class="nav-link-icon__wrapper">
@@ -83,18 +80,10 @@
                     </span></h6>
                     <div class="block-handle"></div>
                   </div>
-                
                  <div class="card-body p-0" id="bloque_actividad_reciente" >  
-                    
-
                  </div>
-                   
       </div>
   </div>
 </div>
-
-
-
-
 @endsection
 

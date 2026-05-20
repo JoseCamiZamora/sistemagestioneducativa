@@ -136,17 +136,19 @@
     <div class="datos">
        <h3 style="font-weight: normal;text-align: justify;">En constancia se firma a <strong>{{$dia}}</strong> días del mes de <strong>{{$mes}}</strong> del año <strong>{{$anio}}</strong>.</h3>
     </div>
-    <table style="width: 100%; margin-top: 40px; text-align: center;border: none;">
+    <table style="width: 100%; margin-top: 40px; text-align: center; border: none;">
         <tr>
-            <!-- Firma 1 -->
-            <td style="width: 40%;border: none;">
-                <img src="{{ public_path('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
+            <td style="width: 40%; border: none;">
+                @if(!empty($docenteDir->firma) && is_file(public_path('storage/firmas/' . $docenteDir->firma)))
+                    <img src="{{ public_path('storage/firmas/' . $docenteDir->firma) }}" style="max-height: 60px;">
+                @else
+                    <div style="height: 60px;"></div> <small style="color: red;">Firma no configurada</small>
+                @endif
+                <br>
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>{{ $docenteDir->nombres }} {{ $docenteDir->apellidos }}</strong><br>
+                <strong>{{ $docenteDir->nom_completo ?? 'NO ASIGNADO' }}</strong><br>
                 Director(a) C.E. Corazón de María
             </td>
-
-            <!-- Firma 2 -->
         </tr>
     </table>
     @if($individual == 'N')
