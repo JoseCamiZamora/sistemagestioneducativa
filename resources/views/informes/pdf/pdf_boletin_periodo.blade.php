@@ -197,7 +197,7 @@
                 @endif
                 <br>
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>{{ $docenteDir->nombres ?? 'NO ASIGNADO' }} {{ $docenteDir->apellidos ?? '' }}</strong><br>
+                <strong>{{ $docenteDir->nom_completo ?? 'NO ASIGNADO' }}</strong><br>
                 Director(a) C.E. Corazón de María
             </td>
 
@@ -209,7 +209,7 @@
                 @endif
                 <br>
                 <hr style="width: 200px; border: 1px solid black;">
-                <strong>{{ $docente->nombres ?? 'NO ASIGNADO' }} {{ $docente->apellidos ?? '' }}</strong><br>
+                <strong>{{ $docente->nom_docente ?? 'NO ASIGNADO' }}</strong><br>
                 Director(a) de Grupo.
             </td>
         </tr>
