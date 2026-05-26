@@ -2020,8 +2020,6 @@ class InformesController extends Controller
         return response()->json(['url' => asset('pdf/' . $filename)]);
     }
 
-    
-
     public function pdf_infomre_cetirficado_estudiante($idCurso=null,$idAnio=null,$idPeriodo=null,$idEstudiante=null){
 
         ini_set('memory_limit', '712M');
@@ -2369,7 +2367,7 @@ class InformesController extends Controller
         $diaNumero = $fecha->day;
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
-        
+        dd($reporte);
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_transicion', [
             'docente'        => $docente,
             'docenteDir'     => $docenteDirector,
