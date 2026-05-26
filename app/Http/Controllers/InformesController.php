@@ -2367,7 +2367,7 @@ class InformesController extends Controller
         $diaNumero = $fecha->day;
 
         $fechaReporte = strtoupper($mes).' '.$diaNumero;
-        dd($reporte);
+        //dd($reporte);
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_periodo_transicion', [
             'docente'        => $docente,
             'docenteDir'     => $docenteDirector,
