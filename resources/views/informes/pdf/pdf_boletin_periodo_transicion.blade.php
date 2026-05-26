@@ -73,7 +73,7 @@
       <thead class="bg-light">
         <TR>
           <TD ALIGN=center ROWSPAN=4 COLSPAN=1 style="width: 120px"> <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width:3.5em;margin-top: 0px" 
-            src="{{ asset('/assets/img/proinco1.png') }}" alt="logo proinco"></TD>
+            src="{{ public_path('assets/img/proinco1.png') }}" alt="logo proinco"></TD>
           <TD style="text-align: center; " ROWSPAN=2 COLSPAN=1>FUNDACION PROINCO </TD>
           <TD style="text-align: center">CÓDIGO </TD>
         </TR>
@@ -107,8 +107,8 @@
       </tr>
       <tr>
         <td ><img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-height: 30px; " 
-                    src="{{ asset('/assets/img/feliz3.png') }}" alt="logo proinco"></td>
-        <td ><img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'"></td>
+                    src="{{ public_path('assets/img/feliz3.png') }}" alt="logo proinco"></td>
+        <td ><img src="{{ public_path('assets/img/neutro2.png') }}" style="max-height: 30px;"></td>
       </tr>
     </table>
     <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 8px;" >
@@ -123,11 +123,11 @@
       </thead>
       <tbody>
         <tr>
-          <td>{{$boletin['data_estudiante']['nom_estudiante']}}</td>
-          <td>{{$grado->nombre}}</td>
-          <td>{{$periodoClases->nombre}}</td>
-          <td>{{$fechaReporte}}</td>
-          <td>{{$anio->anio_inicio}}</td>
+          <td>{{ $boletin['data_estudiante']['nom_estudiante'] ?? '' }}</td>
+          <td>{{ $grado->nombre ?? '' }}</td>
+          <td>{{ $periodoClases->nombre ?? '' }}</td>
+          <td>{{ $fechaReporte ?? '' }}</td>
+          <td>{{ $anio->anio_inicio ?? '' }}</td>
         </tr>
       </tbody>
     </table>
@@ -135,52 +135,58 @@
       <table border  class='table table-generic table-strech table-font-normal table-hover' style="margin-bottom: 15px;" >
         <thead>
           <tr>
-            <th style="text-align: left;">DIMENSIÓN {{ $materia['dimencion'] }}</th>
+            <th style="text-align: left;">DIMENSIÓN {{ $materia['dimencion'] ?? '' }}</th>
             <th style="text-align: Center;">Logro</th>
           </tr>
         </thead>
         <tbody>
-          @foreach($materia['items'] as $dimencion)
-            <tr>
-              <td style="text-align: justify; height: 35px !important;">{{ $dimencion['nom_dimencion'] }}</td>
-              <td style="width: 30px; height: 35px !important;">
-                @if($dimencion['nota'] == 2)
-                <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-height: 30px; " 
-                    src="{{ asset('/assets/img/feliz3.png') }}" alt="logo proinco">
-                @else
-                  <img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-                @endif
-              </td>
-            </tr>
-          @endforeach
+          @if(isset($materia['items']) && is_array($materia['items']))
+            @foreach($materia['items'] as $dimencion)
+              <tr>
+                <td style="text-align: justify; height: 35px !important;">{{ $dimencion['nom_dimencion'] ?? '' }}</td>
+                <td style="width: 30px; height: 35px !important;">
+                  @if(isset($dimencion['nota']) && $dimencion['nota'] == 2)
+                  <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-height: 30px; " 
+                      src="{{ public_path('assets/img/feliz3.png') }}">
+                  @else
+                    <img src="{{ public_path('assets/img/neutro2.png') }}" style="max-height: 30px;">
+                  @endif
+                </td>
+              </tr>
+            @endforeach
+          @endif
         </tbody>
       </table>
     @endforeach
-    <table border  class='table table-generic table-strech table-font-normal table-hover' >
-      <thead>
+
+    @if(!empty($boletin['data_comportamiento']))
+      <table border  class='table table-generic table-strech table-font-normal table-hover' >
+        <thead>
+          <tr>
+            <th>{{ $boletin['data_comportamiento']['nom_materia'] ?? 'COMPORTAMIENTO' }}</th>
+            <th style="text-align: center; width: 50px;">{{ $boletin['data_comportamiento']['desempenio'] ?? '' }}</th>
+          </tr>
+        </thead>
+        <tbody >
         <tr>
-          <th>{{ $boletin['data_comportamiento']['nom_materia'] }}</th>
-          <th style="text-align: center; width: 50px;">{{ $boletin['data_comportamiento']['desempenio'] }}</th>
+          <td style="text-align: justify;">{{ $boletin['data_comportamiento']['concepto'] ?? '' }}</td>
+          <td style="text-align: center; width: 50px;">
+            @if(isset($boletin['data_comportamiento']['desempenio']))
+              @if($boletin['data_comportamiento']['desempenio'] == 'Alto')
+                <img class="d-inline-block align-top mr-1 ml-3" style="max-height: 30px; " 
+                          src="{{ public_path('assets/img/feliz3.png') }}">
+              @elseif($boletin['data_comportamiento']['desempenio'] == 'Medio')
+                <img src="{{ public_path('assets/img/neutro2.png') }}" style="max-height: 30px;">
+              @elseif($boletin['data_comportamiento']['desempenio'] == 'Bajo')
+                <img src="{{ public_path('assets/img/triste2.png') }}" style="max-height: 40px;">
+              @endif
+            @endif
+          </td>
         </tr>
-      </thead>
-      <tbody >
-      <tr>
-        <td style="text-align: justify;">{{ $boletin['data_comportamiento']['concepto'] }}</td>
-        <td style="text-align: center; width: 50px;">
-          @if($boletin['data_comportamiento']['desempenio'] == 'Alto')
-            <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-height: 30px; " 
-                      src="{{ asset('/assets/img/feliz3.png') }}" alt="logo proinco">
-          @endif
-          @if($boletin['data_comportamiento']['desempenio'] == 'Medio')
-            <img src="{{ asset('/assets/img/neutro2.png') }}" style="max-height: 30px;" onerror="this.onerror=null; this.src='image.png'">
-          @endif
-          @if($boletin['data_comportamiento']['desempenio'] == 'Bajo')
-            <img src="{{ asset('/assets/img/triste2.png') }}" style="max-height: 40px;" onerror="this.onerror=null; this.src='image.png'">
-          @endif
-        </td>
-      </tr>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    @endif
+
     <table border  class='table table-generic table-strech table-font-normal table-hover' >
       <thead>
         <tr>
@@ -189,10 +195,11 @@
       </thead>
       <tbody >
       <tr>
-        <td style="text-align: justify;">{{ $boletin['data_estudiante']['desempenio_final'] }}</td>
+        <td style="text-align: justify;">{{ $boletin['data_estudiante']['desempenio_final'] ?? '' }}</td>
       </tr>
       </tbody>
     </table>
+    
     <table style="width: 100%; margin-top: 40px; text-align: center; border: none;">
         <tr>
             <td style="width: 40%; border: none;">
