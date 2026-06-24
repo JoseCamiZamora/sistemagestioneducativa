@@ -2678,7 +2678,6 @@ class InformesController extends Controller
         $mes = $fecha->translatedFormat('F');
         $diaNumero = $fecha->day;
         $anio = $fecha->year;
-        dd($reporte);
         
       $pdf = Pdf::loadView('informes.pdf.pdf_boletin_constancia_estudios', [
             'reporte'        => $reporte,
