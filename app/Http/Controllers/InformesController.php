@@ -2651,7 +2651,7 @@ class InformesController extends Controller
     public function pdf_infomre_constancia_estudiante($idCurso=null,$idAnio=null,$idEstudiante=null){
 
         ini_set('memory_limit', '712M');
-        $estudianteCurso = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$idAnio)->where("estado",'A')->first();
+        $estudianteCurso = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$idAnio)->where("id_estudiante",$idEstudiante)->where("estado",'A')->first();
         $anio = ConfAnios::find($idAnio);
         $estudiante = Estudiantes::find($idEstudiante);
         $docenteDirector =  Docentes::where("director_escuela",'S')->first();
