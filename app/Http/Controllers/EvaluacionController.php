@@ -140,7 +140,7 @@ class EvaluacionController extends Controller
 
     public function listado_estudiantes_configurados($idCurso=null, $idClase=null){
 
-    dd($idCurso,$idClase);    
+       
     $clasesDocente =  ConfClasesDocente::find($idClase);
         $lstEstudiantes = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$clasesDocente->id_anio)->where("estado",'A')->get();
         foreach ($lstEstudiantes as $estudiante) {
@@ -152,6 +152,7 @@ class EvaluacionController extends Controller
 
         $curso = Grados::find($idCurso);
         $evaluacionesFinales = NotaFinalEstudiante::all();
+        dd($evaluacionesFinales);
         
         foreach ($lstEstudiantes as $estudiante) {
             $estudianteFiltro = $estudiante->id_estudiante;
