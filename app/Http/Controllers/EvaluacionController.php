@@ -152,7 +152,6 @@ class EvaluacionController extends Controller
 
         $curso = Grados::find($idCurso);
         $evaluacionesFinales = NotaFinalEstudiante::all();
-        dd($evaluacionesFinales);
         
         foreach ($lstEstudiantes as $estudiante) {
             $estudianteFiltro = $estudiante->id_estudiante;
