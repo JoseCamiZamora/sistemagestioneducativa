@@ -140,7 +140,8 @@ class EvaluacionController extends Controller
 
     public function listado_estudiantes_configurados($idCurso=null, $idClase=null){
 
-        $clasesDocente =  ConfClasesDocente::find($idClase);
+    dd($idCurso,$idClase);    
+    $clasesDocente =  ConfClasesDocente::find($idClase);
         $lstEstudiantes = EstudiantesCurso::where("id_curso",$idCurso)->where("id_anio",$clasesDocente->id_anio)->where("estado",'A')->get();
         foreach ($lstEstudiantes as $estudiante) {
             $estudiante->materia = $clasesDocente->nom_materia;
