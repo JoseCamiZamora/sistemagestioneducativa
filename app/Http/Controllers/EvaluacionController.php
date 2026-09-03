@@ -159,6 +159,7 @@ class EvaluacionController extends Controller
             $anioFiltro = $estudiante->id_anio;
             $cursoFiltro = $estudiante->id_curso;
             $materiaFiltro = $estudiante->id_materia;
+             dd($materiaFiltro);
         
             $filtrados = array_filter($evaluacionesFinales->toArray(), function($item) use ($estudianteFiltro, $anioFiltro, $cursoFiltro, $materiaFiltro) {
                 return $item['id_estudiante'] == $estudianteFiltro &&
