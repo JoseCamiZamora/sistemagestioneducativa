@@ -151,22 +151,23 @@ class EvaluacionController extends Controller
         }
 
         $curso = Grados::find($idCurso);
+        $anios = ConfAnios::find($clasesDocente->id_anio);
         $evaluacionesFinales = NotaFinalEstudiante::all();
-        
+
         foreach ($lstEstudiantes as $estudiante) {
             $estudianteFiltro = $estudiante->id_estudiante;
             $anioFiltro = $estudiante->id_anio;
             $cursoFiltro = $estudiante->id_curso;
             $materiaFiltro = $estudiante->id_materia;
             //dd($estudianteFiltro,$anioFiltro,$cursoFiltro,$materiaFiltro);
-        
+
             $filtrados = array_filter($evaluacionesFinales->toArray(), function($item) use ($estudianteFiltro, $anioFiltro, $cursoFiltro, $materiaFiltro) {
                 return $item['id_estudiante'] == $estudianteFiltro &&
                        $item['id_anio'] == $anioFiltro &&
                        $item['id_grado'] == $cursoFiltro &&
                        $item['id_materia'] == $materiaFiltro;
             });
-            
+
 
             if (empty($filtrados)) {
                 $estudiante->nota_primer_periodo = 0;
@@ -175,22 +176,39 @@ class EvaluacionController extends Controller
                 $estudiante->nota_final = 0;
                 $estudiante->desempenio = 'Bajo';
             } else {
+                // Puede haber más de un registro para el mismo estudiante/materia cuando
+                // distintos docentes calificaron distintos periodos (cambio de docente
+                // a mitad de año). Se fusionan tomando el valor no-cero de cada periodo
+                // en lugar de quedarse solo con el primer registro encontrado.
+                $notaUno = 0;
+                $notaDos = 0;
+                $notaTres = 0;
                 foreach ($filtrados as $filtro) {
-                    $estudiante->nota_primer_periodo = $filtro['nota_periodo_uno'];
-                    $estudiante->nota_segundo_periodo = $filtro['nota_periodo_dos'];
-                    $estudiante->nota_tercer_periodo = $filtro['nota_periodo_tres'];
-                    $estudiante->nota_final = $filtro['nota_final'];
-
-                    if ( $estudiante->nota_final >= 4.6) {
-                        $estudiante->desempenio = 'Superior';
-                    } elseif ( $estudiante->nota_final >= 4.0) {
-                        $estudiante->desempenio = 'Alto';
-                    } elseif ( $estudiante->nota_final >= 3.0) {
-                        $estudiante->desempenio = 'Básico';
-                    } else {
-                        $estudiante->desempenio = 'Bajo';
+                    if (floatval($filtro['nota_periodo_uno']) > 0) {
+                        $notaUno = $filtro['nota_periodo_uno'];
                     }
-                    break;
+                    if (floatval($filtro['nota_periodo_dos']) > 0) {
+                        $notaDos = $filtro['nota_periodo_dos'];
+                    }
+                    if (floatval($filtro['nota_periodo_tres']) > 0) {
+                        $notaTres = $filtro['nota_periodo_tres'];
+                    }
+                }
+
+                $estudiante->nota_primer_periodo = $notaUno;
+                $estudiante->nota_segundo_periodo = $notaDos;
+                $estudiante->nota_tercer_periodo = $notaTres;
+                $suma = floatval($notaUno) + floatval($notaDos) + floatval($notaTres);
+                $estudiante->nota_final = round($suma / $anios->cant_periodos, 2);
+
+                if ( $estudiante->nota_final >= 4.6) {
+                    $estudiante->desempenio = 'Superior';
+                } elseif ( $estudiante->nota_final >= 4.0) {
+                    $estudiante->desempenio = 'Alto';
+                } elseif ( $estudiante->nota_final >= 3.0) {
+                    $estudiante->desempenio = 'Básico';
+                } else {
+                    $estudiante->desempenio = 'Bajo';
                 }
             }
         }
@@ -210,13 +228,14 @@ class EvaluacionController extends Controller
         
 
         $curso = Grados::find($idCurso);
+        $anios = ConfAnios::find($idAnio);
         $evaluacionesFinales = NotaFinalTransicion::all();
 
         foreach ($lstEstudiantes as $estudiante) {
             $estudianteFiltro = $estudiante->id_estudiante;
             $anioFiltro = $estudiante->id_anio;
             $cursoFiltro = $estudiante->id_curso;
-        
+
             $filtrados = array_filter($evaluacionesFinales->toArray(), function($item) use ($estudianteFiltro, $anioFiltro, $cursoFiltro) {
                 return $item['id_estudiante'] == $estudianteFiltro &&
                        $item['id_anio'] == $anioFiltro &&
@@ -230,23 +249,40 @@ class EvaluacionController extends Controller
                 $estudiante->nota_final = 0;
                 $estudiante->desempenio ='En proceso';
             } else {
+                // Puede haber más de un registro para el mismo estudiante cuando el
+                // director de grupo cambió a mitad de año. Se fusionan tomando el
+                // valor no-cero de cada periodo en lugar de sobrescribir con el último.
+                $notaUno = 0;
+                $notaDos = 0;
+                $notaTres = 0;
                 foreach ($filtrados as $filtro) {
-                    $estudiante->nota_primer_periodo = $filtro['nota_periodo_uno'];
-                    $estudiante->nota_segundo_periodo = $filtro['nota_periodo_dos'];
-                    $estudiante->nota_tercer_periodo = $filtro['nota_periodo_tres'];
-                    $estudiante->nota_final = $filtro['nota_final'];
-                    if($estudiante->nota_final > 0){
-                        if ( $estudiante->nota_final >= 1.5) {
-                            $estudiante->desempenio = 'Logro alcanzado';
-                        } elseif ( $estudiante->nota_final > 0) {
-                            $estudiante->desempenio = 'En proceso';
-                        } else {
-                            $estudiante->desempenio = '';
-                        }
-                    }else{
-                        $estudiante->desempenio = 'En proceso';
+                    if (floatval($filtro['nota_periodo_uno']) > 0) {
+                        $notaUno = $filtro['nota_periodo_uno'];
                     }
-                   
+                    if (floatval($filtro['nota_periodo_dos']) > 0) {
+                        $notaDos = $filtro['nota_periodo_dos'];
+                    }
+                    if (floatval($filtro['nota_periodo_tres']) > 0) {
+                        $notaTres = $filtro['nota_periodo_tres'];
+                    }
+                }
+
+                $estudiante->nota_primer_periodo = $notaUno;
+                $estudiante->nota_segundo_periodo = $notaDos;
+                $estudiante->nota_tercer_periodo = $notaTres;
+                $suma = floatval($notaUno) + floatval($notaDos) + floatval($notaTres);
+                $estudiante->nota_final = round($suma / $anios->cant_periodos, 2);
+
+                if($estudiante->nota_final > 0){
+                    if ( $estudiante->nota_final >= 1.5) {
+                        $estudiante->desempenio = 'Logro alcanzado';
+                    } elseif ( $estudiante->nota_final > 0) {
+                        $estudiante->desempenio = 'En proceso';
+                    } else {
+                        $estudiante->desempenio = '';
+                    }
+                }else{
+                    $estudiante->desempenio = 'En proceso';
                 }
             }
         }
@@ -531,7 +567,7 @@ class EvaluacionController extends Controller
         $notaFinalEstudiante = NotaFinalEstudiante::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
                                                     ->where("id_grado",$estudiante->id_curso)
                                                     ->where("id_materia",$claseDocente->id_materia)
-                                                    ->where("id_docente",$claseDocente->id_docente)->first();
+                                                    ->first();
         
        
         if($notaFinalEstudiante == null){
@@ -580,6 +616,8 @@ class EvaluacionController extends Controller
             $notaFinalEstudiante->concepto_final = "";
 
         }else{
+            $notaFinalEstudiante->id_docente = $claseDocente->id_docente;
+            $notaFinalEstudiante->nom_docente = $claseDocente->nombre_docente;
             if($periodo->id == 1){
                 $notaFinalEstudiante->nota_periodo_uno = $notaFinal;
                 $notaFinalEstudiante->concepto_per1 = $evaluacion->conceptos;
@@ -599,7 +637,7 @@ class EvaluacionController extends Controller
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_tres) ? $notaFinalEstudiante->nota_periodo_tres : 0);
-            
+
             $notaFinal =  $suma / $anios->cant_periodos;
             $notaFinalEstudiante->nota_final =  round($notaFinal,2);
             $notaFinalEstudiante->concepto_final = "";
@@ -890,7 +928,7 @@ class EvaluacionController extends Controller
         $docente = Docentes::find($usuarioactual->id_persona);
 
         $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
-                                                    ->where("id_grado",$estudiante->id_curso)->where("id_docente",$docente->id)->first();
+                                                    ->where("id_grado",$estudiante->id_curso)->first();
         if($notaFinalEstudiante == null){
             $notaFinalEstudiante = new NotaFinalTransicion();
             $notaFinalEstudiante->id_anio =$estudiante->id_anio;
@@ -923,6 +961,8 @@ class EvaluacionController extends Controller
             $notaFinalPer =  round($notaFinalResul,2);
             $notaFinalEstudiante->nota_final =  $notaFinalPer;
         }else{
+            $notaFinalEstudiante->id_docente = $docente->id;
+            $notaFinalEstudiante->nom_docente = $docente->nom_completo;
             if($periodo->id == 1){
                 $notaFinalEstudiante->nota_periodo_uno = $notaFinal;
             }elseif($periodo->id == 2){
@@ -933,7 +973,7 @@ class EvaluacionController extends Controller
             $suma = floatval(isset($notaFinalEstudiante->nota_periodo_uno) ? $notaFinalEstudiante->nota_periodo_uno : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_dos) ? $notaFinalEstudiante->nota_periodo_dos : 0) +
                     floatval(isset($notaFinalEstudiante->nota_periodo_tres) ? $notaFinalEstudiante->nota_periodo_tres : 0);
-            
+
             $notaFinalFinal =  $suma / $anios->cant_periodos;
             $notaFinalPer =  round($notaFinalFinal,2);
             $notaFinalEstudiante->nota_final =  $notaFinalPer;
@@ -1091,7 +1131,7 @@ class EvaluacionController extends Controller
         $docente = Docentes::find($usuarioactual->id_persona);
 
         $notaFinalEstudiante = NotaFinalTransicion::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
-                                                    ->where("id_grado",$estudiante->id_curso)->where("id_docente",$docente->id)->first();
+                                                    ->where("id_grado",$estudiante->id_curso)->first();
         if($notaFinalEstudiante != null){
             if($idPeriodo == 1){
                 $textoConcepto = $notaFinalEstudiante->concepto_per1;
@@ -1120,7 +1160,13 @@ class EvaluacionController extends Controller
         $docente = Docentes::find($usuarioactual->id_persona);
 
         $concepto = NotaFinalTransicion::where("id_anio",$estudiante->id_anio)->where("id_estudiante",$estudiante->id_estudiante)
-                                                    ->where("id_grado",$estudiante->id_curso)->where("id_docente",$docente->id)->first();
+                                                    ->where("id_grado",$estudiante->id_curso)->first();
+        if($concepto == null){
+            return view("usuarios.mensajes.msj_error")->with("msj","Debe calificar el periodo antes de registrar el concepto") ;
+        }
+
+        $concepto->id_docente = $docente->id;
+        $concepto->nom_docente = $docente->nom_completo;
         if($periodo->id == 1){
             $concepto->concepto_per1 = $request->input('conceptos')?$request->input('conceptos'):"";
         }elseif($periodo->id == 2){
